@@ -1,14 +1,12 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Color } from '../util/colors'
+import { Color } from '../util/colors';
+import { Ionicons } from '@expo/vector-icons';
 
-export default Login = ({ route, navigation }) => {
+export default Forgot = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
-    const [txtColor, setTxtColor] = useState("#B19EF9");
-    const [ForgotColor, setForgotColor] = useState("#A9A9A9");
-    const [user, onChangeUser] = React.useState('');
-    const [password, onChangePassword] = React.useState('');
+    const [mail, onChangeMail] = React.useState('');
 
     const styles = StyleSheet.create({
         container: {
@@ -28,8 +26,9 @@ export default Login = ({ route, navigation }) => {
             borderTopLeftRadius: 30,
             borderTopRightRadius: 30,
             width: '100%',
-            paddingVertical: '20%', // Adjust this value to increase the height
+            paddingVertical: '12%', // Adjust this value to increase the height
             alignItems: 'center',
+            paddingHorizontal:"8%",
         },
         Button:{
             backgroundColor: btnColor, 
@@ -61,10 +60,10 @@ export default Login = ({ route, navigation }) => {
             alignItems: 'center',
         },
         imagen: {
-            width: 75, 
-            height: 75, 
-            marginTop:5
-            // backgroundColor:'red'
+            width: 150, 
+            height: 150, 
+            marginTop:5,
+            marginBottom:"-5%"
         },
         container_pill: {
             flex: 0,
@@ -80,6 +79,13 @@ export default Login = ({ route, navigation }) => {
             justifyContent: 'center',
             alignItems: 'center',
         },
+        header: {
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+        icon: {
+            marginRight: 10, // Ajusta este valor según sea necesario
+        },
     });
     
     
@@ -88,66 +94,33 @@ export default Login = ({ route, navigation }) => {
             colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
             style={styles.container}>
 
-            {/* <View style={{alignContent:'center', alignItems:'center', backgroundColor:'red'}}>
-                <View style={styles.circle}>
-                    <Image
-                    source={require("../assets/imgs/heart.png")}
-                    style={styles.imagen}
-                    />
-                </View>
-                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35}}>Pill Reminder</Text>
-            </View> */}
+            <Pressable onPressOut={() => { navigation.navigate('Login')}} style={{ position: 'absolute', top: 10, left: 10,  }}>
+                    <Ionicons name="chevron-back-outline" style={{ marginTop:40, marginLeft:10, alignSelf:'flex-start' }} size={35} color={Color[50]} />
+            </Pressable>
 
             <View style={styles.container_img}>
-                <View style={styles.circle}>
+                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>¿Olvidaste tu contraseña?</Text>
                 <Image
-                    source={require("../assets/imgs/heart.png")}
+                    source={require("../assets/imgs/forgot.png")}
                     style={styles.imagen}
                 />
-                </View>
-                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35 }}>Pill Reminder</Text>
             </View>
 
             <View style={styles.emergentViewContainer}>
                 <View style={styles.emergentView}>
-                    <Text style={{fontFamily: 'M1c-Medium', fontSize:26}}>¡Hola de nuevo!</Text>
-                    <Text style={{fontFamily: 'M1c-Regular', fontSize:16, color:'#A9A9A9', marginBottom:40}}>Inicia sesión para continuar</Text>
+                    <Text style={{fontFamily: 'M1c-Medium', fontSize:24, color:'#4E4E4E', textAlign:'center'}}>Ingresa el correo asociado a tu cuenta</Text>
+                    <Text style={{fontFamily: 'M1c-Regular', fontSize:16, color:'#A9A9A9', marginBottom:40, textAlign:'center'}}>Te enviaremos un código a tu correo para recuperar tu contraseña</Text>
 
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, margin:10, width:"70%"}}>
+                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%"}}>
                         <TextInput
                             style={styles.input}
-                            onChangeText={onChangeUser}
-                            value={user}
-                            placeholder="Usuario"
-                        />
-                    </View>
-
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginTop:10, marginBottom:4, width:"70%"}}>
-                        <TextInput
-                            secureTextEntry={true}
-                            style={styles.input}
-                            onChangeText={onChangePassword}
-                            value={password}
-                            placeholder="Contraseña"
+                            onChangeText={onChangeMail}
+                            value={mail}
+                            placeholder="ejemplo@gmail.com"
                         />
                     </View>
 
                     
-                    <Pressable
-                        style={{ width: "70%" }}
-                        onPressIn={() => { 
-                            setForgotColor("#727272") 
-                        }} 
-                        onPressOut={() => { 
-                            navigation.navigate('Forgot');
-                            setForgotColor("#A9A9A9") 
-                        }
-                    }>
-                        <Text style={{ fontFamily: "M1c-Regular", color: ForgotColor, textAlign: "right", textDecorationLine: 'underline' }}>
-                            Olvidé mi contraseña
-                        </Text>
-                    </Pressable>
-
                     <Pressable
                         style={styles.Button}
                         onPressIn={() => { 
@@ -159,21 +132,11 @@ export default Login = ({ route, navigation }) => {
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
                             <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', marginLeft:5, marginTop:4 }} >
-                                Iniciar Sesión
+                                Enviar
                             </Text>
                         </View>
                     </Pressable>
 
-                    <Pressable
-                        onPressIn={() => { 
-                            setTxtColor("#8B7DC1") 
-                        }} 
-                        onPressOut={() => { 
-                            setTxtColor("#B19EF9") 
-                        }
-                    }>
-                        <Text style={{fontFamily:"M1c-Regular", color:"#A9A9A9"}}>¿No tienes una cuenta? <Text style={{fontFamily:"M1c-Bold", color:txtColor}}>Crea una</Text> </Text>
-                    </Pressable>
                 </View>
             </View>
         </LinearGradient>
