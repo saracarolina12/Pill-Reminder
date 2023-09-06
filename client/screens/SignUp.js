@@ -6,10 +6,10 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default SignUp = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
-    const [txtColor, setTxtColor] = useState("#B19EF9");
-    const [ForgotColor, setForgotColor] = useState("#A9A9A9");
     const [user, onChangeUser] = React.useState('');
     const [password, onChangePassword] = React.useState('');
+    const [email, onChangeEmail] = React.useState('');
+    const [confirmPassword, onChangeConfirmPassword] = React.useState('');
 
     const styles = StyleSheet.create({
         container: {
@@ -56,6 +56,29 @@ export default SignUp = ({ route, navigation }) => {
             textAlignVertical:'center',
             marginBottom:18
         },
+        Form: {
+            transform: btnColor === Color[912]? [{translateY: 0}]: [{translateY: 2}] ,
+            textAlign:'center', 
+            padding: 3,
+            borderRadius:20, 
+            justifyContent: 'center',
+            alignItems: 'center',
+            width:270,
+            alignContent: 'center',
+            textAlign: 'center',
+            justifyContent:'center',
+            textAlignVertical:'center',
+            marginTop:15
+        },
+        input: {
+            height: 45,
+            borderWidth: 1,
+            padding: 10,
+            borderRadius:15,
+            width:250,
+            paddingBottom:3
+            // borderColor:'red'
+        },
         container_img: {
             flex: 1,
             justifyContent: 'center',
@@ -99,44 +122,61 @@ export default SignUp = ({ route, navigation }) => {
 
             <View style={styles.emergentViewContainer}>
                 <View style={styles.emergentView}>
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, margin:10, width:"70%"}}>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={onChangeUser}
-                            value={user}
-                            placeholder="Ingrese el usuario deseado"
-                        />
-                    </View>
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10, position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Usuario</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                onChangeText={onChangeUser}
+                                value={user}
+                                style={styles.input}
+                                placeholder="Ingrese el usuario deseado"
+                            />
+                        </View>
+                    </Pressable>
 
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginTop:10, marginBottom:4, width:"70%"}}>
-                        <TextInput
-                            secureTextEntry={true}
-                            style={styles.input}
-                            onChangeText={onChangePassword}
-                            value={password}
-                            placeholder="Ingrese su correo"
-                        />
-                    </View>
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Correo</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                onChangeText={onChangeEmail}
+                                value={email}
+                                style={styles.input}
+                                placeholder="Ingrese un correo"
+                            />
+                        </View>
+                    </Pressable>
 
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginTop:10, marginBottom:4, width:"70%"}}>
-                        <TextInput
-                            secureTextEntry={true}
-                            style={styles.input}
-                            onChangeText={onChangePassword}
-                            value={password}
-                            placeholder="Ingrese la contraseña"
-                        />
-                    </View>
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Contraseña</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                onChangeText={onChangePassword}
+                                value={password}
+                                style={styles.input}
+                                placeholder="Ingrese la contraseña"
+                            />
+                        </View>
+                    </Pressable>
 
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginTop:10, marginBottom:4, width:"70%"}}>
-                        <TextInput
-                            secureTextEntry={true}
-                            style={styles.input}
-                            onChangeText={onChangePassword}
-                            value={password}
-                            placeholder="Ingrese nuevamente la contraseña"
-                        />
-                    </View>
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Confirmar contraseña</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                onChangeText={onChangeConfirmPassword}
+                                value={confirmPassword}
+                                style={styles.input}
+                                placeholder="Ingrese nuevamente la contraseña"
+                            />
+                        </View>
+                    </Pressable>
 
                     <Pressable
                         style={styles.Button}
