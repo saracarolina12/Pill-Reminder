@@ -13,7 +13,7 @@ export default Forgot = ({ route, navigation }) => {
             flex: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
-            // backgroundColor: 'red',
+            backgroundColor:"white",
             paddingTop: 40,
         },
         emergentViewContainer: {
