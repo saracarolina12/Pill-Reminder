@@ -38,44 +38,50 @@ export default Config = ({ route, navigation }) => {
     const [unidad, onChangeUnidad] = useState("");
     const [hoursMedicine, onChangeHoursMedicine] = useState("");
 
-    // const [selected, setSelected] = useState('');
-    // const [day, setDay] = useState(new Date().getDate());
-    // const [month, setMonth] = useState(new Date().getMonth()+1);
-    // const [year, setYear] = useState(new Date().getFullYear());
     const currentDate = new Date();
-  const year = currentDate.getFullYear();
-  const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-  const day = currentDate.getDate();
+    const year = currentDate.getFullYear();
+    const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+    const day = currentDate.getDate();
 
-  const initialSelectedDates = {}; // Inicialmente, ninguna fecha está seleccionada
+    const initialSelectedDates = {}; // Inicialmente, ninguna fecha está seleccionada
 
-  const getMarked = () => {
-    let marked = {};
+    const getMarked = () => {
+        let marked = {};
 
-    for (let i = 1; i <= 31; i++) {
-      const dayNumber = i.toString().padStart(2, '0');
-      const dateStr = `${year}-${month}-${dayNumber}`;
-      
-      marked[dateStr] = {
-        startingDay: false,
-        endingDay: false,
-        color: selectedDates[dateStr] ? '#FFC9DA' : 'white',
-        textColor: '#444444',
-        disabled: false,
-      };
-    }
+        // Calcular el límite de fechas para mostrar días posteriores a hoy
+        const endDate = new Date(year + 10, 11, 31); // Puedes ajustar esto según tus necesidades
+        
+        // Iterar a través de las fechas desde hoy hasta la fecha de finalización
+        let currentDate = new Date(year, month - 1, day);
+        while (currentDate <= endDate) {
+        const nextYear = currentDate.getFullYear();
+        const nextMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+        const nextDay = currentDate.getDate().toString().padStart(2, '0');
+        const dateStr = `${nextYear}-${nextMonth}-${nextDay}`;
+        
+        marked[dateStr] = {
+            startingDay: false,
+            endingDay: false,
+            color: selectedDates[dateStr] ? '#FFC9DA' : 'white',
+            textColor: '#444444',
+            disabled: false,
+        };
 
-    return marked;
-  };
+        // Incrementar la fecha en 1 día
+        currentDate.setDate(currentDate.getDate() + 1);
+        }
 
-  const [selectedDates, setSelectedDates] = useState(initialSelectedDates);
+        return marked;
+    };
 
-  const handleDayPress = (day) => {
-    const dateStr = day.dateString;
-    const newSelectedDates = { ...selectedDates };
-    newSelectedDates[dateStr] = !newSelectedDates[dateStr];
-    setSelectedDates(newSelectedDates);
-  };
+    const [selectedDates, setSelectedDates] = useState(initialSelectedDates);
+
+    const handleDayPress = (day) => {
+        const dateStr = day.dateString;
+        const newSelectedDates = { ...selectedDates };
+        newSelectedDates[dateStr] = !newSelectedDates[dateStr];
+        setSelectedDates(newSelectedDates);
+    };
 
     const styles = StyleSheet.create({
         container: {
@@ -137,15 +143,15 @@ export default Config = ({ route, navigation }) => {
 
 
     const meses = {
-        1: "enero",
-        2: "febrero",
-        3: "marzo",
-        4: "abril",
-        5: "mayo",
-        6: "junio",
-        7: "julio",
-        8: "agosto",
-        9: "septiembre",
+        "01": "enero",
+        "02": "febrero",
+        "03": "marzo",
+        "04": "abril",
+        "05": "mayo",
+        "06": "junio",
+        "07": "julio",
+        "08": "agosto",
+        "09": "septiembre",
         10: "octubre",
         11: "noviembre",
         12: "diciembre"
@@ -249,15 +255,14 @@ export default Config = ({ route, navigation }) => {
                     }}
                 /> */}
                 <SafeAreaView>
-      <Calendar
-        current={`${year}-${month}-${day}`}
-        initialDate={`${year}-${month}-${day}`}
-        markingType="period"
-        markedDates={getMarked()}
-        onDayPress={handleDayPress}
-        enableSwipeMonths={true} // Permite seleccionar fechas de otros meses
-      />
-    </SafeAreaView>
+                    <Calendar
+                        current={`${year}-${month}-${day}`}
+                        initialDate={`${year}-${month}-${day}`}
+                        markingType="period"
+                        markedDates={getMarked()}
+                        onDayPress={handleDayPress}
+                    />
+                </SafeAreaView>
 
 
                 <View style={styles.buttonContainer}>
