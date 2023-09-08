@@ -36,8 +36,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Lrogin" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
         <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
       </Stack.Navigator>

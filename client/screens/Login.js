@@ -154,6 +154,7 @@ export default Login = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
+                            navigation.navigate("Main")
                             setBtnColor(Color[40]) 
                         }
                     }>
