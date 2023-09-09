@@ -4,9 +4,9 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 
-export default Forgot = ({ route, navigation }) => {
+export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
-    const [mail, onChangeMail] = React.useState('');
+    const [code, onChangeCode] = React.useState('');
 
     const styles = StyleSheet.create({
         container: {
@@ -99,7 +99,7 @@ export default Forgot = ({ route, navigation }) => {
             </Pressable>
 
             <View style={styles.container_img}>
-                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>¿Olvidaste tu contraseña?</Text>
+                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>Verificación</Text>
                 <Image
                     source={require("../assets/imgs/forgot.png")}
                     style={styles.imagen}
@@ -108,18 +108,18 @@ export default Forgot = ({ route, navigation }) => {
 
             <View style={styles.emergentViewContainer}>
                 <View style={styles.emergentView}>
-                    <Text style={{fontFamily: 'M1c-Medium', fontSize:24, color:'#4E4E4E', textAlign:'center'}}>Ingresa el correo asociado a tu cuenta</Text>
-                    <Text style={{fontFamily: 'M1c-Regular', fontSize:16, color:'#A9A9A9', marginBottom:40, textAlign:'center'}}>Te enviaremos un código a tu correo para recuperar tu contraseña</Text>
+                    <Text style={{fontFamily: 'M1c-Regular', fontSize:20, color:'#A9A9A9', marginBottom:40, marginTop:40, textAlign:'center'}}>Ingresa el código de verificación que enviamos a tu correo</Text>
 
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%"}}>
+                    <View style={{padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%", textDecorationLine: 'underline'}}>
                         <TextInput
                             style={styles.input}
-                            onChangeText={onChangeMail}
-                            value={mail}
-                            placeholder="ejemplo@gmail.com"
+                            onChangeText={onChangeCode}
+                            value={code}
+                            placeholder="12345"
                         />
                     </View>
 
+                    <Text style={{fontFamily: 'M1c-Regular', fontSize:10, color:'#0000FF', textAlign:'center', textDecorationLine: 'underline'}}>¿No recibiste ningún código?</Text>
                     
                     <Pressable
                         style={styles.Button}
@@ -127,13 +127,13 @@ export default Forgot = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
-                            navigation.navigate('VerifyCode');
+                            navigation.navigate('NewPassword');
                             setBtnColor(Color[40]);
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
                             <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', marginLeft:5, marginTop:4 }} >
-                                Enviar
+                                Verificar
                             </Text>
                         </View>
                     </Pressable>

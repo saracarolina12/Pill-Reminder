@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 
-export default Forgot = ({ route, navigation }) => {
+export default NewPassword = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [mail, onChangeMail] = React.useState('');
 
@@ -127,13 +127,13 @@ export default Forgot = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
-                            navigation.navigate('VerifyCode');
                             setBtnColor(Color[40]);
+                            navigation.navigate("Login");
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
                             <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', marginLeft:5, marginTop:4 }} >
-                                Enviar
+                                Guardar
                             </Text>
                         </View>
                     </Pressable>

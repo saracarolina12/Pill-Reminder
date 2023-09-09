@@ -7,6 +7,8 @@ import SignUp from './screens/SignUp.js';
 import Forgot from './screens/Forgot.js';
 import Main from './screens/Main.js';
 import nextAlarm from './components/nextAlarm.js';
+import VerifyCode from './screens/VerifyCode.js';
+import NewPassword from './screens/NewPassword.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -41,6 +43,8 @@ const App = () => {
         <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
+        <Stack.Screen name="VerifyCode" component={VerifyCode} options={{ headerShown: false }} />
+        <Stack.Screen name="NewPassword" component={NewPassword} options={{ headerShown: false }} />
         <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
