@@ -170,6 +170,7 @@ export default Login = ({ route, navigation }) => {
                             setTxtColor("#8B7DC1") 
                         }} 
                         onPressOut={() => { 
+                            navigation.navigate('SignUp');
                             setTxtColor("#B19EF9") 
                         }
                     }>
