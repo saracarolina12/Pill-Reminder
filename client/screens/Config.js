@@ -5,6 +5,11 @@ import { Color } from '../util/colors'
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import SelectDropdown from 'react-native-select-dropdown'
+import { AntDesign } from '@expo/vector-icons';
+
+const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ]
+
 
 LocaleConfig.locales['fr'] = {
     monthNames: [
@@ -227,14 +232,33 @@ export default Config = ({ route, navigation }) => {
                     <View style={{ marginBottom: 10 }}>
                         <Text style={{ fontFamily: 'M1c-Regular', fontSize: 18, color: 'black', marginBottom: 0, textAlign: 'left', color: '#EA889A' }}>Dosis</Text>
                         <View style={{ backgroundColor: '#E9E9E9', padding: 10, color: '#A9A9A9', borderRadius: 10, width: 60 }}>
-                        <TextInput
-                            style={{ color: '#808080', fontFamily: 'M1c-Regular', height: 20 }}
-                            onChangeText={onChangeDosis}
-                            value={dosis}
-                            placeholder="ej. 15"
-                        />
+                            <TextInput
+                                style={{ color: '#808080', fontFamily: 'M1c-Regular', height: 20 }}
+                                onChangeText={onChangeDosis}
+                                value={dosis}
+                                placeholder="ej. 15"
+                            />
                         </View>
                     </View>
+
+                    <SelectDropdown
+                        defaultButtonText= {<AntDesign name="caretdown" size={16} color="grey" />}
+                        buttonStyle={{backgroundColor: '#E9E9E9', color: '#A9A9A9', borderRadius: 10, width: 60,alignSelf:'center'}}
+                        data={unidad}
+                        onSelect={(selectedItem, index) => {
+                            console.log(selectedItem, index)
+                        }}
+                        buttonTextAfterSelection={(selectedItem, index) => {
+                            // text represented after item is selected
+                            // if data array is an array of objects then return selectedItem.property to render after item is selected
+                            return selectedItem
+                        }}
+                        rowTextForSelection={(item, index) => {
+                            // text represented for each item in dropdown
+                            // if data array is an array of objects then return item.property to represent item in dropdown
+                            return item
+                        }}
+                    />
 
                     
                 </View>
