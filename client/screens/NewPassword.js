@@ -6,7 +6,8 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default NewPassword = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
-    const [mail, onChangeMail] = React.useState('');
+    const [password, onChangePassword] = React.useState('');
+    const [confirmPassword, onChangeconfirmPassword] = React.useState('');
 
     const styles = StyleSheet.create({
         container: {
@@ -88,7 +89,6 @@ export default NewPassword = ({ route, navigation }) => {
         },
     });
     
-    
     return (
         <LinearGradient
             colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
@@ -99,7 +99,7 @@ export default NewPassword = ({ route, navigation }) => {
             </Pressable>
 
             <View style={styles.container_img}>
-                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>¿Olvidaste tu contraseña?</Text>
+                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>Nueva contraseña</Text>
                 <Image
                     source={require("../assets/imgs/forgot.png")}
                     style={styles.imagen}
@@ -108,15 +108,22 @@ export default NewPassword = ({ route, navigation }) => {
 
             <View style={styles.emergentViewContainer}>
                 <View style={styles.emergentView}>
-                    <Text style={{fontFamily: 'M1c-Medium', fontSize:24, color:'#4E4E4E', textAlign:'center'}}>Ingresa el correo asociado a tu cuenta</Text>
-                    <Text style={{fontFamily: 'M1c-Regular', fontSize:16, color:'#A9A9A9', marginBottom:40, textAlign:'center'}}>Te enviaremos un código a tu correo para recuperar tu contraseña</Text>
+                    <Text style={{fontFamily: 'M1c-Medium', fontSize:24, color:'#4E4E4E', marginBottom:40, textAlign:'center'}}>Crear nueva{'\n'}contraseña</Text>
 
                     <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%"}}>
                         <TextInput
                             style={styles.input}
-                            onChangeText={onChangeMail}
-                            value={mail}
-                            placeholder="ejemplo@gmail.com"
+                            onChangeText={onChangePassword}
+                            value={password}
+                            placeholder="Contraseña"
+                        />
+                    </View>
+                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%"}}>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={onChangeconfirmPassword}
+                            value={confirmPassword}
+                            placeholder="Confirmar contraseña"
                         />
                     </View>
 

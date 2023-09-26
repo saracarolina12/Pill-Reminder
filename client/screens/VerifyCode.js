@@ -3,10 +3,22 @@ import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
 
 export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [code, onChangeCode] = React.useState('');
+    let [resendEnabled, setResendEnabled] = React.useState(false);
+        
+    enableTextAfterDelay = () => {
+        setTimeout(() => {
+          setResendEnabled = true;
+        }, 1000); // 15 seconds
+    };
+
+    useEffect(() => {
+        enableTextAfterDelay();
+    });
 
     const styles = StyleSheet.create({
         container: {
@@ -119,7 +131,7 @@ export default VerifyCode = ({ route, navigation }) => {
                         />
                     </View>
 
-                    <Text style={{fontFamily: 'M1c-Regular', fontSize:10, color:'#0000FF', textAlign:'center', textDecorationLine: 'underline'}}>¿No recibiste ningún código?</Text>
+                    <Text style={{fontFamily: 'M1c-Regular', fontSize:10, color: resendEnabled ? '#0000FF' : 'gray', textAlign:'center', textDecorationLine: 'underline'}}>¿No recibiste ningún código?</Text>
                     
                     <Pressable
                         style={styles.Button}
