@@ -13,18 +13,18 @@ const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ]
 
 LocaleConfig.locales['fr'] = {
     monthNames: [
-      'Enero',
-      'Febrero',
-      'Marzo',
-      'Abril',
-      'Mayo',
-      'Junio',
-      'Julio',
-      'Agosto',
-      'Septiembre',
-      'Octubre',
-      'Noviembre',
-      'Diciembre'
+        'Enero',
+        'Febrero',
+        'Marzo',
+        'Abril',
+        'Mayo',
+        'Junio',
+        'Julio',
+        'Agosto',
+        'Septiembre',
+        'Octubre',
+        'Noviembre',
+        'Diciembre'
     ],
     monthNamesShort: ['Ene.', 'Feb.', 'Mar.', 'Abr.', 'May.', 'Jun.', 'Jul.', 'Ago.', 'Sept.', 'Oct.', 'Nov.', 'Dic.'],
     dayNames: ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'],
@@ -52,11 +52,7 @@ export default Config = ({ route, navigation }) => {
 
     const getMarked = () => {
         let marked = {};
-
-        // Calcular el límite de fechas para mostrar días posteriores a hoy
-        const endDate = new Date(year + 10, 11, 31); // Puedes ajustar esto según tus necesidades
-        
-        // Iterar a través de las fechas desde hoy hasta la fecha de finalización
+        const endDate = new Date(year + 10, 11, 31); 
         let currentDate = new Date(year, month - 1, day);
         while (currentDate <= endDate) {
         const nextYear = currentDate.getFullYear();
@@ -85,6 +81,7 @@ export default Config = ({ route, navigation }) => {
         const dateStr = day.dateString;
         const newSelectedDates = { ...selectedDates };
         newSelectedDates[dateStr] = !newSelectedDates[dateStr];
+        console.log(newSelectedDates);
         setSelectedDates(newSelectedDates);
     };
 
@@ -244,7 +241,7 @@ export default Config = ({ route, navigation }) => {
                     <SelectDropdown
                         defaultButtonText= {<AntDesign name="caretdown" size={16} color="grey" />}
                         buttonStyle={{backgroundColor: '#E9E9E9', color: '#A9A9A9', borderRadius: 10, width: 60,alignSelf:'center'}}
-                        data={unidad}
+                        data={["mg","mcg","mL", "Gotas", "UI", "%", "Patch", "Sup", "Spray"]}
                         onSelect={(selectedItem, index) => {
                             console.log(selectedItem, index)
                         }}
@@ -285,6 +282,7 @@ export default Config = ({ route, navigation }) => {
                         markingType="period"
                         markedDates={getMarked()}
                         onDayPress={handleDayPress}
+
                     />
                 </SafeAreaView>
 
