@@ -291,7 +291,10 @@ export default Config = ({ route, navigation }) => {
                     <Pressable 
                         // style={styles.circleCancelContainer}
                         onPressIn={() => { setCancelBtnColor('#D76161') }}
-                        onPressOut={() => { setCancelBtnColor('#FC7070') }}
+                        onPressOut={() => {
+                            navigation.navigate("Main")
+                            setCancelBtnColor('#FC7070')
+                        }}
                     >
                         {/* <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text> */}
                         <MaterialIcons name="cancel" size={60} color={cancelBtnColor} />
