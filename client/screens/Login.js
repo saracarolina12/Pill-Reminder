@@ -15,7 +15,7 @@ export default Login = ({ route, navigation }) => {
             flex: 1,
             justifyContent: 'space-between',
             alignItems: 'center',
-            // backgroundColor: 'red',
+            backgroundColor:"white",
             paddingTop: 40,
         },
         emergentViewContainer: {
@@ -154,6 +154,7 @@ export default Login = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
+                            navigation.navigate("Main")
                             setBtnColor(Color[40]) 
                         }
                     }>
