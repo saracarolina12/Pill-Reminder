@@ -83,7 +83,10 @@ export default Main = ({ route, navigation }) => {
             <Pressable 
                 style={styles.circleContainer}
                 onPressIn={() => { setBtnColor('#CC597C') }}
-                onPressOut={() => { setBtnColor('#FC709B') }}
+                onPressOut={() => {
+                    setBtnColor('#FC709B')
+                    navigation.navigate("Config")
+                }}
             >
                 <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text>
             </Pressable>
