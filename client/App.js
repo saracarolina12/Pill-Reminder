@@ -7,6 +7,7 @@ import SignUp from './screens/SignUp.js';
 import Forgot from './screens/Forgot.js';
 import Config from './screens/Config.js';
 import Main from './screens/Main.js';
+import Alarm from './screens/Alarm.js';
 import nextAlarm from './components/nextAlarm.js';
 import ShowAlarm from './screens/ShowAlarm.js';
 
@@ -46,6 +47,7 @@ const App = () => {
         <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
         <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
         <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
+        <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
