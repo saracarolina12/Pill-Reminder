@@ -75,11 +75,8 @@ export default Config = ({ route, navigation }) => {
 
     /* */
     useEffect(() => {
-        console.log("1");
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-        console.log("2");
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            console.log("3");
             setNotification(notification);
         });
     
@@ -404,19 +401,20 @@ if (Device.isDevice) {
 
 return token;
 }
-Notifications.scheduleNotificationAsync({
-    content: {
-        title: 'Look at that notification',
-        body: "WUJU",
-    },
-    trigger: null,
-});
 
-// Notifications.scheduleNotificationAsync({
-//     content: {
-//         title: "You've got mail! 📬",
-//         body: 'Here is the notification body',
-//         data: { data: 'goes here' },
-//     },
-//     trigger: { seconds: 5 },
-// });
+const scheduleNotification = async () => {
+    const trigger = new Date();
+    trigger.setHours(21); 
+    trigger.setMinutes(35); 
+    trigger.setSeconds(0); 
+    
+    await Notifications.scheduleNotificationAsync({
+        content: {
+            title: 'Recordatorio de pastilla',
+            body: '¡Es hora de tomar tu medicamento!',
+        },
+        trigger,
+    });
+};
+
+scheduleNotification();
