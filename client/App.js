@@ -15,7 +15,6 @@ const Stack = createNativeStackNavigator();
 
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
-
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({
@@ -33,17 +32,16 @@ const App = () => {
     loadFonts();
   }, []);
 
-  if (!fontLoaded) {
-    return null; // You can render a loading screen or something here
-  }
+  if (!fontLoaded) { return null;}
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
         <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
-        <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} /> */}
         <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
         <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
         <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />

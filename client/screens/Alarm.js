@@ -5,12 +5,14 @@ import { Color } from '../util/colors';
 export default Alarm = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState("#FC709B");
     const[currentDate, setCurrentDate] = useState(new Date());
+
     useEffect(() => {
         const time = setInterval(() => {
             setCurrentDate(new Date());
         });
         return() => clearInterval(time);
     }, []);
+
     const styles = StyleSheet.create({
         container: {
             flex:1,
