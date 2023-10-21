@@ -1,15 +1,17 @@
-import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
+import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, TouchableHighlight } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [code, onChangeCode] = React.useState('');
+    const [flexDirection, setflexDirection] = useState('column');
     let [resendEnabled, setResendEnabled] = React.useState(false);
-        
+            
     enableTextAfterDelay = () => {
         setTimeout(() => {
           setResendEnabled = true;
@@ -20,6 +22,25 @@ export default VerifyCode = ({ route, navigation }) => {
         enableTextAfterDelay();
     });
 
+    inputRefs = [
+                React.createRef(),
+                React.createRef(),
+                React.createRef(),
+                React.createRef()
+            ]
+    
+    function goNext(index){
+        if(index < 3){
+        inputRefs[index+1].focus()
+    }
+}
+    const [color,setColor] = useState('gray');
+    const changeColor = () => {
+        const newColor = color === 'gray' ? '#9D8BE4' : 'gray';
+        setColor(newColor);
+    };
+
+
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -27,11 +48,13 @@ export default VerifyCode = ({ route, navigation }) => {
             alignItems: 'center',
             backgroundColor:"white",
             paddingTop: 40,
+            flexWrap:'wrap'
         },
         emergentViewContainer: {
             width: '100%',
             alignItems: 'center',
             marginBottom: 0,
+            flexWrap:'wrap'
         },
         emergentView: {
             backgroundColor: 'white',
@@ -98,9 +121,26 @@ export default VerifyCode = ({ route, navigation }) => {
         icon: {
             marginRight: 10, // Ajusta este valor según sea necesario
         },
+        row:{
+            flexDirection:'row',
+            justifyContent: 'space-evenly'
+        },
+        input: {
+            height: 55,
+            margin: 15,
+            width:57,
+            borderBottomWidth: 1,
+            padding: 10,
+            borderColor:'#FC709B',
+            fontFamily:'M1c-Regular',
+            fontSize:28
+          },
+        underline:{
+            textDecorationLine:'underline',
+            color : color
+        }
     });
-    
-    
+
     return (
         <LinearGradient
             colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
@@ -122,17 +162,27 @@ export default VerifyCode = ({ route, navigation }) => {
                 <View style={styles.emergentView}>
                     <Text style={{fontFamily: 'M1c-Regular', fontSize:20, color:'#A9A9A9', marginBottom:40, marginTop:40, textAlign:'center'}}>Ingresa el código de verificación que enviamos a tu correo</Text>
 
-                    <View style={{padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%", textDecorationLine: 'underline'}}>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={onChangeCode}
-                            value={code}
-                            placeholder="12345"
-                        />
-                    </View>
+                    <SafeAreaView style={styles.row}>
+                    {this.inputRefs.map((k, idx) => (
+                        <TextInput 
+                        onChange={() => goNext(idx)}
+                        ref={r => inputRefs[idx] = r} 
+                        style={styles.input} 
+                        maxLength={1} 
+                        keyboardType = "numeric">
+                        </TextInput>
+                    )
+                    )}
+                    </SafeAreaView>                       
+                    <View>
+                    <TouchableOpacity onPress={changeColor}>
+                    <Text 
+                    style={styles.underline}>
+                        ¿No recibiste ningún código?
+                    </Text>
+                    </TouchableOpacity>
+                    </View>                   
 
-                    <Text style={{fontFamily: 'M1c-Regular', fontSize:10, color: resendEnabled ? '#0000FF' : 'gray', textAlign:'center', textDecorationLine: 'underline'}}>¿No recibiste ningún código?</Text>
-                    
                     <Pressable
                         style={styles.Button}
                         onPressIn={() => { 
@@ -155,4 +205,3 @@ export default VerifyCode = ({ route, navigation }) => {
         </LinearGradient>
     );
 };
-
