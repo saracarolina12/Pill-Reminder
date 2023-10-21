@@ -1,9 +1,11 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Color } from '../util/colors';
+import { RFValue } from "react-native-responsive-fontsize";
 
 export default Alarm = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState("#FC709B");
+    const [descartarBtnColor, setDescartarBtnColor] = useState("#FC709B");
     const[currentDate, setCurrentDate] = useState(new Date());
 
     useEffect(() => {
@@ -43,7 +45,33 @@ export default Alarm = ({ route, navigation }) => {
             alignItems: 'center',
             elevation:10,
             shadowColor: "#000",
-            width:210,
+            width:RFValue(210),
+            height: RFValue(50),
+            shadowOpacity: 0.3,
+            shadowRadius: 3,
+            shadowOffset: {
+                height: 5,
+                width: 5
+            },
+            alignContent: 'center',
+            marginTop:RFValue(15),
+            textAlign: 'center',
+            justifyContent:'center',
+            textAlignVertical:'center',
+            marginBottom:75
+        },
+        DescartarBtn:{
+            backgroundColor: descartarBtnColor, 
+            transform: descartarBtnColor === Color[912]? [{translateY: 0}]: [{translateY: 2}] ,
+            textAlign:'center', 
+            padding: 10,
+            borderRadius:30 ,
+            justifyContent: 'center',
+            alignItems: 'center',
+            elevation:10,
+            shadowColor: "#000",
+            width:RFValue(100),
+            height: RFValue(50),
             shadowOpacity: 0.3,
             shadowRadius: 3,
             shadowOffset: {
@@ -55,7 +83,7 @@ export default Alarm = ({ route, navigation }) => {
             textAlign: 'center',
             justifyContent:'center',
             textAlignVertical:'center',
-            marginBottom:75
+            // marginBottom:75
         },
         circle2: {
             width: 85, 
@@ -75,10 +103,10 @@ export default Alarm = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-          <Text style={{ color:'#CB7C96', textAlign:'center', fontFamily:'M1c-Regular', fontSize:40,}}>
+          <Text style={{ color:'#CB7C96', textAlign:'center', fontFamily:'M1c-Regular', fontSize:RFValue(50),}}>
                 {currentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
             </Text>
-            <Text style={{color:'#F7A5BF', textAlign:'center',fontFamily:'M1c-Light',fontSize:20,marginBottom:70}}>
+            <Text style={{color:'#F7A5BF', textAlign:'center',fontFamily:'M1c-Light',fontSize:RFValue(22),marginBottom:70}}>
                 {currentDate.toLocaleDateString([],{weekday:'long', day:'numeric', month:'short'})}
             </Text>
             <View style={styles.circle}>
@@ -98,15 +126,32 @@ export default Alarm = ({ route, navigation }) => {
                 }}
             >
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
-                            <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', textAlign:'center'}} >
+                            <Text style={{fontSize:RFValue(17),fontFamily:'M1c-Regular', color:'white', textAlign:'center'}} >
                                 Posponer (10 minutos)
                             </Text>
                         </View>
             </Pressable>
-        <Image source={require("../assets/imgs/left.png")}/> 
+        {/* <Image source={require("../assets/imgs/left.png")}/> 
         <View style={styles.circle2}/>
-        <Image source={require("../assets/imgs/right.png")}/> 
-        <Text style={{color:'#A9939A',fontFamily:'M1c-Light',fontSize:13}}>Desliza al tomar tu medicamento</Text>
+        <Image source={require("../assets/imgs/right.png")}/>  */}
+        {/* <Text style={{color:'#A9939A',fontFamily:'M1c-Light',fontSize:13}}>Desliza al tomar tu medicamento</Text> */}
+            <Pressable
+                style={styles.DescartarBtn}
+                onPressIn={() => { 
+                    setDescartarBtnColor(Color[50]) 
+                }} 
+                onPressOut={() => { 
+                    //TODO: agregar lógica para desactivar la alarma
+                    navigation.navigate('Config');
+                    setDescartarBtnColor(Color[40]) 
+                }}
+            >
+                <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
+                            <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', textAlign:'center'}} >
+                                Descartar
+                            </Text>
+                        </View>
+            </Pressable>
         </View>
     );
 };
