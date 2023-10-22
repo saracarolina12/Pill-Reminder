@@ -69,8 +69,8 @@ app.post('/signin', (req, res) => {
                 console.log("Couldn't find user: " + err); // TODO: ADD A PROPER LOGGER
                 return res.status(500).json({ error: "Couldn't find user: " + err });
             }
-            console.log(entries, entries.length());
-            if(entries.length()) {
+            console.log(entries, entries.length);
+            if(entries.length) {
                 res.json({ message: 'Sign in successful' });
                 console.log("Sign in successful"); // TODO: ADD A PROPER LOGGER
             }
