@@ -106,18 +106,30 @@ export default SignUp = ({ route, navigation }) => {
     const handleSignUp = async () => {
         try {
             
-            const formData = {
+            const formData = {};
+            var formComplete = true;
+            formData.name = user ? user: formComplete = false;
+            formData.email = email ? email: formComplete = false;
+            formData.password = password ? password: formComplete = false;
 
-            };
+            if(!formComplete){  
+                console.log('Form is not complete'); // TODO: Add notif
+                return;
+            }
+            if(password != confirmPassword){
+                console.log('Passwords don"t match'); // TODO: Add proper notif
+                return;
+            }
+
             const response = await axios.post(endpooooooooooooooooooooint + 'signup', formData);
             
             if (response.status === 200) {
-                Alert.alert('Sign Up Successful', 'You are now registered!');
+                console.log('Sign Up Successful', 'You are now registered!');
             } else {
-                Alert.alert('Sign Up Failed', 'Please try again later.');
+                console.log('Sign Up Failed', 'Please try again later.');
             }
         } catch (error) {
-            Alert.alert('Error', 'An error occurred while signing up.');
+            console.log('Error', 'An error occurred while signing up.', error);
         }
     };
     

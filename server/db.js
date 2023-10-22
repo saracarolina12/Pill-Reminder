@@ -78,9 +78,10 @@ createUnitsTable();
 selectTable('units');
 */
 
-/* Users
+/* Users 
 createUsersTable();
 */
+selectTable('users');
 
 /* Pills
 createPillsTable();
