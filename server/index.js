@@ -33,6 +33,16 @@ app.get('/', (req, res) => {
     res.send('Hola');
 });
 
+const requireAuth = (req, res, next) => {
+    if (req.session.userId) {
+        next();
+    }
+    else {
+        console.log("Called an endpoint that requires authentication");
+        res.status(401).json({ message: 'Unauthorized. Please log in.' });
+    }
+};
+
 app.post('/signup', (req, res) => {
     const data = req.body;
     if (!data)
@@ -81,6 +91,10 @@ app.post('/signin', (req, res) => {
     });
 
     handler.closeConnection();
+});
+
+app.get('/getPills', requireAuth, (req, res) => {
+    res.json({ message: 'This is a protected route. You are logged in as ' + req.session.userId });
 });
 
 app.listen(port, () => {
