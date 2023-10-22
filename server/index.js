@@ -44,9 +44,12 @@ app.post('/signup', (req, res) => {
       'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
       [data.name, data.email, data.password],
       (err) => {
-        if (err) 
-          return res.status(500).json({ error: 'Database insertion failed' + err });
+        if (err) {
+            console.log("Couldn't insert user: " + err); // TODO: ADD A PROPER LOGGER
+            return res.status(500).json({ error: 'Database insertion failed' + err });
+        }
         res.json({ message: 'Data inserted successfully' });
+        console.log("User created successfully"); // TODO: ADD A PROPER LOGGER
       }
     );
 
