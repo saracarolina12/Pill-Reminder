@@ -105,7 +105,6 @@ export default SignUp = ({ route, navigation }) => {
     
     const handleSignUp = async () => {
         try {
-            
             const formData = {};
             var formComplete = true;
             formData.name = user ? user: formComplete = false;

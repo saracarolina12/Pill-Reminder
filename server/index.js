@@ -56,6 +56,29 @@ app.post('/signup', (req, res) => {
     handler.closeConnection();
 });
 
+app.post('/signin', (req, res) => {
+    const data = req.body;
+    if (!data)
+        return res.status(400).json({ error: 'Invalid JSON data' });
+
+    var db = handler.openConnection();
+  
+    db.run(
+      'SELECT * FROM users WHERE name = ? and password = ?',
+      [data.name, data.password],
+      (err) => {
+        if (err) {
+            console.log("Couldn't find user: " + err); // TODO: ADD A PROPER LOGGER
+            return res.status(500).json({ error: "Couldn't find user: " + err });
+        }
+        res.json({ message: 'Sign in successful' });
+        console.log("Sign in successful"); // TODO: ADD A PROPER LOGGER
+      }
+    );
+
+    handler.closeConnection();
+});
+
 app.listen(port, () => {
     console.log(`Holahola. My app listening on port ${port}`);
 })
