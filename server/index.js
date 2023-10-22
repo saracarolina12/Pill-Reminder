@@ -64,7 +64,7 @@ app.post('/signin', (req, res) => {
     var db = handler.openConnection();
   
     db.serialize(() => {
-        db.all(`SELECT * FROM users WHERE name = ${data.name} and password = ${data.password}`, (err, entries) => {
+        db.all(`SELECT * FROM users WHERE name = '${data.name}' and password = '${data.password}'`, (err, entries) => {
             if (err) {
                 console.log("Couldn't find user: " + err); // TODO: ADD A PROPER LOGGER
                 return res.status(500).json({ error: "Couldn't find user: " + err });
