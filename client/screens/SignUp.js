@@ -156,6 +156,7 @@ export default SignUp = ({ route, navigation }) => {
                         </View>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
                             <TextInput
+                                secureTextEntry
                                 onChangeText={onChangePassword}
                                 value={password}
                                 style={styles.input}
@@ -170,6 +171,7 @@ export default SignUp = ({ route, navigation }) => {
                         </View>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
                             <TextInput
+                                secureTextEntry
                                 onChangeText={onChangeConfirmPassword}
                                 value={confirmPassword}
                                 style={styles.input}
