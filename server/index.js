@@ -1,6 +1,15 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const sqlite3 = require('sqlite3');
+const session = require('express-session');
+
+app.use(
+  session({
+    secret: 'your-secret-key', // Change this to a strong and secure secret
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 const app = express();
 const port = 8532;
 // var cors = require('cors');
