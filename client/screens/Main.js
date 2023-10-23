@@ -42,7 +42,7 @@ export default Main = ({ route, navigation }) => {
             maxHeight:"57%",
             width:"100%",
             marginBottom:15,
-            width:"90%"
+            width:"90%",
         },
         text: {
             fontSize: 15,
@@ -112,7 +112,7 @@ export default Main = ({ route, navigation }) => {
                             hour={"10:00"} // TODO: Calculate next hour
                             />
                         ))
-                    : <Text style={{ fontFamily: 'M1c-Medium', fontSize: 15, color:"#CB7C96"  }}>No tienes pastillas pendientes</Text>
+                    : <Text style={{ fontFamily: 'M1c-Medium', fontSize: 15, color:"#CB7C96", textAlign: "center", flex: 1, justifyContent: "center", alignItems: "center" }}>No tienes pastillas pendientes</Text>
                     
                 }
             </ScrollView>
