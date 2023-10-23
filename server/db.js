@@ -90,6 +90,7 @@ const insert = db.prepare('INSERT INTO pills (name, user_id, dose, dose_unit) VA
 insert.run('Paracetamol', 3, 500, 1);
 insert.finalize();
 */
+selectTable('pills');
 
 /* CURL to add a new entry
 curl -X POST http://localhost:8532/signup -H "Content-Type: application/json" -d '{
