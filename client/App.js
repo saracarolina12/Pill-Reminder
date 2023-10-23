@@ -9,6 +9,8 @@ import Config from './screens/Config.js';
 import Main from './screens/Main.js';
 import Alarm from './screens/Alarm.js';
 import nextAlarm from './components/nextAlarm.js';
+import VerifyCode from './screens/VerifyCode.js';
+import NewPassword from './screens/NewPassword.js';
 import ShowAlarm from './screens/ShowAlarm.js';
 
 const Stack = createNativeStackNavigator();
@@ -46,6 +48,8 @@ const App = () => {
         <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
         <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
         <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
+        <Stack.Screen name="VerifyCode" component={VerifyCode} options={{ headerShown: false }} />
+        <Stack.Screen name="NewPassword" component={NewPassword} options={{ headerShown: false }} />
         <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
         <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
       </Stack.Navigator>
