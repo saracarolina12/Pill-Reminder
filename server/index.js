@@ -3,6 +3,8 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
 
+// TODO: Make sure that the codes that i'm returning are right: 400, 500, 200, etc
+
 const app = express();
 app.use(
   session({
@@ -96,6 +98,7 @@ app.post('/signin', (req, res) => { // TODO: Is it handling multi user connectio
             }
             else {
                 console.log("Couldn't find user"); // TODO: Logger
+                return res.status(500).json({ error: "Couldn't find user: " + err });
             }
         })
     });
