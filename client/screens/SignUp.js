@@ -134,100 +134,102 @@ export default SignUp = ({ route, navigation }) => {
     
     return (
         <LinearGradient
-        colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
-        style={styles.container}>
-        
-        <Pressable onPressOut={() => { navigation.navigate('Login')}} style={{ position: 'absolute', top: 10, left: 10,  }}>
-        <Ionicons name="chevron-back-outline" style={{ marginTop:40, marginLeft:10, alignSelf:'flex-start' }} size={35} color={Color[50]} />
-        </Pressable>
-        
-        <View style={styles.container_img}>
-        <View style={styles.circle}>
-        <Image
-        source={require("../assets/imgs/heart.png")}
-        style={styles.imagen}
-        />
-        </View>
-        <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35 }}>Crear cuenta</Text>
-        </View>
-        
-        <View style={styles.emergentViewContainer}>
-        <View style={styles.emergentView}>
-        <Pressable style={styles.Form} >
-        <View style={{paddingLeft:10, paddingRight:10, position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
-        <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Usuario</Text>
-        </View>
-        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
-        <TextInput
-        onChangeText={onChangeUser}
-        value={user}
-        style={styles.input}
-        placeholder="Ingrese el usuario deseado"
-        />
-        </View>
-        </Pressable>
-        
-        <Pressable style={styles.Form} >
-        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
-        <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Correo</Text>
-        </View>
-        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
-        <TextInput
-        onChangeText={onChangeEmail}
-        value={email}
-        style={styles.input}
-        placeholder="Ingrese un correo"
-        />
-        </View>
-        </Pressable>
-        
-        <Pressable style={styles.Form} >
-        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
-        <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Contraseña</Text>
-        </View>
-        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
-        <TextInput
-        onChangeText={onChangePassword}
-        value={password}
-        style={styles.input}
-        placeholder="Ingrese la contraseña"
-        />
-        </View>
-        </Pressable>
-        
-        <Pressable style={styles.Form} >
-        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
-        <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Confirmar contraseña</Text>
-        </View>
-        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
-        <TextInput
-        onChangeText={onChangeConfirmPassword}
-        value={confirmPassword}
-        style={styles.input}
-        placeholder="Ingrese nuevamente la contraseña"
-        />
-        </View>
-        </Pressable>
-        
-        <Pressable
-        style={styles.Button}
-        onPressIn={() => { 
-            setBtnColor(Color[50]) 
-        }} 
-        onPressOut={() => { 
-            setBtnColor(Color[40]) 
-            handleSignUp();
-        }
-    }>
-    <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
-    <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', marginLeft:5, marginTop:4 }} >
-    Crear cuenta
-    </Text>
-    </View>
-    </Pressable>
-    </View>
-    </View>
-    </LinearGradient>
+            colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
+            style={styles.container}>
+
+            <Pressable onPressOut={() => { navigation.navigate('Login')}} style={{ position: 'absolute', top: 10, left: 10,  }}>
+                    <Ionicons name="chevron-back-outline" style={{ marginTop:40, marginLeft:10, alignSelf:'flex-start' }} size={35} color={Color[50]} />
+            </Pressable>
+
+            <View style={styles.container_img}>
+                <View style={styles.circle}>
+                <Image
+                    source={require("../assets/imgs/heart.png")}
+                    style={styles.imagen}
+                />
+                </View>
+                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35 }}>Crear cuenta</Text>
+            </View>
+
+            <View style={styles.emergentViewContainer}>
+                <View style={styles.emergentView}>
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10, position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Usuario</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                onChangeText={onChangeUser}
+                                value={user}
+                                style={styles.input}
+                                placeholder="Ingrese el usuario deseado"
+                            />
+                        </View>
+                    </Pressable>
+
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Correo</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                onChangeText={onChangeEmail}
+                                value={email}
+                                style={styles.input}
+                                placeholder="Ingrese un correo"
+                            />
+                        </View>
+                    </Pressable>
+
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Contraseña</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                secureTextEntry
+                                onChangeText={onChangePassword}
+                                value={password}
+                                style={styles.input}
+                                placeholder="Ingrese la contraseña"
+                            />
+                        </View>
+                    </Pressable>
+
+                    <Pressable style={styles.Form} >
+                        <View style={{paddingLeft:10, paddingRight:10,position:'absolute',backgroundColor:'white', zIndex:1, top:-7, left:20}}>
+                            <Text style={{fontSize:13,/*fontFamily:'PopRegular'*/}}>Confirmar contraseña</Text>
+                        </View>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
+                            <TextInput
+                                secureTextEntry
+                                onChangeText={onChangeConfirmPassword}
+                                value={confirmPassword}
+                                style={styles.input}
+                                placeholder="Ingrese nuevamente la contraseña"
+                            />
+                        </View>
+                    </Pressable>
+
+                    <Pressable
+                        style={styles.Button}
+                        onPressIn={() => { 
+                            setBtnColor(Color[50]) 
+                        }} 
+                        onPressOut={() => { 
+                            setBtnColor(Color[40]) 
+                            handleSignUp();
+                        }
+                    }>
+                        <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
+                            <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', marginLeft:5, marginTop:4 }} >
+                                Crear cuenta
+                            </Text>
+                        </View>
+                    </Pressable>
+                </View>
+            </View>
+        </LinearGradient>
     );
 };
 

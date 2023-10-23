@@ -1,13 +1,36 @@
-import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
+import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, TouchableHighlight } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
+import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-export default Forgot = ({ route, navigation }) => {
+export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
-    const [mail, onChangeMail] = React.useState('');
-
+    const [code, onChangeCode] = React.useState('');
+    const [flexDirection, setflexDirection] = useState('column');
+    let [resendEnabled, setResendEnabled] = React.useState(false);
+    
+    inputRefs = [
+        React.createRef(),
+        React.createRef(),
+        React.createRef(),
+        React.createRef()
+    ]
+    
+    function goNext(index){
+        if(index < 3){
+            inputRefs[index+1].focus()
+        }
+    }
+    const [color,setColor] = useState('gray');
+    const changeColor = () => {
+        const newColor = color === 'gray' ? '#9D8BE4' : 'gray';
+        setColor(newColor);
+    };
+    
+    
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -15,11 +38,13 @@ export default Forgot = ({ route, navigation }) => {
             alignItems: 'center',
             backgroundColor:"white",
             paddingTop: 40,
+            flexWrap:'wrap'
         },
         emergentViewContainer: {
             width: '100%',
             alignItems: 'center',
             marginBottom: 0,
+            flexWrap:'wrap'
         },
         emergentView: {
             backgroundColor: 'white',
@@ -86,61 +111,83 @@ export default Forgot = ({ route, navigation }) => {
         icon: {
             marginRight: 10, // Ajusta este valor según sea necesario
         },
+        row:{
+            flexDirection:'row',
+            justifyContent: 'space-evenly'
+        },
+        input: {
+            height: 55,
+            margin: 15,
+            width:57,
+            borderBottomWidth: 1,
+            padding: 10,
+            borderColor:'#FC709B',
+            fontFamily:'M1c-Regular',
+            fontSize:28
+        },
+        underline:{
+            textDecorationLine:'underline',
+            color : color
+        }
     });
     
-    
     return (
-        <LinearGradient
-            colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
-            style={styles.container}>
-
+        <LinearGradient colors={['#F8C0D2', '#F4B0C6', '#F497B5']} style={styles.container}>
             <Pressable onPressOut={() => { navigation.navigate('Login')}} style={{ position: 'absolute', top: 10, left: 10,  }}>
-                    <Ionicons name="chevron-back-outline" style={{ marginTop:40, marginLeft:10, alignSelf:'flex-start' }} size={35} color={Color[50]} />
+                <Ionicons name="chevron-back-outline" style={{ marginTop:40, marginLeft:10, alignSelf:'flex-start' }} size={35} color={Color[50]} />
             </Pressable>
-
+        
             <View style={styles.container_img}>
-                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>¿Olvidaste tu contraseña?</Text>
+                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>Verificación</Text>
                 <Image
                     source={require("../assets/imgs/forgot.png")}
                     style={styles.imagen}
                 />
             </View>
-
+        
             <View style={styles.emergentViewContainer}>
                 <View style={styles.emergentView}>
-                    <Text style={{fontFamily: 'M1c-Medium', fontSize:24, color:'#4E4E4E', textAlign:'center'}}>Ingresa el correo asociado a tu cuenta</Text>
-                    <Text style={{fontFamily: 'M1c-Regular', fontSize:16, color:'#A9A9A9', marginBottom:40, textAlign:'center'}}>Te enviaremos un código a tu correo para recuperar tu contraseña</Text>
-
-                    <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%"}}>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={onChangeMail}
-                            value={mail}
-                            placeholder="ejemplo@gmail.com"
-                        />
-                    </View>
-
-                    
+                    <Text style={{fontFamily: 'M1c-Regular', fontSize:20, color:'#A9A9A9', marginBottom:40, marginTop:40, textAlign:'center'}}>Ingresa el código de verificación que enviamos a tu correo</Text>
+                    <SafeAreaView style={styles.row}>
+                        {this.inputRefs.map((k, idx) => (
+                            <TextInput 
+                                onChange={() => goNext(idx)}
+                                ref={r => inputRefs[idx] = r} 
+                                style={styles.input} 
+                                maxLength={1} 
+                                keyboardType = "numeric">
+                            </TextInput>
+                        ))}
+                    </SafeAreaView>       
+                    {/*
+                    <View>
+                        <TouchableOpacity onPress={changeColor}>
+                            <Text style={styles.underline}>
+                                ¿No recibiste ningún código?
+                            </Text>
+                        </TouchableOpacity>
+                    </View>                   
+                    */}                
+            
                     <Pressable
                         style={styles.Button}
                         onPressIn={() => { 
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
-                            navigation.navigate('VerifyCode');
+                            navigation.navigate('NewPassword');
                             setBtnColor(Color[40]);
-                        }
-                    }>
+                        }}
+                    >
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
                             <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', marginLeft:5, marginTop:4 }} >
-                                Enviar
+                                Verificar
                             </Text>
                         </View>
                     </Pressable>
-
                 </View>
             </View>
         </LinearGradient>
-    );
-};
-
+        );
+    };
+    

@@ -5,8 +5,13 @@ import * as Font from 'expo-font';
 import Login from './screens/Login.js';
 import SignUp from './screens/SignUp.js';
 import Forgot from './screens/Forgot.js';
+import Config from './screens/Config.js';
 import Main from './screens/Main.js';
+import Alarm from './screens/Alarm.js';
 import nextAlarm from './components/nextAlarm.js';
+import VerifyCode from './screens/VerifyCode.js';
+import NewPassword from './screens/NewPassword.js';
+import ShowAlarm from './screens/ShowAlarm.js';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,10 +43,15 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
         <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+        <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+        <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
+        <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
         <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
+        <Stack.Screen name="VerifyCode" component={VerifyCode} options={{ headerShown: false }} />
+        <Stack.Screen name="NewPassword" component={NewPassword} options={{ headerShown: false }} />
         <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
+        <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
