@@ -113,7 +113,7 @@ app.get('/getPills', requireAuth, (req, res) => {
         db.all(`SELECT p.pill_id, p.name, p.start, p.end, p.frequency, p.dose, u.name as dose_unit
             FROM pills p
             JOIN units u ON u.unit_id = p.dose_unit
-            WHERE user_id = 3;`, 
+            WHERE user_id = ${req.session.userId};`, 
             (err, entries) => {
             if (err) {
                 console.log("Couldn't find pills: " + err); // TODO: ADD A PROPER LOGGER

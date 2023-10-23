@@ -102,16 +102,18 @@ export default Main = ({ route, navigation }) => {
             ) : (
             <ScrollView style={styles.scrollView}>
                 {
-                    pills?.length > 0 &&
-                    pills.map((alarm, index) => (
-                        <NextAlarm
-                          key={index}
-                          url={require("../assets/imgs/pill_0.png")} // TODO: Load a random image
-                          pill={alarm.name}
-                          amount={alarm.dose + " " + alarm.dose_unit}
-                          hour={"10:00"} // TODO: Calculate next hour
-                        />
-                      ))
+                    pills?.length > 0 ?
+                        pills.map((alarm, index) => (
+                            <NextAlarm
+                            key={index}
+                            url={require("../assets/imgs/pill_0.png")} // TODO: Load a random image
+                            pill={alarm.name}
+                            amount={alarm.dose + " " + alarm.dose_unit}
+                            hour={"10:00"} // TODO: Calculate next hour
+                            />
+                        ))
+                    : <Text style={{ fontFamily: 'M1c-Medium', fontSize: 15, color:"#CB7C96"  }}>No tienes pastillas pendientes</Text>
+                    
                 }
             </ScrollView>
             )}
