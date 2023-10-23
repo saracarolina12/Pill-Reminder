@@ -105,19 +105,14 @@ export default Main = ({ route, navigation }) => {
                     pills?.length > 0 &&
                     pills.map((alarm, index) => (
                         <NextAlarm
-                          key={index} // Make sure to provide a unique key for each item in the list
+                          key={index}
                           url={require("../assets/imgs/pill_0.png")} // TODO: Load a random image
                           pill={alarm.name}
-                          amount={alarm.dose + " " + alarm.dose_unit} // TODO: Get unit name
+                          amount={alarm.dose + " " + alarm.dose_unit}
                           hour={"10:00"} // TODO: Calculate next hour
                         />
                       ))
                 }
-                <NextAlarm url={require("../assets/imgs/pill_0.png")} pill={"Paracetamol"} amount={"20 mg"} hour={"6:00"}/>
-                <NextAlarm url={require("../assets/imgs/pill_1.png")} pill={"Ramipril"} amount={"20 mg"} hour={"10:00"}/>
-                <NextAlarm url={require("../assets/imgs/pill_2.png")} pill={"Aspirina"} amount={"20 mg"} hour={"13:10"}/>
-                <NextAlarm url={require("../assets/imgs/pill_3.png")} pill={"Lexotiroxina sódica"} amount={"20 mg"} hour={"20:05"}/>
-                <NextAlarm url={require("../assets/imgs/pill_4.png")} pill={"Omeprazol"} amount={"20 mg"} hour={"22:40"}/>
             </ScrollView>
             )}
             <Pressable 

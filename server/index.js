@@ -77,7 +77,7 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
     handler.closeConnection();
 });
 
-app.post('/signin', (req, res) => { // TODO: Is it handling multi user connections?
+app.post('/signin', (req, res) => {
     const data = req.body;
     if (!data)
         return res.status(400).json({ error: 'Invalid JSON data' });
