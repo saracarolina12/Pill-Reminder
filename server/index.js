@@ -92,9 +92,9 @@ app.post('/signin', (req, res) => { // TODO: Is it handling multi user connectio
             }
             console.log(entries, entries.length);
             if(entries.length) {
-                res.json({ message: 'Sign in successful' });
                 console.log("Sign in successful."); // TODO: ADD A PROPER LOGGER
                 req.session.userId = entries[0].user_id;
+                return res.status(200).json({ message: 'Sign in successful' });
             }
             else {
                 console.log("Couldn't find user"); // TODO: Logger
