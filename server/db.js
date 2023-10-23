@@ -93,11 +93,7 @@ selectTable('pills');
 */
 
 /* CURL to add a new entry
-curl -X POST http://localhost:8532/signup -H "Content-Type: application/json" -d '{
-  "name": "mindspark",
-  "email": "mindspark@example.com",
-  "password": "mindspark"
-}'
+curl -X POST http://localhost:8532/signup -H "Content-Type: application/json" -d "{\"name\":\"test\",\"email\":\"test@example.com\",\"password\":\"123\"}"
 */
 
 seeTables();
