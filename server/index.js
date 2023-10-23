@@ -6,7 +6,7 @@ const session = require('express-session');
 const app = express();
 app.use(
   session({
-    secret: 'your-secret-key', // Change this to a strong and secure secret
+    secret: 'your-secret-key', // TODO: Change this to a strong and secure secret
     resave: false,
     saveUninitialized: true,
   })
@@ -52,7 +52,7 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-app.post('/signup', (req, res) => {
+app.post('/signup', (req, res) => { // TODO: Handle not repeated users
     const data = req.body;
     if (!data)
         return res.status(400).json({ error: 'Invalid JSON data' });
@@ -75,7 +75,7 @@ app.post('/signup', (req, res) => {
     handler.closeConnection();
 });
 
-app.post('/signin', (req, res) => {
+app.post('/signin', (req, res) => { // TODO: Is it handling multi user connections? 
     const data = req.body;
     if (!data)
         return res.status(400).json({ error: 'Invalid JSON data' });
@@ -91,7 +91,8 @@ app.post('/signin', (req, res) => {
             console.log(entries, entries.length);
             if(entries.length) {
                 res.json({ message: 'Sign in successful' });
-                console.log("Sign in successful"); // TODO: ADD A PROPER LOGGER
+                console.log("Sign in successful."); // TODO: ADD A PROPER LOGGER
+                req.session.userId = entries[0].user_id;
             }
             else {
                 console.log("Couldn't find user"); // TODO: Logger
