@@ -11,36 +11,26 @@ export default VerifyCode = ({ route, navigation }) => {
     const [code, onChangeCode] = React.useState('');
     const [flexDirection, setflexDirection] = useState('column');
     let [resendEnabled, setResendEnabled] = React.useState(false);
-            
-    enableTextAfterDelay = () => {
-        setTimeout(() => {
-          setResendEnabled = true;
-        }, 1000); // 15 seconds
-    };
-
-    useEffect(() => {
-        enableTextAfterDelay();
-    });
-
+    
     inputRefs = [
-                React.createRef(),
-                React.createRef(),
-                React.createRef(),
-                React.createRef()
-            ]
+        React.createRef(),
+        React.createRef(),
+        React.createRef(),
+        React.createRef()
+    ]
     
     function goNext(index){
         if(index < 3){
-        inputRefs[index+1].focus()
+            inputRefs[index+1].focus()
+        }
     }
-}
     const [color,setColor] = useState('gray');
     const changeColor = () => {
         const newColor = color === 'gray' ? '#9D8BE4' : 'gray';
         setColor(newColor);
     };
-
-
+    
+    
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -134,22 +124,19 @@ export default VerifyCode = ({ route, navigation }) => {
             borderColor:'#FC709B',
             fontFamily:'M1c-Regular',
             fontSize:28
-          },
+        },
         underline:{
             textDecorationLine:'underline',
             color : color
         }
     });
-
+    
     return (
-        <LinearGradient
-            colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
-            style={styles.container}>
-
+        <LinearGradient colors={['#F8C0D2', '#F4B0C6', '#F497B5']} style={styles.container}>
             <Pressable onPressOut={() => { navigation.navigate('Login')}} style={{ position: 'absolute', top: 10, left: 10,  }}>
-                    <Ionicons name="chevron-back-outline" style={{ marginTop:40, marginLeft:10, alignSelf:'flex-start' }} size={35} color={Color[50]} />
+                <Ionicons name="chevron-back-outline" style={{ marginTop:40, marginLeft:10, alignSelf:'flex-start' }} size={35} color={Color[50]} />
             </Pressable>
-
+        
             <View style={styles.container_img}>
                 <Text style={{ fontFamily: 'M1c-Bold', fontSize: 30, textAlign:'center', color:Color[50], marginBottom:"5%" }}>Verificación</Text>
                 <Image
@@ -157,32 +144,31 @@ export default VerifyCode = ({ route, navigation }) => {
                     style={styles.imagen}
                 />
             </View>
-
+        
             <View style={styles.emergentViewContainer}>
                 <View style={styles.emergentView}>
                     <Text style={{fontFamily: 'M1c-Regular', fontSize:20, color:'#A9A9A9', marginBottom:40, marginTop:40, textAlign:'center'}}>Ingresa el código de verificación que enviamos a tu correo</Text>
-
                     <SafeAreaView style={styles.row}>
-                    {this.inputRefs.map((k, idx) => (
-                        <TextInput 
-                        onChange={() => goNext(idx)}
-                        ref={r => inputRefs[idx] = r} 
-                        style={styles.input} 
-                        maxLength={1} 
-                        keyboardType = "numeric">
-                        </TextInput>
-                    )
-                    )}
-                    </SafeAreaView>                       
+                        {this.inputRefs.map((k, idx) => (
+                            <TextInput 
+                                onChange={() => goNext(idx)}
+                                ref={r => inputRefs[idx] = r} 
+                                style={styles.input} 
+                                maxLength={1} 
+                                keyboardType = "numeric">
+                            </TextInput>
+                        ))}
+                    </SafeAreaView>       
+                    {/*
                     <View>
-                    <TouchableOpacity onPress={changeColor}>
-                    <Text 
-                    style={styles.underline}>
-                        ¿No recibiste ningún código?
-                    </Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity onPress={changeColor}>
+                            <Text style={styles.underline}>
+                                ¿No recibiste ningún código?
+                            </Text>
+                        </TouchableOpacity>
                     </View>                   
-
+                    */}                
+            
                     <Pressable
                         style={styles.Button}
                         onPressIn={() => { 
@@ -191,17 +177,17 @@ export default VerifyCode = ({ route, navigation }) => {
                         onPressOut={() => { 
                             navigation.navigate('NewPassword');
                             setBtnColor(Color[40]);
-                        }
-                    }>
+                        }}
+                    >
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
                             <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', marginLeft:5, marginTop:4 }} >
                                 Verificar
                             </Text>
                         </View>
                     </Pressable>
-
                 </View>
             </View>
         </LinearGradient>
-    );
-};
+        );
+    };
+    
