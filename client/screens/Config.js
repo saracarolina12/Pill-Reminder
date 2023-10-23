@@ -10,6 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants from 'expo-constants';
+import NotificationSounds, { playSampleSound, stopSampleSound } from  'react-native-notification-sounds';
 
 const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ]
 
@@ -74,7 +75,19 @@ export default Config = ({ route, navigation }) => {
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate();
 
+
+
     const initialSelectedDates = {}; // Inicialmente, ninguna fecha está seleccionada
+    const [currentTime, setCurrentTime] = useState(new Date());
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            // setCurrentTime(new Date());
+            scheduleNotification(new Date());
+        }, 1000);
+        return () => clearInterval(interval); // Limpieza al desmontar el componente
+    }, []);
+    
 
     /* */
     useEffect(() => {
@@ -121,7 +134,6 @@ export default Config = ({ route, navigation }) => {
             return;
             }
             token = (await Notifications.getExpoPushTokenAsync( {projectId:'045aec31-ccc6-46a8-bb3f-efe4110f9aba'} )).data;
-            console.log("token: ",token);
         } else {
             alert('Must use physical device for Push Notifications');
         }
@@ -129,41 +141,53 @@ export default Config = ({ route, navigation }) => {
         return token;
         }
         
-        const scheduleNotification = async () => {
+        const scheduleNotification = async (currDate) => {
             const triggerTime = new Date();
-            triggerTime.setHours(22);
-            triggerTime.setMinutes(12);
+            triggerTime.setHours(23);
+            triggerTime.setMinutes(34);
             triggerTime.setSeconds(0);
+
+            console.log("current: ", currDate.getHours(), ":", currDate.getMinutes());
     
-            if (currentHour === triggerTime.getHours() && currentMinutes === triggerTime.getMinutes()) {
-                await Notifications.scheduleNotificationAsync({
-                    content: {
-                        title: 'Recordatorio de pastilla',
-                        body: '¡Es hora de tomar tu medicamento!',
-                    },
-                    trigger: {
-                        seconds: 0, // Immediate trigger
-                    },
-                });
-    
+            if (currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
+                // await Notifications.scheduleNotificationAsync({
+                //     content: {
+                //         title: 'Recordatorio de pastilla',
+                //         body: '¡Es hora de tomar tu medicamento!',
+                //     },
+                //     trigger: {
+                //         seconds: 0, 
+                //     },
+                // });
+                try {
+                    const soundsList = await NotificationSounds.getNotifications('notification');
+                    console.warn('SOUNDS', JSON.stringify(soundsList));
+                    // Play the notification sound.
+                    playSampleSound(soundsList[1]);
+                    // Stop the sound after 4 seconds
+                    setTimeout(() => {
+                        stopSampleSound();
+                    }, 4000); // 4000 milliseconds = 4 seconds
+                } catch (error) {
+                    console.error('Error fetching notification sounds:', error);
+                }
                 navigation.navigate('Alarm');
+            }else{
+                navigation.navigate("Config");
             }
         };
 
-        useEffect(() => {
-            const interval = setInterval(() => {
-                const now = new Date();
-                setCurrentHour(now.getHours());
-                setCurrentMinutes(now.getMinutes());
-            }, 60000); 
+        
+        // useEffect(() => {
+        //     const interval = setInterval(() => {
+        //         const now = new Date();
+        //         setCurrentHour(now.getHours());
+        //         setCurrentMinutes(now.getMinutes());
+        //     }, 60000); 
     
-            return () => clearInterval(interval);
-        }, []);
-    
-        useEffect(() => {
-            console.log("time: ", currentHour,":", currentMinutes);
-            scheduleNotification();
-        }, [currentHour, currentMinutes]);
+        //     return () => clearInterval(interval);
+        // }, []);
+
     /* */
 
     const getMarked = () => {
@@ -197,7 +221,7 @@ export default Config = ({ route, navigation }) => {
         const dateStr = day.dateString;
         const newSelectedDates = { ...selectedDates };
         newSelectedDates[dateStr] = !newSelectedDates[dateStr];
-        console.log(newSelectedDates);
+        console.log("selected dates: ",newSelectedDates);
         setSelectedDates(newSelectedDates);
     };
 
@@ -296,11 +320,8 @@ export default Config = ({ route, navigation }) => {
     //     return marked;
     //   };
     
-    
-
-
     useEffect(()=>{
-        console.log(day, meses[month] , year);
+        // console.log(day, meses[month] , year);
     }, [day, month, year])
 
 

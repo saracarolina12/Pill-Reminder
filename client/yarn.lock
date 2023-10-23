@@ -5563,6 +5563,11 @@
   "resolved" "https://registry.npmjs.org/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz"
   "version" "1.3.1"
 
+"react-native-notification-sounds@^0.5.8":
+  "integrity" "sha512-pvqJPwCGMvJzeCXMGlkIfbZP3t5vVJw2+8H83SN08g9L3l528BMnlRf99MArJN0qJwusxGFvKat6srNzPayAnA=="
+  "resolved" "https://registry.npmjs.org/react-native-notification-sounds/-/react-native-notification-sounds-0.5.8.tgz"
+  "version" "0.5.8"
+
 "react-native-push-notification@^8.1.1":
   "integrity" "sha512-XpBtG/w+a6WXTxu6l1dNYyTiHnbgnvjoc3KxPTxYkaIABRmvuJZkFxqruyGvfCw7ELAlZEAJO+dthdTabCe1XA=="
   "resolved" "https://registry.npmjs.org/react-native-push-notification/-/react-native-push-notification-8.1.1.tgz"
