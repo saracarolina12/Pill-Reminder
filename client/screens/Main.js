@@ -102,7 +102,7 @@ export default Main = ({ route, navigation }) => {
             ) : (
             <ScrollView style={styles.scrollView}>
                 {
-                    pills &&
+                    pills?.length > 0 &&
                     pills.map((alarm, index) => (
                         <NextAlarm
                           key={index} // Make sure to provide a unique key for each item in the list
