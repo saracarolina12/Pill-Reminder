@@ -1,4 +1,4 @@
-import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, SafeAreaView, ScrollView, StatusBar } from 'react-native';
+import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, SafeAreaView, ScrollView, StatusBar, ActivityIndicator } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
@@ -9,6 +9,23 @@ export default Main = ({ route, navigation }) => {
     const [day, setDay] = useState(new Date().getDate());
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
+    const [loading, setLoading] = useState(true);
+
+    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
+
+    useEffect(() => {
+        // Replace with your API endpoint
+        fetch(endpooooooooooooooooooooint + 'getPills')
+          .then((response) => response.json())
+          .then((result) => {
+            setLoading(false);
+            console.log(result);
+          })
+          .catch((error) => {
+            console.error('API request error', error);
+            setLoading(false);
+          });
+      }, []);
 
     const styles = StyleSheet.create({
         container: {
@@ -39,8 +56,6 @@ export default Main = ({ route, navigation }) => {
         },
     });
 
-
-
     const meses = {
         1: "enero",
         2: "febrero",
@@ -65,12 +80,12 @@ export default Main = ({ route, navigation }) => {
 
             <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color:"#DA5D74", marginBottom:5 }}>Siguientes tomas</Text>
 
-
             <View style={{alignItems:'center', textAlign:'center', justifyContent:'center', backgroundColor:'#FCEEF1', padding:10, borderRadius:15, width:"80%", margin:10, marginBottom:15}}>
                 <Text style={{ fontFamily: 'M1c-Medium', fontSize: 25, color:"#CB7C96"  }}>Hoy</Text>
                 <Text style={{ fontFamily: 'M1c-Regular', fontSize: 17, color:"#EA89A7" }}>{day} {meses[month+1]} {year}</Text>
             </View>
 
+            {/*
             <ScrollView style={styles.scrollView}>
                     <NextAlarm url={require("../assets/imgs/pill_0.png")} pill={"Paracetamol"} amount={"20 mg"} hour={"6:00"}/>
                     <NextAlarm url={require("../assets/imgs/pill_1.png")} pill={"Ramipril"} amount={"20 mg"} hour={"10:00"}/>
@@ -78,8 +93,19 @@ export default Main = ({ route, navigation }) => {
                     <NextAlarm url={require("../assets/imgs/pill_3.png")} pill={"Lexotiroxina sódica"} amount={"20 mg"} hour={"20:05"}/>
                     <NextAlarm url={require("../assets/imgs/pill_4.png")} pill={"Omeprazol"} amount={"20 mg"} hour={"22:40"}/>
             </ScrollView>
+            */} 
 
-
+            {loading ? (
+            <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+            <ScrollView style={styles.scrollView}>
+                <NextAlarm url={require("../assets/imgs/pill_0.png")} pill={"Paracetamol"} amount={"20 mg"} hour={"6:00"}/>
+                <NextAlarm url={require("../assets/imgs/pill_1.png")} pill={"Ramipril"} amount={"20 mg"} hour={"10:00"}/>
+                <NextAlarm url={require("../assets/imgs/pill_2.png")} pill={"Aspirina"} amount={"20 mg"} hour={"13:10"}/>
+                <NextAlarm url={require("../assets/imgs/pill_3.png")} pill={"Lexotiroxina sódica"} amount={"20 mg"} hour={"20:05"}/>
+                <NextAlarm url={require("../assets/imgs/pill_4.png")} pill={"Omeprazol"} amount={"20 mg"} hour={"22:40"}/>
+            </ScrollView>
+            )}
             <Pressable 
                 style={styles.circleContainer}
                 onPressIn={() => { setBtnColor('#CC597C') }}

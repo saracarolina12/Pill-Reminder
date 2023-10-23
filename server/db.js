@@ -70,6 +70,7 @@ function createPillsTable(){
     });
 }
 
+
 seeTables();
 
 /* Units
@@ -80,12 +81,15 @@ selectTable('units');
 
 /* Users 
 createUsersTable();
-*/
 selectTable('users');
+*/
 
 /* Pills
 createPillsTable();
 */
+const insert = db.prepare('INSERT INTO pills (name, user_id, dose, dose_unit) VALUES (?, ?, ?, ?)');
+insert.run('Paracetamol', 3, 500, 1);
+insert.finalize();
 
 /* CURL to add a new entry
 curl -X POST http://localhost:8532/signup -H "Content-Type: application/json" -d '{
