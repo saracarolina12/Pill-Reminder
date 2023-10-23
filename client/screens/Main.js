@@ -20,6 +20,7 @@ export default Main = ({ route, navigation }) => {
           .then((response) => response.json())
           .then((result) => {
             setLoading(false);
+            setPills(result);
             console.log(result);
           })
           .catch((error) => {
@@ -105,10 +106,10 @@ export default Main = ({ route, navigation }) => {
                     pills.map((alarm, index) => (
                         <NextAlarm
                           key={index} // Make sure to provide a unique key for each item in the list
-                          url={require("../assets/imgs/pill_0.png")}
+                          url={require("../assets/imgs/pill_0.png")} // TODO: Load a random image
                           pill={alarm.name}
-                          amount={alarm.dose + " " + alarm.dose_unit}
-                          hour={"10:00"}
+                          amount={alarm.dose + " " + alarm.dose_unit} // TODO: Get unit name
+                          hour={"10:00"} // TODO: Calculate next hour
                         />
                       ))
                 }

@@ -110,7 +110,12 @@ app.get('/getPills', requireAuth, (req, res) => {
     var db = handler.openConnection();
 
     db.serialize(() => {
-        db.all(`SELECT * FROM pills WHERE user_id = ${req.session.userId}`, (err, entries) => {
+        db.all(`SELECT p.pill_id, p.name, p.start, p.end, p.frequency, p.dose, u.name
+            FROM pills p
+            WHERE user_id = ${req.session.userId}
+            JOIN units u ON p.dose_unit = u.unit_id
+            `, 
+            (err, entries) => {
             if (err) {
                 console.log("Couldn't find pills: " + err); // TODO: ADD A PROPER LOGGER
                 return res.status(500).json({ error: "Couldn't find pills: " + err });
