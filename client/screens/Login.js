@@ -101,6 +101,7 @@ export default Login = ({ route, navigation }) => {
 
             if (response.status === 200) {
                 console.log('Sign in Successful', 'You are now logged in!');
+                navigation.navigate('Main');
             } else {
                 console.log('Sign in Failed', 'Please try again.');
             }
