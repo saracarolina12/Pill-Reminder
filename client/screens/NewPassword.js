@@ -112,6 +112,7 @@ export default NewPassword = ({ route, navigation }) => {
 
                     <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%"}}>
                         <TextInput
+                            secureTextEntry
                             style={styles.input}
                             onChangeText={onChangePassword}
                             value={password}
@@ -120,6 +121,7 @@ export default NewPassword = ({ route, navigation }) => {
                     </View>
                     <View style={{backgroundColor:'#E9E9E9', padding:10, color:'#A9A9A9', borderRadius:10, marginBottom:"5%",marginTop:"0%", width:"80%"}}>
                         <TextInput
+                            secureTextEntry
                             style={styles.input}
                             onChangeText={onChangeconfirmPassword}
                             value={confirmPassword}
