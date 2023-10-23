@@ -60,7 +60,7 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
         return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
-  
+
     db.run(
       'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
       [data.name, data.email, data.password],
@@ -77,13 +77,13 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
     handler.closeConnection();
 });
 
-app.post('/signin', (req, res) => { // TODO: Is it handling multi user connections? 
+app.post('/signin', (req, res) => { // TODO: Is it handling multi user connections?
     const data = req.body;
     if (!data)
         return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
-  
+
     db.serialize(() => {
         db.all(`SELECT * FROM users WHERE name = '${data.name}' and password = '${data.password}'`, (err, entries) => {
             if (err) {
@@ -107,7 +107,27 @@ app.post('/signin', (req, res) => { // TODO: Is it handling multi user connectio
 });
 
 app.get('/getPills', requireAuth, (req, res) => {
-    res.json({ message: 'This is a protected route. You are logged in as ' + req.session.userId });
+    var db = handler.openConnection();
+
+    db.serialize(() => {
+        db.all(`SELECT * FROM pills WHERE user_id = '${req.session.user_id}'`, (err, entries) => {
+            if (err) {
+                console.log("Couldn't find pills: " + err); // TODO: ADD A PROPER LOGGER
+                return res.status(500).json({ error: "Couldn't find pills: " + err });
+            }
+            console.log(entries, entries.length);
+            if(entries.length) {
+                console.log("Displaying " + entries.length +  " pills: " + entries); // TODO: ADD A PROPER LOGGER
+                return res.status(200).json(entries);
+            }
+            else {
+                console.log("No pills to show"); // TODO: Logger
+                return res.status(500).json({ error: "No pills to display: " });
+            }
+        })
+    });
+
+    handler.closeConnection();
 });
 
 app.listen(port, () => {

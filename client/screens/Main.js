@@ -10,6 +10,7 @@ export default Main = ({ route, navigation }) => {
     const [month, setMonth] = useState(new Date().getMonth());
     const [year, setYear] = useState(new Date().getFullYear());
     const [loading, setLoading] = useState(true);
+    const [pills, setPills] = useState();
 
     const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
 
@@ -99,6 +100,18 @@ export default Main = ({ route, navigation }) => {
             <ActivityIndicator size="large" color="#0000ff" />
             ) : (
             <ScrollView style={styles.scrollView}>
+                {
+                    pills &&
+                    pills.map((alarm, index) => (
+                        <NextAlarm
+                          key={index} // Make sure to provide a unique key for each item in the list
+                          url={require("../assets/imgs/pill_0.png")}
+                          pill={alarm.name}
+                          amount={alarm.dose + " " + alarm.dose_unit}
+                          hour={"10:00"}
+                        />
+                      ))
+                }
                 <NextAlarm url={require("../assets/imgs/pill_0.png")} pill={"Paracetamol"} amount={"20 mg"} hour={"6:00"}/>
                 <NextAlarm url={require("../assets/imgs/pill_1.png")} pill={"Ramipril"} amount={"20 mg"} hour={"10:00"}/>
                 <NextAlarm url={require("../assets/imgs/pill_2.png")} pill={"Aspirina"} amount={"20 mg"} hour={"13:10"}/>
