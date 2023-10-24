@@ -143,7 +143,7 @@ app.post('/newPill', requireAuth, (req, res) => {
 
     db.run(
       'INSERT INTO pills (name, user_id, start, end, frequency, dose, dose_unit) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [data.name, data.user_id, data.start, data.end, data.frequency, data.dose, data.dose_unit],
+      [data.name, req.session.userId, data.start, data.end, data.frequency, data.dose, data.dose_unit],
       (err) => {
         if (err) {
             console.log("Couldn't insert Pill: " + err); // TODO: ADD A PROPER LOGGER
