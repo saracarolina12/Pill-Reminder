@@ -134,6 +134,29 @@ app.get('/getPills', requireAuth, (req, res) => {
     handler.closeConnection();
 });
 
+app.post('/newPill', requireAuth, (req, res) => {
+    const data = req.body;
+    if (!data)
+        return res.status(400).json({ error: 'Invalid JSON data' });
+
+    var db = handler.openConnection();
+
+    db.run(
+      'INSERT INTO users (name, user_id, start, end, frequency, dose, dose_unit) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [data.name, data.user_id, data.start, data.end, data.frequency, data.dose, data.dose_unit],
+      (err) => {
+        if (err) {
+            console.log("Couldn't insert Pill: " + err); // TODO: ADD A PROPER LOGGER
+            return res.status(500).json({ error: 'Database insertion failed' + err });
+        }
+        res.json({ message: 'Data inserted successfully' });
+        console.log("Pill created successfully"); // TODO: ADD A PROPER LOGGER
+      }
+    );
+
+    handler.closeConnection();
+});
+
 app.listen(port, () => {
     console.log(`Holahola. My app listening on port ${port}`);
 })
