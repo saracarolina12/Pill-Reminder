@@ -115,19 +115,19 @@ app.get('/getPills', requireAuth, (req, res) => {
             JOIN units u ON u.unit_id = p.dose_unit
             WHERE user_id = ${req.session.userId};`, 
             (err, entries) => {
-            if (err) {
-                console.log("Couldn't find pills: " + err); // TODO: ADD A PROPER LOGGER
-                return res.status(500).json({ error: "Couldn't find pills: " + err });
-            }
-            console.log(entries, entries.length);
-            if(entries.length) {
-                console.log("Displaying " + entries.length +  " pills: " + entries); // TODO: ADD A PROPER LOGGER
-                return res.status(200).json(entries);
-            }
-            else {
-                console.log("No pills to show"); // TODO: Logger
-                return res.status(500).json({ error: "No pills to display: " });
-            }
+                if (err) {
+                    console.log("Couldn't find pills: " + err); // TODO: ADD A PROPER LOGGER
+                    return res.status(500).json({ error: "Couldn't find pills: " + err });
+                }
+                console.log(entries, entries.length);
+                if(entries.length) {
+                    console.log("Displaying " + entries.length +  " pills: " + entries); // TODO: ADD A PROPER LOGGER
+                    return res.status(200).json(entries);
+                }
+                else {
+                    console.log("No pills to show"); // TODO: Logger
+                    return res.status(500).json({ error: "No pills to display: " });
+                }
         })
     });
 

@@ -182,7 +182,7 @@ export default Config = ({ route, navigation }) => {
         const firstDate = `${trueDates[0]} ${hours}:${minutes}:00`;
         const lastDate = `${trueDates[trueDates.length - 1]} 23:59:59`;
 
-        if(!medicine || !firstDate || !lastDate || !hoursMedicine || !dosis || !unidad){
+        if(!medicine || !firstDate || !lastDate || !hoursMedicine || !dosis || !unidad){ // TODO: unidad can be 0
             console.log("Form is not complete"); // TODO: Add notif
             return;
         }
@@ -204,6 +204,8 @@ export default Config = ({ route, navigation }) => {
         .catch((error) => {
             console.error('Error sending data:', error);
         });
+
+        // TODO: Reload request
     };
 
     return (
@@ -261,7 +263,8 @@ export default Config = ({ route, navigation }) => {
                         buttonStyle={{backgroundColor: '#E9E9E9', color: '#A9A9A9', borderRadius: 10, width: 60,alignSelf:'center'}}
                         data={["mg","mcg","mL", "Gotas", "UI", "%", "Patch", "Sup", "Spray"]} // TODO: Fetch this from server
                         onSelect={(selectedItem, index) => {
-                            onChangeUnidad(selectedItem);
+                            //onChangeUnidad(selectedItem);
+                            onChangeUnidad(index); // TODO: fix index to match db
                         }}
                         buttonTextAfterSelection={(selectedItem, index) => {
                             // text represented after item is selected
