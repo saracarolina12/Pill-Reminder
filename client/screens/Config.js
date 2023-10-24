@@ -10,7 +10,8 @@ import { AntDesign } from '@expo/vector-icons';
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import Constants from 'expo-constants';
-import NotificationSounds, { playSampleSound, stopSampleSound } from  'react-native-notification-sounds';
+// import NotificationSounds, { playSampleSound, stopSampleSound } from 'react-native-notification-sounds';
+
 
 const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ]
 
@@ -24,9 +25,6 @@ Notifications.setNotificationHandler({
         priority: Notifications.AndroidNotificationPriority.HIGH, //Android
     }),
 });
-
-
-/* */
 
 
 LocaleConfig.locales['fr'] = {
@@ -143,34 +141,23 @@ export default Config = ({ route, navigation }) => {
         
         const scheduleNotification = async (currDate) => {
             const triggerTime = new Date();
-            triggerTime.setHours(23);
-            triggerTime.setMinutes(34);
-            triggerTime.setSeconds(0);
+            triggerTime.setHours(22);
+            triggerTime.setMinutes(45);
+            // triggerTime.setSeconds(0);
 
             console.log("current: ", currDate.getHours(), ":", currDate.getMinutes());
     
             if (currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
-                // await Notifications.scheduleNotificationAsync({
-                //     content: {
-                //         title: 'Recordatorio de pastilla',
-                //         body: '¡Es hora de tomar tu medicamento!',
-                //     },
-                //     trigger: {
-                //         seconds: 0, 
-                //     },
-                // });
-                try {
-                    const soundsList = await NotificationSounds.getNotifications('notification');
-                    console.warn('SOUNDS', JSON.stringify(soundsList));
-                    // Play the notification sound.
-                    playSampleSound(soundsList[1]);
-                    // Stop the sound after 4 seconds
-                    setTimeout(() => {
-                        stopSampleSound();
-                    }, 4000); // 4000 milliseconds = 4 seconds
-                } catch (error) {
-                    console.error('Error fetching notification sounds:', error);
-                }
+                await Notifications.scheduleNotificationAsync({
+                    content: {
+                        title: 'Recordatorio de pastilla',
+                        body: '¡Es hora de tomar tu medicamento!',
+                    },
+                    trigger: {
+                        seconds: 0, 
+                    },
+                });
+                
                 navigation.navigate('Alarm');
             }else{
                 navigation.navigate("Config");
