@@ -10,6 +10,7 @@ import Main from './screens/Main.js';
 import Alarm from './screens/Alarm.js';
 import nextAlarm from './components/nextAlarm.js';
 import ShowAlarm from './screens/ShowAlarm.js';
+import { AlarmProvider } from './screens/AlarmContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -36,17 +37,19 @@ const App = () => {
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-        <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} /> */}
-        <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
-        <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
-        <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
-        <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
-      </Stack.Navigator>
+        <AlarmProvider>
+        <Stack.Navigator>
+          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
+          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+          <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+          <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
+          <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
+          <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
+          <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
+          <Stack.Screen name="AlarmProvider" component={AlarmProvider} options={{ headerShown: false }} />
+        </Stack.Navigator>
+      </AlarmProvider>
     </NavigationContainer>
   );
 };

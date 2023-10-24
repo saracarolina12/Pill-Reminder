@@ -3,8 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
 import NextAlarm from '../components/nextAlarm';
+import * as Device from 'expo-device';
+import { useAlarms, AlarmProvider } from './AlarmContext';
 
 export default Main = ({ route, navigation }) => {
+    const { alarms, setAlarms } = useAlarms();
     const [btnColor, setBtnColor] = useState("#FC709B");
     const [day, setDay] = useState(new Date().getDate());
     const [month, setMonth] = useState(new Date().getMonth());
@@ -39,8 +42,6 @@ export default Main = ({ route, navigation }) => {
         },
     });
 
-
-
     const meses = {
         1: "enero",
         2: "febrero",
@@ -57,42 +58,41 @@ export default Main = ({ route, navigation }) => {
     }
     
     useEffect(()=>{
-        // console.log(day, , year);
-    }, [day, month, year])
+        // console.log(alarms);
+    }, [])
     
     return (
-        <View style={styles.container}>
+        <AlarmProvider navigation={navigation}>
+            <View style={styles.container}>
+                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color:"#DA5D74", marginBottom:5 }}>Siguientes tomas</Text>
+                <View style={{alignItems:'center', textAlign:'center', justifyContent:'center', backgroundColor:'#FCEEF1', padding:10, borderRadius:15, width:"80%", margin:10, marginBottom:15}}>
+                    <Text style={{ fontFamily: 'M1c-Medium', fontSize: 25, color:"#CB7C96"  }}>Hoy</Text>
+                    <Text style={{ fontFamily: 'M1c-Regular', fontSize: 17, color:"#EA89A7" }}>{day} {meses[month+1]} {year}</Text>
+                </View>
 
-            <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color:"#DA5D74", marginBottom:5 }}>Siguientes tomas</Text>
+                <ScrollView style={styles.scrollView}>
+                        <NextAlarm url={require("../assets/imgs/pill_0.png")} pill={"Paracetamol"} amount={"20 mg"} hour={"6:00"}/>
+                        <NextAlarm url={require("../assets/imgs/pill_1.png")} pill={"Ramipril"} amount={"20 mg"} hour={"10:00"}/>
+                        <NextAlarm url={require("../assets/imgs/pill_2.png")} pill={"Aspirina"} amount={"20 mg"} hour={"13:10"}/>
+                        <NextAlarm url={require("../assets/imgs/pill_3.png")} pill={"Lexotiroxina sódica"} amount={"20 mg"} hour={"20:05"}/>
+                        <NextAlarm url={require("../assets/imgs/pill_4.png")} pill={"Omeprazol"} amount={"20 mg"} hour={"22:40"}/>
+                </ScrollView>
 
 
-            <View style={{alignItems:'center', textAlign:'center', justifyContent:'center', backgroundColor:'#FCEEF1', padding:10, borderRadius:15, width:"80%", margin:10, marginBottom:15}}>
-                <Text style={{ fontFamily: 'M1c-Medium', fontSize: 25, color:"#CB7C96"  }}>Hoy</Text>
-                <Text style={{ fontFamily: 'M1c-Regular', fontSize: 17, color:"#EA89A7" }}>{day} {meses[month+1]} {year}</Text>
+                <Pressable 
+                    style={styles.circleContainer}
+                    onPressIn={() => { setBtnColor('#CC597C') }}
+                    onPressOut={() => {
+                        setBtnColor('#FC709B')
+                        navigation.navigate("Config")
+                    }}
+                >
+                    <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text>
+                </Pressable>
+
+                
             </View>
-
-            <ScrollView style={styles.scrollView}>
-                    <NextAlarm url={require("../assets/imgs/pill_0.png")} pill={"Paracetamol"} amount={"20 mg"} hour={"6:00"}/>
-                    <NextAlarm url={require("../assets/imgs/pill_1.png")} pill={"Ramipril"} amount={"20 mg"} hour={"10:00"}/>
-                    <NextAlarm url={require("../assets/imgs/pill_2.png")} pill={"Aspirina"} amount={"20 mg"} hour={"13:10"}/>
-                    <NextAlarm url={require("../assets/imgs/pill_3.png")} pill={"Lexotiroxina sódica"} amount={"20 mg"} hour={"20:05"}/>
-                    <NextAlarm url={require("../assets/imgs/pill_4.png")} pill={"Omeprazol"} amount={"20 mg"} hour={"22:40"}/>
-            </ScrollView>
-
-
-            <Pressable 
-                style={styles.circleContainer}
-                onPressIn={() => { setBtnColor('#CC597C') }}
-                onPressOut={() => {
-                    setBtnColor('#FC709B')
-                    navigation.navigate("Config")
-                }}
-            >
-                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text>
-            </Pressable>
-
-            
-        </View>
+        </AlarmProvider>
     );
 };
 

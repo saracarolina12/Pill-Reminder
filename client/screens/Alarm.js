@@ -2,8 +2,11 @@ import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } fro
 import React, { useState, useEffect } from 'react';
 import { Color } from '../util/colors';
 import { RFValue } from "react-native-responsive-fontsize";
+import { useRoute } from '@react-navigation/native';
 
-export default Alarm = ({ route, navigation }) => {
+
+export default Alarm = ({ navigation }) => {
+    const route = useRoute();
     const [btnColor, setBtnColor] = useState("#FC709B");
     const [descartarBtnColor, setDescartarBtnColor] = useState("#FC709B");
     const[currentDate, setCurrentDate] = useState(new Date());
@@ -70,7 +73,7 @@ export default Alarm = ({ route, navigation }) => {
             alignItems: 'center',
             elevation:10,
             shadowColor: "#000",
-            width:RFValue(100),
+            width:RFValue(150),
             height: RFValue(50),
             shadowOpacity: 0.3,
             shadowRadius: 3,
@@ -79,7 +82,7 @@ export default Alarm = ({ route, navigation }) => {
                 width: 5
             },
             alignContent: 'center',
-            marginTop:10,
+            marginTop:RFValue(40),
             textAlign: 'center',
             justifyContent:'center',
             textAlignVertical:'center',
@@ -103,8 +106,9 @@ export default Alarm = ({ route, navigation }) => {
 
     return (
         <View style={styles.container}>
-          <Text style={{ color:'#CB7C96', textAlign:'center', fontFamily:'M1c-Regular', fontSize:RFValue(50),}}>
-                {currentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+            <Text style={{ color:'#CB7C96', textAlign:'center', fontFamily:'M1c-Regular', fontSize:RFValue(50),}}>
+                {/* {currentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})} */}
+                {`${String(route.params.hour).padStart(2, '0')}:${String(route.params.minutes).padStart(2, '0')}`}
             </Text>
             <Text style={{color:'#F7A5BF', textAlign:'center',fontFamily:'M1c-Light',fontSize:RFValue(22),marginBottom:70}}>
                 {currentDate.toLocaleDateString([],{weekday:'long', day:'numeric', month:'short'})}
@@ -116,7 +120,7 @@ export default Alarm = ({ route, navigation }) => {
                 </Image>
             </View>
             <Text style={{fontFamily: 'M1c-Regular', fontSize: 20, color:'#F7A5BF',textAlign:'center'}}>Paracetamol 20 mg</Text>
-            <Pressable
+            {/* <Pressable
                 style={styles.Button}
                 onPressIn={() => { 
                     setBtnColor(Color[50]) 
@@ -130,7 +134,7 @@ export default Alarm = ({ route, navigation }) => {
                                 Posponer (10 minutos)
                             </Text>
                         </View>
-            </Pressable>
+            </Pressable> */}
         {/* <Image source={require("../assets/imgs/left.png")}/> 
         <View style={styles.circle2}/>
         <Image source={require("../assets/imgs/right.png")}/>  */}
@@ -142,12 +146,13 @@ export default Alarm = ({ route, navigation }) => {
                 }} 
                 onPressOut={() => { 
                     //TODO: agregar lógica para desactivar la alarma
-                    navigation.navigate('Config');
+                    // navigation.navigate('Config'); //TODO: navigate to last screen
+                    navigation.popToTop(); //TODO: al parecer se estanca en Login.js
                     setDescartarBtnColor(Color[40]) 
                 }}
             >
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
-                            <Text style={{fontSize:15,fontFamily:'M1c-Regular', color:'white', textAlign:'center'}} >
+                            <Text style={{fontSize:RFValue(20),fontFamily:'M1c-Regular', color:'white', textAlign:'center'}} >
                                 Descartar
                             </Text>
                         </View>
