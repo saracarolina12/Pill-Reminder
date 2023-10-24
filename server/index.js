@@ -142,7 +142,7 @@ app.post('/newPill', requireAuth, (req, res) => {
     var db = handler.openConnection();
 
     db.run(
-      'INSERT INTO users (name, user_id, start, end, frequency, dose, dose_unit) VALUES (?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO pills (name, user_id, start, end, frequency, dose, dose_unit) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [data.name, data.user_id, data.start, data.end, data.frequency, data.dose, data.dose_unit],
       (err) => {
         if (err) {
