@@ -25,6 +25,9 @@ export const AlarmProvider = ({ children, route  }) => {
     const navigation = useNavigation();
     const [sound, setSound] = React.useState();
     const [isPlaying, setIsPlaying] = useState(false);
+    const [stopShowing, setStopShowing] = useState();
+    const [notificationActivated, setNotificationActivated] = useState(false); //obtiene desde la base de datos o almacenamiento si está actuva o no la alarma
+
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -87,65 +90,36 @@ export const AlarmProvider = ({ children, route  }) => {
         return token;
         }
 
-        const playSound = async () => {
-            if (!isPlaying) {
-                console.log('Loading Sound');
-                const { sound } = await Audio.Sound.createAsync(require("../assets/sound/Ringtone.mp3"));
-                setSound(sound);
-    
-                console.log('Playing Sound');
-                await sound.playAsync();
-                setIsPlaying(true);
-            }
-        };
-
-        const stopSound = async () => {
-            try {
-                if (sound) {
-                    await sound.stopAsync();
-                    setIsPlaying(false);
-                }
-            } catch (error) {
-                console.error('Error al detener el sonido:', error);
-            }
-        };
-        
-
-        useEffect(() => {
-            return () => {
-                if (sound) {
-                    console.log('Unloading Sound');
-                    sound.unloadAsync();
-                }
-            };
-        }, [sound]);
-        
         
         const scheduleNotification = async (currDate) => {
-            let alarmHour = 20;
-            let alarmMinutes = 21;
+            console.log("stop showing: ", notificationActivated);
+            let alarmHour = 22;
+            let alarmMinutes = 33;
             const triggerTime = new Date();
             triggerTime.setHours(alarmHour);
             triggerTime.setMinutes(alarmMinutes);
             console.log("current: ", currDate.getHours(), ":", currDate.getMinutes());
-            if (currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
+            
+            if (notificationActivated == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
                 await Notifications.scheduleNotificationAsync({
                     content: {
                         title: 'Recordatorio de pastilla',
                         body: '¡Es hora de tomar tu medicamento!',
-                    },
+                    },  
                     trigger: {
                         seconds: 0, 
                     },
                 });
-                playSound();
-                navigation.navigate('Alarm',{hour:alarmHour, minutes:alarmMinutes});
+        
+                setNotificationActivated(false);
+                navigation.navigate('Alarm',{hour:alarmHour, minutes:alarmMinutes, sound:sound});
             }
         };
+        
 
     return (
         <AlarmContext.Provider value={{ alarms, setAlarms }}>
-        {children}
+            {children}
         </AlarmContext.Provider>
     );
 };

@@ -3,13 +3,19 @@ import React, { useState, useEffect } from 'react';
 import { Color } from '../util/colors';
 import { RFValue } from "react-native-responsive-fontsize";
 import { useRoute } from '@react-navigation/native';
-
+import { Audio } from 'expo-av';
 
 export default Alarm = ({ navigation }) => {
     const route = useRoute();
     const [btnColor, setBtnColor] = useState("#FC709B");
     const [descartarBtnColor, setDescartarBtnColor] = useState("#FC709B");
     const[currentDate, setCurrentDate] = useState(new Date());
+    const [sound, setSound] = React.useState();
+    const [isPlaying, setIsPlaying] = useState(false);
+
+    useEffect(()=>{
+        playSound();
+    },[])
 
     useEffect(() => {
         const time = setInterval(() => {
@@ -17,6 +23,39 @@ export default Alarm = ({ navigation }) => {
         });
         return() => clearInterval(time);
     }, []);
+
+    const playSound = async () => {
+        if(!isPlaying){
+            setIsPlaying(true);
+            console.log('Loading Sound');
+            const { sound } = await Audio.Sound.createAsync(require("../assets/sound/Ringtone.mp3"));
+            setSound(sound);
+
+            console.log('Playing Sound');
+            await sound.playAsync();
+        }
+    };
+
+    const stopSound = async () => {
+        try {
+            if (sound) {
+                await sound.stopAsync();
+                setIsPlaying(false);
+            }
+        } catch (error) {
+            console.error('Error al detener el sonido:', error);
+        }
+    };
+    
+
+    useEffect(() => {
+        return () => {
+            if (sound) {
+                console.log('Unloading Sound');
+                sound.unloadAsync();
+            }
+        };
+    }, [sound]);
 
     const styles = StyleSheet.create({
         container: {
@@ -146,9 +185,10 @@ export default Alarm = ({ navigation }) => {
                 }} 
                 onPressOut={() => { 
                     //TODO: agregar lógica para desactivar la alarma
+                    stopSound();
+                    setDescartarBtnColor(Color[40]) 
                     navigation.navigate('Main'); //TODO: navigate to last screen
                     // navigation.popToTop(); //TODO: al parecer se estanca en Login.js
-                    setDescartarBtnColor(Color[40]) 
                 }}
             >
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
