@@ -75,6 +75,7 @@ app.post('/sendCode', (req, res) => {
                 let codigoV  = [];
                 for(let i = 1; i <= Longitud; i++)
                     codigoV.push(Math.floor(Math.random()*10));
+                let code = codigoV.join("");
 
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
@@ -87,8 +88,10 @@ app.post('/sendCode', (req, res) => {
                     from:'mindsparkpillreminder01@gmail.com',
                     to: email,
                     subject : 'Recuperacion de cuenta',
-                    text : 'Tu codigo de verifiación es: ' + codigoV.join(""),
+                    text : 'Tu codigo de verifiación es: ' + code,
                 };
+
+                req.session.code = parseInt(code);
 
                 transporter.sendMail(mailOptions,
                     function(err,info){
@@ -107,6 +110,20 @@ app.post('/sendCode', (req, res) => {
     });
 
     handler.closeConnection();
+});
+
+app.post('/verify', (req, res) => {
+    const {code} = req.body;
+    if(!code) 
+        return res.status(400).json({error: 'Invalid JSON data'});
+
+    if(code === req.session.code) {
+        req.session.unset('code');
+        return res.status(200).json({message: 'Codes match'});
+    }
+    else {
+        return res.status(500).json({error: "Codes don't match"});
+    }
 });
 
 app.post('/signup', (req, res) => { // TODO: Handle not repeated users

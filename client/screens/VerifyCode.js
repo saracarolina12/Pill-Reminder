@@ -8,7 +8,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
-    const [code, onChangeCode] = React.useState('');
+    const [code, onChangeCode] = React.useState('', '', '', '');
     const [flexDirection, setflexDirection] = useState('column');
     let [resendEnabled, setResendEnabled] = React.useState(false);
     
@@ -21,6 +21,7 @@ export default VerifyCode = ({ route, navigation }) => {
     
     function goNext(index){
         if(index < 3){
+            // onChangeCode(index ? code );
             inputRefs[index+1].focus()
         }
     }
@@ -133,10 +134,22 @@ export default VerifyCode = ({ route, navigation }) => {
 
     const handleVerify = async () => {
         try {
-            // TODO: COMPLETE
+            if(code.length != 4){
+                console.log("Please write the code"); // TODO: NOTIF
+                return;
+            }
+            var verification = parseInt(code.join(""));
+            const response = await axios.post(endpooooooooooooooooooooint + 'signin', {code: verification});
+
+            if (response.status === 200) {
+                console.log('Codes match', 'You can change your password!');
+                navigation.navigate('NewPassword');
+            } else {
+                console.log("Code isn't right");
+            }
         }
         catch (error) {
-            // TODO: COMPLETE
+            console.log("Couldn't send code:", error);
         }
     };
     
@@ -161,7 +174,13 @@ export default VerifyCode = ({ route, navigation }) => {
                         {this.inputRefs.map((k, idx) => (
                             <TextInput 
                                 key={idx}
-                                onChange={() => goNext(idx)}
+                                onChange={(text) => {
+                                    const newCode = [...code]; 
+                                    newCode[idx] = text.nativeEvent.text; // Update the value at the current index
+                                    onChangeCode(newCode); // Update the state
+                                    console.log(text.nativeEvent.text);
+                                    goNext(idx);
+                                }}
                                 ref={r => inputRefs[idx] = r} 
                                 style={styles.input} 
                                 maxLength={1} 

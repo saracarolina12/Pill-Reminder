@@ -3,10 +3,13 @@ import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 export default Forgot = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [mail, onChangeMail] = React.useState('');
+
+    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
 
     const styles = StyleSheet.create({
         container: {
@@ -103,7 +106,7 @@ export default Forgot = ({ route, navigation }) => {
 
             if (response.status === 200) {
                 console.log('Request to send code succeded!');
-                navigation.navigate('Verify');
+                navigation.navigate('VerifyCode');
             } else {
                 console.log("Couldn't send code", 'Please try again.');
             }
