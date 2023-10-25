@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useRef, useEffect } from 'r
 import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { useNavigation } from '@react-navigation/native';
+import { Audio } from 'expo-av';
 
 const AlarmContext = createContext();
 
@@ -22,7 +23,8 @@ export const AlarmProvider = ({ children, route  }) => {
     const notificationListener = useRef();
     const responseListener = useRef();
     const navigation = useNavigation();
-
+    const [sound, setSound] = React.useState();
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -32,7 +34,6 @@ export const AlarmProvider = ({ children, route  }) => {
         }, 1000);
         return () => clearInterval(interval); // Limpieza al desmontar el componente
     }, []);
-    
 
     /* */
     useEffect(() => {
@@ -56,7 +57,7 @@ export const AlarmProvider = ({ children, route  }) => {
 
 
     async function registerForPushNotificationsAsync() {
-        let token;
+        let token;  
         
         if (Platform.OS === 'android') {
             await Notifications.setNotificationChannelAsync('default', {
@@ -85,17 +86,48 @@ export const AlarmProvider = ({ children, route  }) => {
         
         return token;
         }
+
+        const playSound = async () => {
+            if (!isPlaying) {
+                console.log('Loading Sound');
+                const { sound } = await Audio.Sound.createAsync(require("../assets/sound/Ringtone.mp3"));
+                setSound(sound);
+    
+                console.log('Playing Sound');
+                await sound.playAsync();
+                setIsPlaying(true);
+            }
+        };
+
+        const stopSound = async () => {
+            try {
+                if (sound) {
+                    await sound.stopAsync();
+                    setIsPlaying(false);
+                }
+            } catch (error) {
+                console.error('Error al detener el sonido:', error);
+            }
+        };
+        
+
+        useEffect(() => {
+            return () => {
+                if (sound) {
+                    console.log('Unloading Sound');
+                    sound.unloadAsync();
+                }
+            };
+        }, [sound]);
+        
         
         const scheduleNotification = async (currDate) => {
-            let alarmHour = 1;
-            let alarmMinutes = 22;
+            let alarmHour = 20;
+            let alarmMinutes = 21;
             const triggerTime = new Date();
             triggerTime.setHours(alarmHour);
             triggerTime.setMinutes(alarmMinutes);
-            // triggerTime.setSeconds(0);
-
             console.log("current: ", currDate.getHours(), ":", currDate.getMinutes());
-    
             if (currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
                 await Notifications.scheduleNotificationAsync({
                     content: {
@@ -106,11 +138,8 @@ export const AlarmProvider = ({ children, route  }) => {
                         seconds: 0, 
                     },
                 });
-                
-                console.log(alarmHour, alarmMinutes);
+                playSound();
                 navigation.navigate('Alarm',{hour:alarmHour, minutes:alarmMinutes});
-            }else{
-                // navigation.navigate("Config");
             }
         };
 

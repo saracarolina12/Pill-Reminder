@@ -146,8 +146,8 @@ export default Alarm = ({ navigation }) => {
                 }} 
                 onPressOut={() => { 
                     //TODO: agregar lógica para desactivar la alarma
-                    // navigation.navigate('Config'); //TODO: navigate to last screen
-                    navigation.popToTop(); //TODO: al parecer se estanca en Login.js
+                    navigation.navigate('Main'); //TODO: navigate to last screen
+                    // navigation.popToTop(); //TODO: al parecer se estanca en Login.js
                     setDescartarBtnColor(Color[40]) 
                 }}
             >

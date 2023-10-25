@@ -12,6 +12,7 @@
     "@react-navigation/native": "^6.1.7",
     "@react-navigation/native-stack": "^6.9.13",
     "expo": "~49.0.8",
+    "expo-av": "~13.4.1",
     "expo-background-fetch": "~11.3.0",
     "expo-device": "~5.4.0",
     "expo-font": "~11.4.0",
