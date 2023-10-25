@@ -62,7 +62,7 @@ app.post('/sendCode', (req, res) => {
     var db = handler.openConnection();
 
     db.serialize(() => {
-        db.all(`SELECT * FROM users WHERE email = ${email};`, (err, entries) => {
+        db.all(`SELECT * FROM users WHERE email = ?;`, [email], (err, entries) => {
             if (err) {
                 console.log("Couldn't find email: " + err); // TODO: ADD A PROPER LOGGER
                 return res.status(500).json({ error: "Couldn't find email: " + err });
