@@ -4,12 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import { URL } from '../util/configurations';
 
 export default Forgot = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [mail, onChangeMail] = React.useState('');
 
-    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
 
     const styles = StyleSheet.create({
         container: {
@@ -102,7 +102,7 @@ export default Forgot = ({ route, navigation }) => {
                 return;
             }
  
-            const response = await axios.post(endpooooooooooooooooooooint + 'sendCode', formData);
+            const response = await axios.post(URL + 'sendCode', formData);
 
             if (response.status === 200) {
                 console.log('Request to send code succeded!');

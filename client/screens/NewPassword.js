@@ -4,13 +4,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import { URL } from '../util/configurations';
 
 export default NewPassword = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [password, onChangePassword] = React.useState('');
     const [confirmPassword, onChangeconfirmPassword] = React.useState('');
 
-    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
 
     const styles = StyleSheet.create({
         container: {
@@ -107,7 +107,7 @@ export default NewPassword = ({ route, navigation }) => {
                 return;
             }
  
-            const response = await axios.post(endpooooooooooooooooooooint + 'newPassword', formData);
+            const response = await axios.post(URL + 'newPassword', formData);
 
             if (response.status === 200) {
                 console.log('Sign in Successful', 'You can now log in!');

@@ -6,9 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown'
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
-
-
-const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
+import { URL } from '../util/configurations';
 
 LocaleConfig.locales['fr'] = {
     monthNames: [
@@ -196,7 +194,7 @@ export default Config = ({ route, navigation }) => {
             dose_unit: unidad,
         };
 
-        axios.post(endpooooooooooooooooooooint + 'newPill', data) //TODO: ADD GLOBAL ENDPOINT
+        axios.post(URL + 'newPill', data)
         .then((response) => {
             console.log('Data sent successfully:', data);
             navigation.navigate('Main');

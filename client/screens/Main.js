@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
 import NextAlarm from '../components/nextAlarm';
+import { URL } from '../util/configurations';
 
 export default Main = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState("#FC709B");
@@ -12,11 +13,10 @@ export default Main = ({ route, navigation }) => {
     const [loading, setLoading] = useState(true);
     const [pills, setPills] = useState();
 
-    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
 
     useEffect(() => {
         // Replace with your API endpoint
-        fetch(endpooooooooooooooooooooint + 'getPills')
+        fetch(URL + 'getPills')
           .then((response) => response.json())
           .then((result) => {
             setLoading(false);

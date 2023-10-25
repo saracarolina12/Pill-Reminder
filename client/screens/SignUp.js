@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import { URL } from '../util/configurations';
 
 // TOOD: EVITAR QUE SE REGRESE A ESTA PANTALLA
 
@@ -14,7 +15,6 @@ export default SignUp = ({ route, navigation }) => {
     const [email, onChangeEmail] = React.useState('');
     const [confirmPassword, onChangeConfirmPassword] = React.useState('');
     
-    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
     
     const styles = StyleSheet.create({
         container: {
@@ -122,7 +122,7 @@ export default SignUp = ({ route, navigation }) => {
                 return;
             }
 
-            const response = await axios.post(endpooooooooooooooooooooint + 'signup', formData);
+            const response = await axios.post(URL + 'signup', formData);
             
             if (response.status === 200) {
                 console.log('Sign Up Successful', 'You are now registered!');

@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
+import { URL } from '../util/configurations';
 
 export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
@@ -13,7 +14,6 @@ export default VerifyCode = ({ route, navigation }) => {
     const [flexDirection, setflexDirection] = useState('column');
     let [resendEnabled, setResendEnabled] = React.useState(false);
 
-    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
     
     inputRefs = [
         React.createRef(),
@@ -142,7 +142,7 @@ export default VerifyCode = ({ route, navigation }) => {
                 return;
             }
             var verification = parseInt(code.join(""));
-            const response = await axios.post(endpooooooooooooooooooooint + 'verify', {code: verification});
+            const response = await axios.post(URL + 'verify', {code: verification});
 
             if (response.status === 200) {
                 console.log('Codes match', 'You can change your password!');

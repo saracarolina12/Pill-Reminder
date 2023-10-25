@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import axios from 'axios';
+import { URL } from '../util/configurations';
 
 // TOOD: EVITAR QUE SE REGRESE A ESTA PANTALLA
 
@@ -12,8 +13,6 @@ export default Login = ({ route, navigation }) => {
     const [ForgotColor, setForgotColor] = useState("#A9A9A9");
     const [user, onChangeUser] = React.useState('');
     const [password, onChangePassword] = React.useState('');
-
-    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
 
     const styles = StyleSheet.create({
         container: {
@@ -99,7 +98,7 @@ export default Login = ({ route, navigation }) => {
                 return;
             }
  
-            const response = await axios.post(endpooooooooooooooooooooint + 'signin', formData);
+            const response = await axios.post(URL + 'signin', formData);
 
             if (response.status === 200) {
                 console.log('Sign in Successful', 'You are now logged in!');
