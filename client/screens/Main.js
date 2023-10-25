@@ -15,7 +15,6 @@ export default Main = ({ route, navigation }) => {
 
 
     useEffect(() => {
-        // Replace with your API endpoint
         fetch(URL + 'getPills')
           .then((response) => response.json())
           .then((result) => {

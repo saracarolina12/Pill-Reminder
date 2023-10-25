@@ -1,4 +1,5 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
@@ -111,7 +112,12 @@ export default NewPassword = ({ route, navigation }) => {
 
             if (response.status === 200) {
                 console.log('Sign in Successful', 'You can now log in!');
-                navigation.navigate('Login');
+                navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: 'Login' }],
+                    })
+                  );
             } else {
                 console.log('New Password Failed', 'Please try again.');
             }

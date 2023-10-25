@@ -1,4 +1,5 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
@@ -102,7 +103,12 @@ export default Login = ({ route, navigation }) => {
 
             if (response.status === 200) {
                 console.log('Sign in Successful', 'You are now logged in!');
-                navigation.navigate('Main');
+                navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: 'Main' }],
+                    })
+                  );
             } else {
                 console.log('Sign in Failed', 'Please try again.');
             }

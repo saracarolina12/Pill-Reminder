@@ -1,4 +1,5 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
@@ -146,7 +147,12 @@ export default VerifyCode = ({ route, navigation }) => {
 
             if (response.status === 200) {
                 console.log('Codes match', 'You can change your password!');
-                navigation.navigate('NewPassword');
+                navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'NewPassword' }],
+                })
+              );
             } else {
                 console.log("Code isn't right");
             }

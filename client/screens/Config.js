@@ -1,4 +1,5 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, SafeAreaView, ScrollView, StatusBar } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import { MaterialIcons } from '@expo/vector-icons';
@@ -38,6 +39,7 @@ export default Config = ({ route, navigation }) => {
     const [medicine, onChangeMedicine] = useState("");
     const [dosis, onChangeDosis] = useState("");
     const [unidad, onChangeUnidad] = useState("");
+    const [unidades, setUnidades] = useState(["mg","mcg","mL", "Gotas", "UI", "%", "Patch", "Sup", "Spray"]);
     const [hoursMedicine, onChangeHoursMedicine] = useState("");
 
     const currentDate = new Date();
@@ -165,6 +167,15 @@ export default Config = ({ route, navigation }) => {
     useEffect(()=>{
         console.log(day, meses[month] , year);
     }, [day, month, year])
+    useEffect(() => {
+        fetch(URL + 'getUnits')
+            .then((response) => response.json())
+            .then((result) => setUnidades(result.map(item => item.name)))
+            .then(() => console.log(unidades))
+            .catch((error) => {
+                console.error('API request error', error);
+            });
+      }, []);
 
     const handleOkPress = () => {
         const hours = currentDate.getHours().toString().padStart(2, '0');
@@ -180,7 +191,7 @@ export default Config = ({ route, navigation }) => {
         const firstDate = `${trueDates[0]} ${hours}:${minutes}:00`;
         const lastDate = `${trueDates[trueDates.length - 1]} 23:59:59`;
 
-        if(!medicine || !firstDate || !lastDate || !hoursMedicine || !dosis || !unidad){ // TODO: unidad can be 0
+        if(!medicine || !firstDate || !lastDate || !hoursMedicine || !dosis || !unidad){
             console.log("Form is not complete"); // TODO: Add notif
             return;
         }
@@ -197,13 +208,16 @@ export default Config = ({ route, navigation }) => {
         axios.post(URL + 'newPill', data)
         .then((response) => {
             console.log('Data sent successfully:', data);
-            navigation.navigate('Main');
+            navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Main' }],
+                })
+              );
         })
         .catch((error) => {
             console.error('Error sending data:', error);
         });
-
-        // TODO: Reload request
     };
 
     return (
@@ -259,10 +273,9 @@ export default Config = ({ route, navigation }) => {
                     <SelectDropdown
                         defaultButtonText= {<AntDesign name="caretdown" size={16} color="grey" />}
                         buttonStyle={{backgroundColor: '#E9E9E9', color: '#A9A9A9', borderRadius: 10, width: 60,alignSelf:'center'}}
-                        data={["mg","mcg","mL", "Gotas", "UI", "%", "Patch", "Sup", "Spray"]} // TODO: Fetch this from server
+                        data={unidades}
                         onSelect={(selectedItem, index) => {
-                            //onChangeUnidad(selectedItem);
-                            onChangeUnidad(index); // TODO: fix index to match db
+                            onChangeUnidad(index + 1);
                         }}
                         buttonTextAfterSelection={(selectedItem, index) => {
                             // text represented after item is selected
