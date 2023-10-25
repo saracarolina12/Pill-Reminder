@@ -188,7 +188,7 @@ app.post('/newPassword', (req, res) => {
     var db = handler.openConnection();
 
     db.run(
-        'UPDATE users SET password = ? WHERE user_id = ?',
+        'UPDATE users SET password = ? WHERE email = ?',
         [password, req.session.email],
         (err) => {
             if (err || !req.session.email) {

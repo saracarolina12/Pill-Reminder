@@ -111,7 +111,7 @@ export default NewPassword = ({ route, navigation }) => {
 
             if (response.status === 200) {
                 console.log('Sign in Successful', 'You can now log in!');
-                navigation.navigate('Main');
+                navigation.navigate('Login');
             } else {
                 console.log('New Password Failed', 'Please try again.');
             }
