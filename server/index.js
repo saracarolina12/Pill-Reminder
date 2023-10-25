@@ -118,7 +118,7 @@ app.post('/verify', (req, res) => {
         return res.status(400).json({error: 'Invalid JSON data'});
 
     if(code === req.session.code) {
-        req.session.unset('code');
+        req.session.code = 0;
         return res.status(200).json({message: 'Codes match'});
     }
     else {
