@@ -88,6 +88,14 @@ export default Forgot = ({ route, navigation }) => {
         },
     });
     
+    const handleEmail = async () => {
+        try {
+            // TODO: CODE THIS
+        }
+        catch (error) {
+            // TODO: CODE THIS
+        }
+    }
     
     return (
         <LinearGradient
@@ -127,7 +135,7 @@ export default Forgot = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
-                            navigation.navigate('VerifyCode');
+                            handleEmail();
                             setBtnColor(Color[40]);
                         }
                     }>

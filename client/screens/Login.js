@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import axios from 'axios';
 
+// TOOD: EVITAR QUE SE REGRESE A ESTA PANTALLA
+
 export default Login = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [txtColor, setTxtColor] = useState("#B19EF9");
@@ -106,7 +108,7 @@ export default Login = ({ route, navigation }) => {
                 console.log('Sign in Failed', 'Please try again.');
             }
         } catch (error) {
-            console.log('Error', 'An error occurred while signing in.', error);
+            console.log('Error', 'An error occurred while signing in.', error); // TODO: LOGGER
         }
     };
 
@@ -181,9 +183,8 @@ export default Login = ({ route, navigation }) => {
                             setBtnColor(Color[50])
                         }}
                         onPressOut={() => {
-                            handleLogIn();
-                            // navigation.navigate("Main")
                             setBtnColor(Color[40])
+                            handleLogIn();
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>

@@ -130,6 +130,15 @@ export default VerifyCode = ({ route, navigation }) => {
             color : color
         }
     });
+
+    const handleVerify = async () => {
+        try {
+            // TODO: COMPLETE
+        }
+        catch (error) {
+            // TODO: COMPLETE
+        }
+    };
     
     return (
         <LinearGradient colors={['#F8C0D2', '#F4B0C6', '#F497B5']} style={styles.container}>
@@ -151,6 +160,7 @@ export default VerifyCode = ({ route, navigation }) => {
                     <SafeAreaView style={styles.row}>
                         {this.inputRefs.map((k, idx) => (
                             <TextInput 
+                                key={idx}
                                 onChange={() => goNext(idx)}
                                 ref={r => inputRefs[idx] = r} 
                                 style={styles.input} 
@@ -175,7 +185,8 @@ export default VerifyCode = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
-                            navigation.navigate('NewPassword');
+                            // navigation.navigate('NewPassword');
+                            handleVerify();
                             setBtnColor(Color[40]);
                         }}
                     >

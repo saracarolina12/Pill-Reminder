@@ -2,6 +2,7 @@ const bodyParser = require('body-parser');
 const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
+const nodemailer = require('nodemailer');
 
 // TODO: Make sure that the codes that i'm returning are right: 400, 500, 200, etc
 
@@ -54,26 +55,80 @@ const requireAuth = (req, res, next) => {
     }
 };
 
+app.post('/sendCode', (req, res) => {
+    const {email} = req.body;
+    if(!email)
+        return res.status(400).json({error: 'Invalid JSON data'});
+    var db = handler.openConnection();
+
+    db.serialize(() => {
+        db.all(`SELECT * FROM users WHERE email = ${email};`, (err, entries) => {
+            if (err) {
+                console.log("Couldn't find email: " + err); // TODO: ADD A PROPER LOGGER
+                return res.status(500).json({ error: "Couldn't find email: " + err });
+            }
+            if(entries.length) {
+                console.log("Found email."); // TODO: ADD A PROPER LOGGER
+                // req.session.userId = entries[0].user_id; 
+
+                const Longitud = 4;
+                let codigoV  = [];
+                for(let i = 1; i <= Longitud; i++)
+                    codigoV.push(Math.floor(Math.random()*10));
+
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth:{
+                        user:'mindsparkpillreminder01@gmail.com',
+                        pass:'omof cacf vcvm yyqo'
+                    }
+                });
+                const mailOptions = {
+                    from:'mindsparkpillreminder01@gmail.com',
+                    to: email,
+                    subject : 'Recuperacion de cuenta',
+                    text : 'Tu codigo de verifiación es: ' + codigoV.join(""),
+                };
+
+                transporter.sendMail(mailOptions,
+                    function(err,info){
+                        if(err){
+                            console.log("Couldn't find email: " + err); // TODO: ADD A PROPER LOGGER
+                            return res.status(500).json({ error: "Couldn't find email: " + err });
+                        }
+                        else return res.status(200).json({ message: info.response });
+                    });
+            }
+            else {
+                console.log("Couldn't find email"); // TODO: Logger
+                return res.status(500).json({ error: "Couldn't find email" });
+            }
+        })
+    });
+
+    handler.closeConnection();
+});
+
 app.post('/signup', (req, res) => { // TODO: Handle not repeated users
     const data = req.body;
     if (!data)
-        return res.status(400).json({ error: 'Invalid JSON data' });
+    return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
 
     db.run(
-      'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-      [data.name, data.email, data.password],
-      (err) => {
-        if (err) {
-            console.log("Couldn't insert user: " + err); // TODO: ADD A PROPER LOGGER
-            return res.status(500).json({ error: 'Database insertion failed' + err });
+        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+        [data.name, data.email, data.password],
+        (err) => {
+            if (err) {
+                console.log("Couldn't insert user: " + err); // TODO: ADD A PROPER LOGGER
+                return res.status(500).json({ error: 'Database insertion failed' + err });
+            }
+            res.json({ message: 'Data inserted successfully' });
+            console.log("User created successfully"); // TODO: ADD A PROPER LOGGER
         }
-        res.json({ message: 'Data inserted successfully' });
-        console.log("User created successfully"); // TODO: ADD A PROPER LOGGER
-      }
-    );
-
+        );
+        
     handler.closeConnection();
 });
 

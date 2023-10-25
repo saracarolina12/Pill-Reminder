@@ -5,6 +5,8 @@ import { Color } from '../util/colors'
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 
+// TOOD: EVITAR QUE SE REGRESE A ESTA PANTALLA
+
 export default SignUp = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [user, onChangeUser] = React.useState('');
