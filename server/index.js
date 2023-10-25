@@ -92,6 +92,7 @@ app.post('/sendCode', (req, res) => {
                 };
 
                 req.session.code = parseInt(code);
+                req.session.email = email;
 
                 transporter.sendMail(mailOptions,
                     function(err,info){
@@ -118,10 +119,12 @@ app.post('/verify', (req, res) => {
         return res.status(400).json({error: 'Invalid JSON data'});
 
     if(code === req.session.code) {
+        console.log("Codes match");
         req.session.code = 0;
         return res.status(200).json({message: 'Codes match'});
     }
     else {
+        console.log("Codes don't match");
         return res.status(500).json({error: "Codes don't match"});
     }
 });
@@ -155,7 +158,7 @@ app.post('/signin', (req, res) => {
         return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
-
+    
     db.serialize(() => {
         db.all(`SELECT * FROM users WHERE name = '${data.name}' and password = '${data.password}'`, (err, entries) => {
             if (err) {
@@ -174,6 +177,29 @@ app.post('/signin', (req, res) => {
             }
         })
     });
+    
+    handler.closeConnection();
+});
+
+app.post('/newPassword', (req, res) => {
+    const {password} = req.body;
+    if(!password) return res.status(400).json({error: 'Invalid JSON data'});
+    
+    var db = handler.openConnection();
+
+    db.run(
+        'UPDATE users SET password = ? WHERE user_id = ?',
+        [password, req.session.email],
+        (err) => {
+            if (err || !req.session.email) {
+                console.log("Couldn't update password: " + err); // TODO: ADD A PROPER LOGGER
+                return res.status(500).json({ error: 'Database update failed' + err });
+            }
+            req.session.email = "";
+            console.log("Password updated successfully"); // TODO: ADD A PROPER LOGGER
+            res.json({ message: 'Data inserted successfully' });
+        }
+        );
 
     handler.closeConnection();
 });

@@ -3,11 +3,14 @@ import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
 
 export default NewPassword = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [password, onChangePassword] = React.useState('');
     const [confirmPassword, onChangeconfirmPassword] = React.useState('');
+
+    const endpooooooooooooooooooooint = "http://dapp.enlacenet.net:8532/"; // TODO: Add An env? 
 
     const styles = StyleSheet.create({
         container: {
@@ -88,6 +91,34 @@ export default NewPassword = ({ route, navigation }) => {
             marginRight: 10, // Ajusta este valor según sea necesario
         },
     });
+
+    const handleNewPassword = async () => {
+        try {
+            const formData = {};
+            var formComplete = true;
+            formData.password = password ? password: formComplete = false;
+
+            if(!formComplete){
+                console.log('Form is not complete'); // TODO: Add notif
+                return;
+            }
+            if(password != confirmPassword){
+                console.log("Passwords don't match"); // TODO: Add notif
+                return;
+            }
+ 
+            const response = await axios.post(endpooooooooooooooooooooint + 'newPassword', formData);
+
+            if (response.status === 200) {
+                console.log('Sign in Successful', 'You can now log in!');
+                navigation.navigate('Main');
+            } else {
+                console.log('New Password Failed', 'Please try again.');
+            }
+        } catch (error) {
+            console.log('Error', 'An error occurred while setting up a new password.', error); // TODO: LOGGER
+        }
+    };
     
     return (
         <LinearGradient
@@ -137,7 +168,7 @@ export default NewPassword = ({ route, navigation }) => {
                         }} 
                         onPressOut={() => { 
                             setBtnColor(Color[40]);
-                            navigation.navigate("Login");
+                            handleNewPassword();
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
