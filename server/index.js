@@ -5,6 +5,8 @@ const session = require('express-session');
 const nodemailer = require('nodemailer');
 
 // TODO: Make sure that the codes that i'm returning are right: 400, 500, 200, etc
+// TOOD: Create endpoint for logout
+// TODO: Create endpoint to bring units
 
 const app = express();
 app.use(
@@ -225,6 +227,30 @@ app.get('/getPills', requireAuth, (req, res) => {
                 else {
                     console.log("No pills to show"); // TODO: Logger
                     return res.status(500).json({ error: "No pills to display: " });
+                }
+        })
+    });
+
+    handler.closeConnection();
+});
+
+app.get('/getUnits', (req, res) => {
+    var db = handler.openConnection();
+
+    db.serialize(() => {
+        db.all('SELECT unit_id, name FROM units;', 
+            (err, entries) => {
+                if (err) {
+                    console.log("Couldn't find units: " + err); // TODO: ADD A PROPER LOGGER
+                    return res.status(500).json({ error: "Couldn't find units: " + err });
+                }
+                if(entries.length) {
+                    console.log("Displaying " + entries.length +  " units: " + entries); // TODO: ADD A PROPER LOGGER
+                    return res.status(200).json(entries);
+                }
+                else {
+                    console.log("No units to show"); // TODO: Logger
+                    return res.status(500).json({ error: "No units to display" });
                 }
         })
     });
