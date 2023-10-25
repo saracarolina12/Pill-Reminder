@@ -90,10 +90,25 @@ export default Forgot = ({ route, navigation }) => {
     
     const handleEmail = async () => {
         try {
-            // TODO: CODE THIS
-        }
-        catch (error) {
-            // TODO: CODE THIS
+            const formData = {};
+            var formComplete = true;
+            formData.email = mail ? mail: formComplete = false;
+
+            if(!formComplete){
+                console.log('Please provide an email address'); // TODO: Add notif
+                return;
+            }
+ 
+            const response = await axios.post(endpooooooooooooooooooooint + 'sendCode', formData);
+
+            if (response.status === 200) {
+                console.log('Request to send code succeded!');
+                navigation.navigate('Verify');
+            } else {
+                console.log("Couldn't send code", 'Please try again.');
+            }
+        } catch (error) {
+            console.log('Error', 'An error occurred while sending request.', error); // TODO: LOGGER
         }
     }
     
