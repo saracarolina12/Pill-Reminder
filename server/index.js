@@ -153,7 +153,7 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
             }
         })
     });
-    if(!failed){
+    if(failed){
         db.run(
             'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
             [data.name, data.email, data.password],
@@ -162,8 +162,10 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
                     console.log("Couldn't insert user: " + err);
                     return res.status(500).json({ error: 'Database insertion failed' + err });
                 }
-                console.log("User created successfully");
-                return res.status(200).json({ message: 'Data inserted successfully' });
+                else {
+                    console.log("User created successfully");
+                    return res.status(200).json({ message: 'Data inserted successfully' });
+                }
             }
         );
     }
