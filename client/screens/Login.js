@@ -95,7 +95,7 @@ export default Login = ({ route, navigation }) => {
             formData.password = password ? password: formComplete = false;
 
             if(!formComplete){
-                console.log('Form is not complete'); // TODO: Add notif
+                console.log('Form is not complete'); 
                 return;
             }
  
@@ -113,7 +113,7 @@ export default Login = ({ route, navigation }) => {
                 console.log('Sign in Failed', 'Please try again.');
             }
         } catch (error) {
-            console.log('Error', 'An error occurred while signing in.', error); // TODO: LOGGER
+            console.log('Error', 'An error occurred while signing in.', error);
         }
     };
 

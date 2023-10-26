@@ -98,7 +98,7 @@ export default Forgot = ({ route, navigation }) => {
             formData.email = mail ? mail: formComplete = false;
 
             if(!formComplete){
-                console.log('Please provide an email address'); // TODO: Add notif
+                console.log('Please provide an email address'); 
                 return;
             }
  
@@ -111,7 +111,7 @@ export default Forgot = ({ route, navigation }) => {
                 console.log("Couldn't send code", 'Please try again.');
             }
         } catch (error) {
-            console.log('Error', 'An error occurred while sending request.', error); // TODO: LOGGER
+            console.log('Error', 'An error occurred while sending request.', error);
         }
     }
     

@@ -114,11 +114,11 @@ export default SignUp = ({ route, navigation }) => {
             formData.password = password ? password: formComplete = false;
 
             if(!formComplete){  
-                console.log('Form is not complete'); // TODO: Add notif
+                console.log('Form is not complete'); 
                 return;
             }
             if(password != confirmPassword){
-                console.log('Passwords don"t match'); // TODO: Add proper notif
+                console.log('Passwords don"t match');
                 return;
             }
 

@@ -6,12 +6,13 @@ const nodemailer = require('nodemailer');
 
 // TODO: Make sure that the codes that i'm returning are right: 400, 500, 200, etc
 // TOOD: Create endpoint for logout
-// TODO: Create endpoint to bring units
+// TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
+
 
 const app = express();
 app.use(
   session({
-    secret: '7B#Kp&2M$5n@9T8Q', // TODO: Change this to a strong and secure secret
+    secret: '7B#Kp&2M$5n@9T8Q',
     resave: false,
     saveUninitialized: true,
   })
@@ -66,11 +67,11 @@ app.post('/sendCode', (req, res) => {
     db.serialize(() => {
         db.all(`SELECT * FROM users WHERE email = ?;`, [email], (err, entries) => {
             if (err) {
-                console.log("Couldn't find email: " + err); // TODO: ADD A PROPER LOGGER
+                console.log("Couldn't find email: " + err); 
                 return res.status(500).json({ error: "Couldn't find email: " + err });
             }
             if(entries.length) {
-                console.log("Found email."); // TODO: ADD A PROPER LOGGER
+                console.log("Found email."); 
                 // req.session.userId = entries[0].user_id; 
 
                 const Longitud = 4;
@@ -99,14 +100,14 @@ app.post('/sendCode', (req, res) => {
                 transporter.sendMail(mailOptions,
                     function(err,info){
                         if(err){
-                            console.log("Couldn't find email: " + err); // TODO: ADD A PROPER LOGGER
+                            console.log("Couldn't find email: " + err);
                             return res.status(500).json({ error: "Couldn't find email: " + err });
                         }
                         else return res.status(200).json({ message: info.response });
                     });
             }
             else {
-                console.log("Couldn't find email"); // TODO: Logger
+                console.log("Couldn't find email");
                 return res.status(500).json({ error: "Couldn't find email" });
             }
         })
@@ -143,11 +144,11 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
         [data.name, data.email, data.password],
         (err) => {
             if (err) {
-                console.log("Couldn't insert user: " + err); // TODO: ADD A PROPER LOGGER
+                console.log("Couldn't insert user: " + err);
                 return res.status(500).json({ error: 'Database insertion failed' + err });
             }
             res.json({ message: 'Data inserted successfully' });
-            console.log("User created successfully"); // TODO: ADD A PROPER LOGGER
+            console.log("User created successfully");
         }
         );
         
@@ -164,17 +165,17 @@ app.post('/signin', (req, res) => {
     db.serialize(() => {
         db.all(`SELECT * FROM users WHERE name = '${data.name}' and password = '${data.password}'`, (err, entries) => {
             if (err) {
-                console.log("Couldn't find user: " + err); // TODO: ADD A PROPER LOGGER
+                console.log("Couldn't find user: " + err);
                 return res.status(500).json({ error: "Couldn't find user: " + err });
             }
             console.log(entries, entries.length);
             if(entries.length) {
-                console.log("Sign in successful."); // TODO: ADD A PROPER LOGGER
+                console.log("Sign in successful.");
                 req.session.userId = entries[0].user_id;
                 return res.status(200).json({ message: 'Sign in successful' });
             }
             else {
-                console.log("Couldn't find user"); // TODO: Logger
+                console.log("Couldn't find user");
                 return res.status(500).json({ error: "Couldn't find user: " + err });
             }
         })
@@ -194,11 +195,11 @@ app.post('/newPassword', (req, res) => {
         [password, req.session.email],
         (err) => {
             if (err || !req.session.email) {
-                console.log("Couldn't update password: " + err); // TODO: ADD A PROPER LOGGER
+                console.log("Couldn't update password: " + err);
                 return res.status(500).json({ error: 'Database update failed' + err });
             }
             req.session.email = "";
-            console.log("Password updated successfully"); // TODO: ADD A PROPER LOGGER
+            console.log("Password updated successfully");
             res.json({ message: 'Data inserted successfully' });
         }
         );
@@ -216,16 +217,16 @@ app.get('/getPills', requireAuth, (req, res) => {
             WHERE user_id = ${req.session.userId};`, 
             (err, entries) => {
                 if (err) {
-                    console.log("Couldn't find pills: " + err); // TODO: ADD A PROPER LOGGER
+                    console.log("Couldn't find pills: " + err);
                     return res.status(500).json({ error: "Couldn't find pills: " + err });
                 }
                 console.log(entries, entries.length);
                 if(entries.length) {
-                    console.log("Displaying " + entries.length +  " pills: " + entries); // TODO: ADD A PROPER LOGGER
+                    console.log("Displaying " + entries.length +  " pills: " + entries);
                     return res.status(200).json(entries);
                 }
                 else {
-                    console.log("No pills to show"); // TODO: Logger
+                    console.log("No pills to show");
                     return res.status(500).json({ error: "No pills to display: " });
                 }
         })
@@ -241,15 +242,15 @@ app.get('/getUnits', (req, res) => {
         db.all('SELECT unit_id, name FROM units;', 
             (err, entries) => {
                 if (err) {
-                    console.log("Couldn't find units: " + err); // TODO: ADD A PROPER LOGGER
+                    console.log("Couldn't find units: " + err);
                     return res.status(500).json({ error: "Couldn't find units: " + err });
                 }
                 if(entries.length) {
-                    console.log("Displaying " + entries.length +  " units: " + entries); // TODO: ADD A PROPER LOGGER
+                    console.log("Displaying " + entries.length +  " units: " + entries);
                     return res.status(200).json(entries);
                 }
                 else {
-                    console.log("No units to show"); // TODO: Logger
+                    console.log("No units to show");
                     return res.status(500).json({ error: "No units to display" });
                 }
         })
@@ -270,11 +271,11 @@ app.post('/newPill', requireAuth, (req, res) => {
       [data.name, req.session.userId, data.start, data.end, data.frequency, data.dose, data.dose_unit],
       (err) => {
         if (err) {
-            console.log("Couldn't insert Pill: " + err); // TODO: ADD A PROPER LOGGER
+            console.log("Couldn't insert Pill: " + err);
             return res.status(500).json({ error: 'Database insertion failed' + err });
         }
         res.json({ message: 'Data inserted successfully' });
-        console.log("Pill created successfully"); // TODO: ADD A PROPER LOGGER
+        console.log("Pill created successfully");
       }
     );
 

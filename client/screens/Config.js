@@ -184,7 +184,7 @@ export default Config = ({ route, navigation }) => {
         const trueDates = Object.keys(selectedDates).filter((date) => selectedDates[date]);
   
         if (trueDates.length === 0) {
-            console.log("No dates where selected"); // TODO: Add notif
+            console.log("No dates where selected"); 
             return null;
         }
         trueDates.sort();
@@ -192,7 +192,7 @@ export default Config = ({ route, navigation }) => {
         const lastDate = `${trueDates[trueDates.length - 1]} 23:59:59`;
 
         if(!medicine || !firstDate || !lastDate || !hoursMedicine || !dosis || !unidad){
-            console.log("Form is not complete"); // TODO: Add notif
+            console.log("Form is not complete"); 
             return;
         }
 

@@ -139,7 +139,7 @@ export default VerifyCode = ({ route, navigation }) => {
     const handleVerify = async () => {
         try {
             if(code.length != 4){
-                console.log("Please write the code"); // TODO: NOTIF
+                console.log("Please write the code");
                 return;
             }
             var verification = parseInt(code.join(""));

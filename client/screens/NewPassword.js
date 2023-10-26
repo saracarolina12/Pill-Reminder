@@ -100,11 +100,11 @@ export default NewPassword = ({ route, navigation }) => {
             formData.password = password ? password: formComplete = false;
 
             if(!formComplete){
-                console.log('Form is not complete'); // TODO: Add notif
+                console.log('Form is not complete'); 
                 return;
             }
             if(password != confirmPassword){
-                console.log("Passwords don't match"); // TODO: Add notif
+                console.log("Passwords don't match"); 
                 return;
             }
  
@@ -122,7 +122,7 @@ export default NewPassword = ({ route, navigation }) => {
                 console.log('New Password Failed', 'Please try again.');
             }
         } catch (error) {
-            console.log('Error', 'An error occurred while setting up a new password.', error); // TODO: LOGGER
+            console.log('Error', 'An error occurred while setting up a new password.', error);
         }
     };
     

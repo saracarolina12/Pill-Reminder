@@ -19,6 +19,7 @@ const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
   // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
+  // TODO: ADD NOTIFICATION SYSTEM
 
   useEffect(() => {
     async function loadFonts() {
