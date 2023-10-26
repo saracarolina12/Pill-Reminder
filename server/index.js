@@ -145,29 +145,30 @@ app.post('/signup', (req, res) => {
                 failed = true;
                 return res.status(500).json({ error: "Failed signing up: " + err });
             }
-            if(entries.length) {
+            else if(entries.length) {
                 console.log("User already exists.");
                 failed = true;
                 return res.status(400).json({ message: 'User already exists' });
             }
-        })
-    }).then(() => {
-        console.log("enttre");
-        db.run(
-            'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-            [data.name, data.email, data.password],
-            (err) => {
-                if (err) {
-                    console.log("Couldn't insert user: " + err);
-                    return res.status(500).json({ error: 'Database insertion failed' + err });
-                }
-                else {
-                    console.log("User created successfully");
-                    return res.status(200).json({ message: 'Data inserted successfully' });
-                }
+            else {
+                db.run(
+                    'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+                    [data.name, data.email, data.password],
+                    (err) => {
+                        if (err) {
+                            console.log("Couldn't insert user: " + err);
+                            return res.status(500).json({ error: 'Database insertion failed' + err });
+                        }
+                        else {
+                            console.log("User created successfully");
+                            return res.status(200).json({ message: 'Data inserted successfully' });
+                        }
+                    }
+                );
             }
-        );
-    }).finally(() => handler.closeConnection());
+        })
+    });
+    handler.closeConnection();
 });
 
 app.post('/signin', (req, res) => {
