@@ -137,6 +137,7 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
     return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
+    var failed = false;
 
     db.serialize(() => {
         db.all(`SELECT * FROM users WHERE name = '${data.name}' or email = '${data.email}'`, (err, entries) => {
@@ -150,19 +151,20 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
             }
         })
     });
-    db.run(
-        'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-        [data.name, data.email, data.password],
-        (err) => {
-            if (err) {
-                console.log("Couldn't insert user: " + err);
-                return res.status(500).json({ error: 'Database insertion failed' + err });
+    if(!failed){
+        db.run(
+            'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
+            [data.name, data.email, data.password],
+            (err) => {
+                if (err) {
+                    console.log("Couldn't insert user: " + err);
+                    return res.status(500).json({ error: 'Database insertion failed' + err });
+                }
+                console.log("User created successfully");
+                res.json({ message: 'Data inserted successfully' });
             }
-            res.json({ message: 'Data inserted successfully' });
-            console.log("User created successfully");
-        }
         );
-        
+    }
     handler.closeConnection();
 });
 
