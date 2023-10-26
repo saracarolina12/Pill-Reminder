@@ -167,8 +167,8 @@ app.post('/signup', (req, res) => {
                 );
             }
         })
+        handler.closeConnection();
     });
-    handler.closeConnection();
 });
 
 app.post('/signin', (req, res) => {
