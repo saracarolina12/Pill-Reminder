@@ -152,7 +152,7 @@ app.post('/signup', (req, res) => {
             }
         })
     });
-    if(failed){
+    if(!failed){
         db.run(
             'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
             [data.name, data.email, data.password],
