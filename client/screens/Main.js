@@ -120,7 +120,7 @@ export default Main = ({ route, navigation }) => {
                         pills.map((alarm, index) => (
                             <NextAlarm
                                 key={index}
-                                url={icons[index % pills.length]} // TODO: Load a random image
+                                url={icons[index % pills.length]}
                                 pill={alarm.name}
                                 amount={alarm.dose + " " + alarm.dose_unit}
                                 hour={"10:00"} // TODO: Calculate next hour
