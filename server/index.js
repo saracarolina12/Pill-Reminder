@@ -151,8 +151,7 @@ app.post('/signup', (req, res) => {
                 return res.status(400).json({ message: 'User already exists' });
             }
         })
-    });
-    if(!failed){
+    }).then(() => {
         console.log("enttre");
         db.run(
             'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
@@ -168,8 +167,7 @@ app.post('/signup', (req, res) => {
                 }
             }
         );
-    }
-    handler.closeConnection();
+    }).finally(() => handler.closeConnection());
 });
 
 app.post('/signin', (req, res) => {
