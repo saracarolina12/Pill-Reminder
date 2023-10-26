@@ -5,9 +5,8 @@ const session = require('express-session');
 const nodemailer = require('nodemailer');
 
 // TODO: Make sure that the codes that i'm returning are right: 400, 500, 200, etc
-// TOOD: Create endpoint for logout
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
-
+// TODO: Add next alarm endpoint
 
 const app = express();
 app.use(
@@ -139,6 +138,18 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
 
     var db = handler.openConnection();
 
+    db.serialize(() => {
+        db.all(`SELECT * FROM users WHERE name = '${data.name}' and password = '${data.password}'`, (err, entries) => {
+            if (err) {
+                console.log("Failed while signing up: " + err);
+                return res.status(500).json({ error: "Failed signing up: " + err });
+            }
+            if(entries.length) {
+                console.log("User already exists.");
+                return res.status(500).json({ message: 'User already exists' });
+            }
+        })
+    });
     db.run(
         'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
         [data.name, data.email, data.password],
