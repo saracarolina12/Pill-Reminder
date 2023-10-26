@@ -167,7 +167,7 @@ app.post('/signup', (req, res) => {
                 );
             }
         })
-        handler.closeConnection();
+        //handler.closeConnection();
     });
 });
 
