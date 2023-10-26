@@ -139,7 +139,7 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
     var db = handler.openConnection();
 
     db.serialize(() => {
-        db.all(`SELECT * FROM users WHERE name = '${data.name}' and password = '${data.password}'`, (err, entries) => {
+        db.all(`SELECT * FROM users WHERE name = '${data.name}' or email = '${data.email}'`, (err, entries) => {
             if (err) {
                 console.log("Failed while signing up: " + err);
                 return res.status(500).json({ error: "Failed signing up: " + err });
