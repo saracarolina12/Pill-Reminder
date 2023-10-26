@@ -12,9 +12,10 @@ export default Main = ({ route, navigation }) => {
     const [year, setYear] = useState(new Date().getFullYear());
     const [loading, setLoading] = useState(true);
     const [pills, setPills] = useState();
-
+    const [icons, setIcons] = useState();
 
     useEffect(() => {
+        // Load pills
         fetch(URL + 'getPills')
           .then((response) => response.json())
           .then((result) => {
@@ -26,6 +27,20 @@ export default Main = ({ route, navigation }) => {
             console.error('API request error', error);
             setLoading(false);
           });
+
+        if(!icons)
+            setIcons([
+                require('../assets/imgs/pill_0.png'),
+                require('../assets/imgs/pill_1.png'),
+                require('../assets/imgs/pill_2.png'),
+                require('../assets/imgs/pill_3.png'),
+                require('../assets/imgs/pill_4.png'),
+            ]);
+        // Load images
+        /*
+        for(let i = 0; i < 5; i++)
+        setIcons([...icons, require(`../assets/imgs/pill_${i}.png`)]);
+        */
       }, []);
 
     const styles = StyleSheet.create({
@@ -104,11 +119,11 @@ export default Main = ({ route, navigation }) => {
                     pills?.length > 0 ?
                         pills.map((alarm, index) => (
                             <NextAlarm
-                            key={index}
-                            url={require("../assets/imgs/pill_0.png")} // TODO: Load a random image
-                            pill={alarm.name}
-                            amount={alarm.dose + " " + alarm.dose_unit}
-                            hour={"10:00"} // TODO: Calculate next hour
+                                key={index}
+                                url={icons[index % pills.length]} // TODO: Load a random image
+                                pill={alarm.name}
+                                amount={alarm.dose + " " + alarm.dose_unit}
+                                hour={"10:00"} // TODO: Calculate next hour
                             />
                         ))
                     : <Text style={{ fontFamily: 'M1c-Medium', fontSize: 15, color:"#CB7C96", textAlign: "center", flex: 1, justifyContent: "center", alignItems: "center" }}>No tienes pastillas pendientes</Text>
@@ -120,8 +135,8 @@ export default Main = ({ route, navigation }) => {
                 style={styles.circleContainer}
                 onPressIn={() => { setBtnColor('#CC597C') }}
                 onPressOut={() => {
-                    setBtnColor('#FC709B')
                     navigation.navigate("Config")
+                    setBtnColor('#FC709B')
                 }}
             >
                 <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text>
