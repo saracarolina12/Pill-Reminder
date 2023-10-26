@@ -143,10 +143,12 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
         db.all(`SELECT * FROM users WHERE name = '${data.name}' or email = '${data.email}'`, (err, entries) => {
             if (err) {
                 console.log("Failed while signing up: " + err);
+                failed = true;
                 return res.status(500).json({ error: "Failed signing up: " + err });
             }
             if(entries.length) {
                 console.log("User already exists.");
+                failed = true;
                 return res.status(500).json({ message: 'User already exists' });
             }
         })
