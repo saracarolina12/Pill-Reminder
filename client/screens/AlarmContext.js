@@ -26,7 +26,7 @@ export const AlarmProvider = ({ children, route  }) => {
     const [sound, setSound] = React.useState();
     const [isPlaying, setIsPlaying] = useState(false);
     const [stopShowing, setStopShowing] = useState();
-    const [notificationActivated, setNotificationActivated] = useState(false); //obtiene desde la base de datos o almacenamiento si está actuva o no la alarma
+    const [notificationActivated, setNotificationActivated] = useState(false); 
 
 
     useEffect(() => {
