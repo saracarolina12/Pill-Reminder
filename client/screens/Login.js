@@ -5,6 +5,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import axios from 'axios';
 import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 // TOOD: EVITAR QUE SE REGRESE A ESTA PANTALLA
 
@@ -14,6 +15,16 @@ export default Login = ({ route, navigation }) => {
     const [ForgotColor, setForgotColor] = useState("#A9A9A9");
     const [user, onChangeUser] = React.useState('');
     const [password, onChangePassword] = React.useState('');
+    
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -96,24 +107,27 @@ export default Login = ({ route, navigation }) => {
 
             if(!formComplete){
                 console.log('Form is not complete'); 
+                triggerAlert('Ooops', 'Por favor llena todos los campos');
                 return;
             }
  
             const response = await axios.post(URL + 'signin', formData);
-
+            
             if (response.status === 200) {
                 console.log('Sign in Successful', 'You are now logged in!');
                 navigation.dispatch(
                     CommonActions.reset({
-                      index: 0,
-                      routes: [{ name: 'Main' }],
+                        index: 0,
+                        routes: [{ name: 'Main' }],
                     })
-                  );
+            );
             } else {
                 console.log('Sign in Failed', 'Please try again.');
+                triggerAlert('Ooops', 'Algo salió mal');
             }
         } catch (error) {
             console.log('Error', 'An error occurred while signing in.', error);
+            triggerAlert('Ooops', 'Algo salió mal');
         }
     };
 
@@ -212,6 +226,8 @@ export default Login = ({ route, navigation }) => {
                     </Pressable>
                 </View>
             </View>
+
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };
