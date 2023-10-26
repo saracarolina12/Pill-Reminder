@@ -6,12 +6,22 @@ import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default NewPassword = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [password, onChangePassword] = React.useState('');
     const [confirmPassword, onChangeconfirmPassword] = React.useState('');
 
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -100,10 +110,12 @@ export default NewPassword = ({ route, navigation }) => {
             formData.password = password ? password: formComplete = false;
 
             if(!formComplete){
+                triggerAlert('Ooops', 'Por favor llena todos los campos');
                 console.log('Form is not complete'); 
                 return;
             }
             if(password != confirmPassword){
+                triggerAlert('Ooops', 'Asegurate de que las contraseñas coincidan');
                 console.log("Passwords don't match"); 
                 return;
             }
@@ -119,9 +131,11 @@ export default NewPassword = ({ route, navigation }) => {
                     })
                   );
             } else {
+                triggerAlert('Ooops', 'Algo salió mal');
                 console.log('New Password Failed', 'Please try again.');
             }
         } catch (error) {
+            triggerAlert('Ooops', 'Algo salió mal');
             console.log('Error', 'An error occurred while setting up a new password.', error);
         }
     };
@@ -186,6 +200,7 @@ export default NewPassword = ({ route, navigation }) => {
 
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };

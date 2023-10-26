@@ -8,6 +8,7 @@ import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import axios from 'axios';
 import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
@@ -15,6 +16,15 @@ export default VerifyCode = ({ route, navigation }) => {
     const [flexDirection, setflexDirection] = useState('column');
     let [resendEnabled, setResendEnabled] = React.useState(false);
 
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
     
     inputRefs = [
         React.createRef(),
@@ -139,6 +149,7 @@ export default VerifyCode = ({ route, navigation }) => {
     const handleVerify = async () => {
         try {
             if(code.length != 4){
+                triggerAlert('Ooops', 'Por favor ingresa el codigo');
                 console.log("Please write the code");
                 return;
             }
@@ -154,10 +165,12 @@ export default VerifyCode = ({ route, navigation }) => {
                 })
               );
             } else {
+                triggerAlert('Mmmmh', 'Ese no es el codigo');
                 console.log("Code isn't right");
             }
         }
         catch (error) {
+            triggerAlert('Mmmmh', 'Ese no es el codigo');
             console.log("Couldn't send code:", error);
         }
     };
@@ -187,7 +200,6 @@ export default VerifyCode = ({ route, navigation }) => {
                                     const newCode = [...code]; 
                                     newCode[idx] = text.nativeEvent.text; // Update the value at the current index
                                     onChangeCode(newCode); // Update the state
-                                    console.log(text.nativeEvent.text);
                                     goNext(idx);
                                 }}
                                 ref={r => inputRefs[idx] = r} 
@@ -226,6 +238,7 @@ export default VerifyCode = ({ route, navigation }) => {
                     </Pressable>
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
         );
     };

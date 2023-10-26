@@ -8,6 +8,7 @@ import SelectDropdown from 'react-native-select-dropdown'
 import { AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 LocaleConfig.locales['fr'] = {
     monthNames: [
@@ -46,6 +47,16 @@ export default Config = ({ route, navigation }) => {
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate();
+
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const initialSelectedDates = {}; // Inicialmente, ninguna fecha está seleccionada
 
@@ -184,6 +195,7 @@ export default Config = ({ route, navigation }) => {
         const trueDates = Object.keys(selectedDates).filter((date) => selectedDates[date]);
   
         if (trueDates.length === 0) {
+            triggerAlert('Ooops', 'Por favor llena todos los campos');
             console.log("No dates where selected"); 
             return null;
         }
@@ -192,6 +204,7 @@ export default Config = ({ route, navigation }) => {
         const lastDate = `${trueDates[trueDates.length - 1]} 23:59:59`;
 
         if(!medicine || !firstDate || !lastDate || !hoursMedicine || !dosis || !unidad){
+            triggerAlert('Ooops', 'Por favor llena todos los campos');
             console.log("Form is not complete"); 
             return;
         }
@@ -334,6 +347,7 @@ export default Config = ({ route, navigation }) => {
                 </View>
 
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
             
         </View>
     );

@@ -5,11 +5,21 @@ import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default Forgot = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [mail, onChangeMail] = React.useState('');
 
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -99,6 +109,7 @@ export default Forgot = ({ route, navigation }) => {
 
             if(!formComplete){
                 console.log('Please provide an email address'); 
+                triggerAlert('Ooops', 'Por favor ingresa tu correo');
                 return;
             }
  
@@ -108,9 +119,11 @@ export default Forgot = ({ route, navigation }) => {
                 console.log('Request to send code succeded!');
                 navigation.navigate('VerifyCode');
             } else {
+                triggerAlert('Ooops', 'No encontramos ese correo');
                 console.log("Couldn't send code", 'Please try again.');
             }
         } catch (error) {
+            triggerAlert('Ooops', 'Algo salió mal');
             console.log('Error', 'An error occurred while sending request.', error);
         }
     }
@@ -166,6 +179,7 @@ export default Forgot = ({ route, navigation }) => {
 
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };

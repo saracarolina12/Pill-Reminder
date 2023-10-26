@@ -7,8 +7,6 @@ import axios from 'axios';
 import { URL } from '../util/configurations';
 import Alerta from '../components/alert';
 
-// TOOD: EVITAR QUE SE REGRESE A ESTA PANTALLA
-
 export default Login = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [txtColor, setTxtColor] = useState("#B19EF9");

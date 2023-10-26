@@ -1,12 +1,12 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { CommonActions } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import { URL } from '../util/configurations';
-
-// TOOD: EVITAR QUE SE REGRESE A ESTA PANTALLA
+import Alerta from '../components/alert';
 
 export default SignUp = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
@@ -15,7 +15,16 @@ export default SignUp = ({ route, navigation }) => {
     const [email, onChangeEmail] = React.useState('');
     const [confirmPassword, onChangeConfirmPassword] = React.useState('');
     
-    
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
+
     const styles = StyleSheet.create({
         container: {
             flex: 1,
@@ -115,9 +124,11 @@ export default SignUp = ({ route, navigation }) => {
 
             if(!formComplete){  
                 console.log('Form is not complete'); 
+                triggerAlert('Ooops', 'Por favor llena todos los campos');
                 return;
             }
             if(password != confirmPassword){
+                triggerAlert('Ooops', 'Asegurate de que las contraseñas coincidan');
                 console.log('Passwords don"t match');
                 return;
             }
@@ -126,10 +137,18 @@ export default SignUp = ({ route, navigation }) => {
             
             if (response.status === 200) {
                 console.log('Sign Up Successful', 'You are now registered!');
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: 'Login' }],
+                    })
+                )
             } else {
+                triggerAlert('Ooops', 'Algo salió mal');
                 console.log('Sign Up Failed', 'Please try again later.');
             }
         } catch (error) {
+            triggerAlert('Ooops', 'Algo salió mal');
             console.log('Error', 'An error occurred while signing up.', error);
         }
     };
@@ -231,6 +250,7 @@ export default SignUp = ({ route, navigation }) => {
                     </Pressable>
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };
