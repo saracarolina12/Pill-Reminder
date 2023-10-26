@@ -4,7 +4,6 @@ const sqlite3 = require('sqlite3');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
 
-// TODO: Make sure that the codes that i'm returning are right: 400, 500, 200, etc
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
 // TODO: Add next alarm endpoint
 
@@ -107,7 +106,7 @@ app.post('/sendCode', (req, res) => {
             }
             else {
                 console.log("Couldn't find email");
-                return res.status(500).json({ error: "Couldn't find email" });
+                return res.status(400).json({ error: "Couldn't find email" });
             }
         })
     });
@@ -127,11 +126,11 @@ app.post('/verify', (req, res) => {
     }
     else {
         console.log("Codes don't match");
-        return res.status(500).json({error: "Codes don't match"});
+        return res.status(400).json({error: "Codes don't match"});
     }
 });
 
-app.post('/signup', (req, res) => { // TODO: Handle not repeated users
+app.post('/signup', (req, res) => {
     const data = req.body;
     if (!data)
     return res.status(400).json({ error: 'Invalid JSON data' });
@@ -149,7 +148,7 @@ app.post('/signup', (req, res) => { // TODO: Handle not repeated users
             if(entries.length) {
                 console.log("User already exists.");
                 failed = true;
-                return res.status(500).json({ message: 'User already exists' });
+                return res.status(400).json({ message: 'User already exists' });
             }
         })
     });
@@ -193,7 +192,7 @@ app.post('/signin', (req, res) => {
             }
             else {
                 console.log("Couldn't find user");
-                return res.status(500).json({ error: "Couldn't find user: " + err });
+                return res.status(400).json({ error: "Couldn't find user: " + err });
             }
         })
     });
@@ -254,7 +253,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
                 else {
                     console.log("No pills to show");
-                    return res.status(500).json({ error: "No pills to display: " });
+                    return res.status(200).json({ message: "No pills to display: " });
                 }
         })
     });
