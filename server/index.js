@@ -184,10 +184,8 @@ app.post('/signin', (req, res) => {
     handler.closeConnection();
 });
 
-app.get('/signout', (req, res) => {
+app.get('/signout', requireAuth, (req, res) => {
     try {
-        if(req.session.userId) 
-            return res.status(500).json({ message: 'There was not active session' });
         req.session.userId = null;
         return res.status(200).json({ message: 'Sign out successful' });
     }
