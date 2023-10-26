@@ -184,6 +184,16 @@ app.post('/signin', (req, res) => {
     handler.closeConnection();
 });
 
+app.get('/signout', (req, res) => {
+    try {
+        req.session.userId = null;
+        return res.status(200).json({ message: 'Sign out successful' });
+    }
+    catch (error) {
+        return res.status(500).json({ message: 'Sign out failed: ' + error });
+    }
+});
+
 app.post('/newPassword', (req, res) => {
     const {password} = req.body;
     if(!password) return res.status(400).json({error: 'Invalid JSON data'});
