@@ -208,6 +208,7 @@ app.post('/signin', (req, res) => {
 app.get('/signout', requireAuth, (req, res) => {
     try {
         req.session.userId = null;
+        console.log('Signed out');
         return res.status(200).json({ message: 'Sign out successful' });
     }
     catch (error) {

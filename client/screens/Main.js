@@ -1,4 +1,5 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, SafeAreaView, ScrollView, StatusBar, ActivityIndicator } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
@@ -42,6 +43,23 @@ export default Main = ({ route, navigation }) => {
         setIcons([...icons, require(`../assets/imgs/pill_${i}.png`)]);
         */
       }, []);
+
+    const handleSignOut = async () => {
+        axios.get(URL + 'signout')
+          .then(() => {
+            console.log("Signed out");
+
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: 'Login' }],
+                })
+            )
+          })
+          .catch((error) => {
+            console.error('API request error', error);
+          });
+    };
 
     const styles = StyleSheet.create({
         container: {
@@ -93,6 +111,17 @@ export default Main = ({ route, navigation }) => {
     
     return (
         <View style={styles.container}>
+
+            <Pressable
+                onPressOut={() => {
+                    handleSignOut();
+                }}>
+                <Image
+                source={require("../assets/imgs/signout.png")}
+                style={{marginLeft:300}}>
+                </Image>
+            </Pressable>
+
 
             <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color:"#DA5D74", marginBottom:5 }}>Siguientes tomas</Text>
 
