@@ -40,7 +40,7 @@ export default Config = ({ route, navigation }) => {
     const [medicine, onChangeMedicine] = useState("");
     const [dosis, onChangeDosis] = useState("");
     const [unidad, onChangeUnidad] = useState("");
-    const [unidades, setUnidades] = useState(["mg","mcg","mL", "Gotas", "UI", "%", "Patch", "Sup", "Spray"]);
+    const [unidades, setUnidades] = useState(["mg","ml","oz"]);
     const [hoursMedicine, onChangeHoursMedicine] = useState("");
 
     const currentDate = new Date();
@@ -179,6 +179,7 @@ export default Config = ({ route, navigation }) => {
         console.log(day, meses[month] , year);
     }, [day, month, year])
     useEffect(() => {
+        /*
         
         axios.get(URL + 'getUnits')
         //.then((response) => response.json())
@@ -187,7 +188,6 @@ export default Config = ({ route, navigation }) => {
         .catch((error) => {
             console.error('API request error', error);
         });
-        /*
         fetch(URL + 'getUnits')
         .then((response) => response.json())
         .then((result) => setUnidades(result.map(item => item.name)))

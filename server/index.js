@@ -252,7 +252,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
                 console.log(entries, entries.length);
 
-                //req.session.nextAlarm = new Heap();
+                req.session.nextAlarm = new Heap();
 
                 const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
@@ -269,11 +269,10 @@ app.get('/getPills', requireAuth, (req, res) => {
                             if(start < end) {
                                 let next = new Date(start);
                                 alarm.next = next;
-                                /*
                                 req.session.nextAlarm.push({'pill_id': alarm.pill_id, 'date': next}, null, (a, b) => {
                                     a['date'] - b['date'];
                                 });
-                                */
+                                console.log(req.session);
                             }
                         }
                     });
@@ -296,8 +295,6 @@ app.get('/nextAlarm', requireAuth, (req, res) => {
 
 app.get('/getUnits', (req, res) => {
     var db = handler.openConnection();
-
-    console.log("Hey! I'm using session", req.session);
 
     db.serialize(() => {
         db.all('SELECT unit_id, name FROM units;', 
