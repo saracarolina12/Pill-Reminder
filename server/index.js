@@ -253,7 +253,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                 console.log(entries, entries.length);
 
                 req.session.nextAlarm = new Heap(null, null, (a, b) => {
-                    console.log(typeof(a['date']), a['date'] - b['date']);
+                    console.log(typeof(new Date(a['date'])), a['date'] - b['date']);
                     return a['date'] - b['date'];
                 });
 
