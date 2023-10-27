@@ -263,7 +263,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             timeZone: 'America/Mexico_City',
                         });
                         */
-                        if(!a.start) {
+                        if(a.start) {
                             let date = new Date(a.start);
                             a.next = date;
                         }
