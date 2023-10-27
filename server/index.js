@@ -265,7 +265,8 @@ app.get('/getPills', requireAuth, (req, res) => {
                         */
                         if(a.start) {
                             let date = new Date(a.start);
-                            a.next = date;
+                            a.next = Date.parse(date);
+                            a.test = date;
                         }
 
                     });
