@@ -274,7 +274,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             for(
                                 ; 
                                 start < curr && start < end;
-                                start += a.frequency * 60 * 60 * 1000
+                                start += toHours(a.frequency)
                             );
                             if(start < end) a.next = start;
 
