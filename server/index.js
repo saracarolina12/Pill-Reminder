@@ -281,8 +281,9 @@ app.get('/getPills', requireAuth, (req, res) => {
                             }
                         }
                     });
+                    console.log('--------');
                     while(req.session.nextAlarm.length){
-                        console.log(req.session.nextAlarm.pop()['date'], req.session.nextAlarm.pop()['pill_id']);
+                        console.log(req.session.nextAlarm.peek()['date'], req.session.nextAlarm.pop()['pill_id']);
                     }  
                     /*
                     req.session.nextAlarm.forEach(alarm => {
