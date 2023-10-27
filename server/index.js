@@ -270,7 +270,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 let next = new Date(start);
                                 alarm.next = next;
                                 req.session.nextAlarm.push({'pill_id': alarm.pill_id, 'date': next}, null, (a, b) => {
-                                    console.log(typeof(a['date']), a['date'] - b['date');
+                                    console.log(typeof(a['date']), a['date'] - b['date']);
                                     a['date'] - b['date'];
                                 });
                             }
