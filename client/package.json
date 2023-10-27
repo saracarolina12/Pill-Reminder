@@ -15,6 +15,7 @@
     "expo-av": "~13.4.1",
     "expo-background-fetch": "~11.3.0",
     "expo-device": "~5.4.0",
+    "expo-file-system": "~15.4.4",
     "expo-font": "~11.4.0",
     "expo-linear-gradient": "~12.3.0",
     "expo-notifications": "~0.20.1",

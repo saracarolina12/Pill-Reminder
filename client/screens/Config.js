@@ -91,13 +91,11 @@ export default Config = ({ route, navigation }) => {
     //     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
     //     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
     //         console.log("\tsetNotification: ", notification);
-    //         navigation.navigate('Alarm');
     //         setNotification(notification);
     //     });
     
     //     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
     //         console.log(response);
-    //         // navigation.navigate('Alarm');
     //     });
     
     //     return () => {
@@ -157,9 +155,7 @@ export default Config = ({ route, navigation }) => {
     //                 },
     //             });
                 
-    //             navigation.navigate('Alarm');
     //         }else{
-    //             navigation.navigate("Config");
     //         }
     //     };
 

@@ -3,6 +3,7 @@ import * as Notifications from 'expo-notifications';
 import * as Device from 'expo-device';
 import { useNavigation } from '@react-navigation/native';
 import { Audio } from 'expo-av';
+import { AlarmData } from '../util/alarmData';
 
 const AlarmContext = createContext();
 
@@ -15,7 +16,6 @@ Notifications.setNotificationHandler({
     }),
 });
 
-
 export const AlarmProvider = ({ children, route  }) => {
     const [alarms, setAlarms] = useState([]);
     const [expoPushToken, setExpoPushToken] = useState('');
@@ -26,13 +26,10 @@ export const AlarmProvider = ({ children, route  }) => {
     const [sound, setSound] = React.useState();
     const [isPlaying, setIsPlaying] = useState(false);
     const [stopShowing, setStopShowing] = useState();
-    const [notificationActivated, setNotificationActivated] = useState(false); 
 
 
     useEffect(() => {
         const interval = setInterval(() => {
-            // setCurrentTime(new Date());
-            // console.log(props);
             scheduleNotification(new Date());
         }, 1000);
         return () => clearInterval(interval); // Limpieza al desmontar el componente
@@ -43,7 +40,7 @@ export const AlarmProvider = ({ children, route  }) => {
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
             console.log("\tsetNotification: ", notification);
-            navigation.navigate('Alarm');
+            // navigation.navigate('Alarm');
             setNotification(notification);
         });
     
@@ -92,15 +89,17 @@ export const AlarmProvider = ({ children, route  }) => {
 
         
         const scheduleNotification = async (currDate) => {
-            console.log("stop showing: ", notificationActivated);
-            let alarmHour = 22;
-            let alarmMinutes = 33;
+            console.log("\n\n",AlarmData,"\n\n");
+            console.log(AlarmData.hour, ":", AlarmData.minutes);
+            let alarmHour = AlarmData.hour;
+            let alarmMinutes = AlarmData.minutes;
             const triggerTime = new Date();
             triggerTime.setHours(alarmHour);
             triggerTime.setMinutes(alarmMinutes);
             console.log("current: ", currDate.getHours(), ":", currDate.getMinutes());
-            
-            if (notificationActivated == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
+        
+            if (AlarmData.active == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
+                global.AlarmData.active = false;
                 await Notifications.scheduleNotificationAsync({
                     content: {
                         title: 'Recordatorio de pastilla',
@@ -110,8 +109,6 @@ export const AlarmProvider = ({ children, route  }) => {
                         seconds: 0, 
                     },
                 });
-        
-                setNotificationActivated(false);
                 navigation.navigate('Alarm',{hour:alarmHour, minutes:alarmMinutes, sound:sound});
             }
         };
