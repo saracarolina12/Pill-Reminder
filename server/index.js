@@ -250,6 +250,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                 console.log(entries, entries.length);
 
                 req.session.nextAlarm = new PriorityQueue();
+                const pq = new PriorityQueue();
 
                 const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
