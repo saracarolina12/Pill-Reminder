@@ -267,13 +267,14 @@ app.get('/getPills', requireAuth, (req, res) => {
                             let curr = new Date();
                             let start = new Date(a.start);
                             let end = new Date(a.end);
-                            a.test = new Date(Date.parse(start)).toLocaleString('en-US', {timeZone: 'America/Mexico_City'});
+                            a.test = start;
+                            a.curr = curr;
                             for(
                                 ; 
                                 start < curr && start < end;
-                                start = new Date(Date.parse(start) + a.frequency * 60 * 60 * 1000)
+                                start = Date.parse(start) + a.frequency * 60 * 60 * 1000
                             );
-                            if(start < end) a.next = start.toLocaleString('en-US', {timeZone: 'America/Mexico_City'});
+                            if(start < end) a.next = start;
                         }
 
                     });
