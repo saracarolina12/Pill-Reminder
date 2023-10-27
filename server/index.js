@@ -258,6 +258,8 @@ app.get('/getPills', requireAuth, (req, res) => {
                             hour: "2-digit",
                             minute: "2-digit",
                             second: "2-digit",
+                            hour12: false,
+                            timeZone: 'America/Mexico_City',
                           });
                     });
                     console.log("Displaying " + entries.length +  " pills: " + entries);
