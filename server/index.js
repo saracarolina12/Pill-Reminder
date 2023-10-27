@@ -14,9 +14,6 @@ app.use(
     secret: '7B#Kp&2M$5n@9T8QH38904GHY5$',
     resave: false,
     saveUninitialized: true,
-    cookie: {
-        maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
-      },
   })
 );
 const port = 8532;
