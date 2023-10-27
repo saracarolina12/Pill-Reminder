@@ -11,8 +11,21 @@ import Alarm from './screens/Alarm.js';
 import nextAlarm from './components/nextAlarm.js';
 import ShowAlarm from './screens/ShowAlarm.js';
 import { AlarmProvider } from './screens/AlarmContext';
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from 'expo-background-fetch';
 
 const Stack = createNativeStackNavigator();
+
+TaskManager.defineTask('updateTime', ({ data, error }) => {
+  if (error) {
+    console.error('Error executing background task:', error);
+    return;
+  }
+  if(data){
+    alert('Something went right with background locations', data)
+    const{locations} = data
+  }
+});
 
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);

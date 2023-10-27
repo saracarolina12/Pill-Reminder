@@ -1,6 +1,6 @@
 export var AlarmData = {
-    hour: 19,
-    minutes: 4,
+    hour: 30,
+    minutes: 9,
     active: true,
 };
 

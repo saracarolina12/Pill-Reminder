@@ -4,6 +4,8 @@ import * as Device from 'expo-device';
 import { useNavigation } from '@react-navigation/native';
 import { Audio } from 'expo-av';
 import { AlarmData } from '../util/alarmData';
+import * as TaskManager from 'expo-task-manager';
+
 
 const AlarmContext = createContext();
 
@@ -27,10 +29,11 @@ export const AlarmProvider = ({ children, route  }) => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [stopShowing, setStopShowing] = useState();
 
-
     useEffect(() => {
         const interval = setInterval(() => {
-            scheduleNotification(new Date());
+            if(AlarmData.hour && AlarmData.minutes){
+                scheduleNotification(new Date());
+            }
         }, 1000);
         return () => clearInterval(interval); // Limpieza al desmontar el componente
     }, []);
@@ -89,14 +92,14 @@ export const AlarmProvider = ({ children, route  }) => {
 
         
         const scheduleNotification = async (currDate) => {
-            console.log("\n\n",AlarmData,"\n\n");
-            console.log(AlarmData.hour, ":", AlarmData.minutes);
+            // console.log("\n\n",AlarmData,"\n\n");
+            // console.log(AlarmData.hour, ":", AlarmData.minutes);
             let alarmHour = AlarmData.hour;
             let alarmMinutes = AlarmData.minutes;
             const triggerTime = new Date();
             triggerTime.setHours(alarmHour);
             triggerTime.setMinutes(alarmMinutes);
-            console.log("current: ", currDate.getHours(), ":", currDate.getMinutes());
+            console.log(AlarmData.hour, ":", AlarmData.minutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
         
             if (AlarmData.active == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
                 global.AlarmData.active = false;
