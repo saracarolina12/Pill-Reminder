@@ -247,7 +247,11 @@ app.get('/getPills', requireAuth, (req, res) => {
                     return res.status(500).json({ error: "Couldn't find pills: " + err });
                 }
                 console.log(entries, entries.length);
+                var result = [];
                 if(entries.length) {
+                    entries.forEach(a => {
+                        a.next = a.start;
+                    });
                     console.log("Displaying " + entries.length +  " pills: " + entries);
                     return res.status(200).json(entries);
                 }
@@ -257,6 +261,14 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
         })
     });
+
+    handler.closeConnection();
+});
+
+app.get('/nextAlarm', requireAuth, (req, res) => {
+    var db = handler.openConnection();
+
+
 
     handler.closeConnection();
 });
