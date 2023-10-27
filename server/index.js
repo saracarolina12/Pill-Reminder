@@ -264,17 +264,21 @@ app.get('/getPills', requireAuth, (req, res) => {
                         });
                         */
                         if(a.start) {
-                            let curr = new Date();
-                            let start = new Date(a.start);
-                            let end = new Date(a.end);
+                            let curr = Date.parse(new Date());
+                            let start = Date.parse(new Date(a.start));
+                            let end = Date.parse(new Date(a.end));
                             a.test = start;
                             a.curr = curr;
                             for(
                                 ; 
                                 start < curr && start < end;
-                                start = Date.parse(start) + a.frequency * 60 * 60 * 1000
+                                start += a.frequency * 60 * 60 * 1000
                             );
                             if(start < end) a.next = start;
+
+                            a.s = new Date(start);
+                            a.c = new Date(curr);
+                            a.e = new Date(end);
                         }
 
                     });
