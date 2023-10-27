@@ -5,6 +5,7 @@ import NextAlarm from '../components/nextAlarm';
 import { useAlarms, AlarmProvider } from './AlarmContext';
 import { URL } from '../util/configurations';
 import axios from 'axios';
+import { AlarmData } from '../util/alarmData';
 
 export default Main = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState("#FC709B");
@@ -21,6 +22,14 @@ export default Main = ({ route, navigation }) => {
             setLoading(false);
             setPills(result.data);
             console.log(result.data);
+          })
+          .then(() => {
+            axios.get(URL + 'nextAlarm')
+                .then((result) => {
+                    console.log('------------------------------ Next Alarm', result.data.nextAlarm);
+                    global.AlarmData.alarm = result.data.nextAlarm;
+                    console.log('------------------------------ Next Alarm', global.AlarmData.alarm);
+                })
           })
           .catch((error) => {
             console.error('API request error', error);
@@ -41,7 +50,7 @@ export default Main = ({ route, navigation }) => {
         axios.get(URL + 'signout')
           .then(() => {
             console.log("Signed out");
-
+            AlarmData.alarm = null;
             navigation.dispatch(
                 CommonActions.reset({
                     index: 0,
