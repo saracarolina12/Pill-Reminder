@@ -99,7 +99,7 @@ export const AlarmProvider = ({ children, route  }) => {
             const triggerTime = new Date();
             triggerTime.setHours(alarmHour);
             triggerTime.setMinutes(alarmMinutes);
-            //console.log(AlarmData.hour, ":", AlarmData.minutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
+            console.log(AlarmData.hour, ":", AlarmData.minutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
         
             if (AlarmData.active == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
                 global.AlarmData.active = false;
