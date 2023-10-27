@@ -3,6 +3,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
+const { DateTime } = require('luxon');
 
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
 // TODO: Add next alarm endpoint
@@ -264,7 +265,11 @@ app.get('/getPills', requireAuth, (req, res) => {
                         });
                         */
                         if(a.start) {
-                            let curr = Date.parse(new Date());
+                            let curr = DateTime.now({ zone: 'America/Mexico_City' });
+
+                            console.log(curr.toISO()); // Outputs a string like "2023-10-26T15:30:00.000-05:00"
+                            console.log(curr); // Outputs a string like "2023-10-26T15:30:00.000-05:00"
+                            //let curr = Date.parse(new Date());
                             let start = Date.parse(new Date(a.start));
                             let end = Date.parse(new Date(a.end));
                             a.test = start;
