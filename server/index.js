@@ -272,11 +272,12 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 req.session.nextAlarm.push({'pill_id': alarm.pill_id, 'date': next}, null, (a, b) => {
                                     a['date'] - b['date'];
                                 });
-                                console.log(req.session);
                             }
                         }
                     });
-                    //console.log(req.session.nextAlarm);
+                    req.session.nextAlarm.forEach(alarm => {
+                        console.log(alarm['pill_id'], alarm['date']);
+                    });
                     return res.status(200).json(entries);
                 }
                 else {
