@@ -12,7 +12,7 @@ const app = express();
 app.use(
   session({
     secret: '7B#Kp&2M$5n@9T8Q',
-    resave: false,
+    resave: true,
     saveUninitialized: true,
   })
 );
