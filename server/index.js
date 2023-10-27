@@ -251,7 +251,14 @@ app.get('/getPills', requireAuth, (req, res) => {
                 if(entries.length) {
                     entries.forEach(a => {
                         let date = new Date(a.start ?? null);
-                        a.next = date?.setHours(date?.getHours() + 23);
+                        a.next = date?.setHours(date?.getHours() + 23).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "2-digit",
+                            day: "2-digit",
+                            hour: "2-digit",
+                            minute: "2-digit",
+                            second: "2-digit",
+                          });
                     });
                     console.log("Displaying " + entries.length +  " pills: " + entries);
                     return res.status(200).json(entries);
