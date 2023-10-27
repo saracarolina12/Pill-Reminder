@@ -179,13 +179,23 @@ export default Config = ({ route, navigation }) => {
         console.log(day, meses[month] , year);
     }, [day, month, year])
     useEffect(() => {
+        
+        axios.get(URL + 'getUnits')
+        //.then((response) => response.json())
+        .then((result) => setUnidades(result.data.map(item => item.name)))
+        .then(() => console.log(unidades))
+        .catch((error) => {
+            console.error('API request error', error);
+        });
+        /*
         fetch(URL + 'getUnits')
-            .then((response) => response.json())
-            .then((result) => setUnidades(result.map(item => item.name)))
-            .then(() => console.log(unidades))
-            .catch((error) => {
+        .then((response) => response.json())
+        .then((result) => setUnidades(result.map(item => item.name)))
+        .then(() => console.log(unidades))
+        .catch((error) => {
                 console.error('API request error', error);
             });
+            */
       }, []);
 
     const handleOkPress = () => {

@@ -4,6 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
 import NextAlarm from '../components/nextAlarm';
 import { URL } from '../util/configurations';
+import axios from 'axios';
 
 export default Main = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState("#FC709B");
@@ -16,12 +17,11 @@ export default Main = ({ route, navigation }) => {
 
     useEffect(() => {
         // Load pills
-        fetch(URL + 'getPills')
-          .then((response) => response.json())
+        axios.get(URL + 'getPills')
           .then((result) => {
             setLoading(false);
-            setPills(result);
-            console.log(result);
+            setPills(result.data);
+            console.log(result.data);
           })
           .catch((error) => {
             console.error('API request error', error);
@@ -120,7 +120,7 @@ export default Main = ({ route, navigation }) => {
                         pills.map((alarm, index) => (
                             <NextAlarm
                                 key={index}
-                                url={icons[index % pills.length]}
+                                url={icons[index % 5]}
                                 pill={alarm.name}
                                 amount={alarm.dose + " " + alarm.dose_unit}
                                 hour={"10:00"} // TODO: Calculate next hour

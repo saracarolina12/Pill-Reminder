@@ -12,8 +12,8 @@ const app = express();
 app.use(
   session({
     secret: '7B#Kp&2M$5n@9T8Q',
-    resave: true,
-    saveUninitialized: true,
+    resave: false,
+    saveUninitialized: false,
   })
 );
 const port = 8532;
@@ -294,8 +294,10 @@ app.get('/nextAlarm', requireAuth, (req, res) => {
     //console.log(
 });
 
-app.get('/getUnits', requireAuth, (req, res) => {
+app.get('/getUnits', (req, res) => {
     var db = handler.openConnection();
+
+    console.log("Hey! I'm using session", req.session);
 
     db.serialize(() => {
         db.all('SELECT unit_id, name FROM units;', 
