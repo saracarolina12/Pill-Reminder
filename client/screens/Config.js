@@ -219,7 +219,7 @@ export default Config = ({ route, navigation }) => {
         };
 
         axios.post(URL + 'newPill', data)
-        .then((response) => {
+        .then(() => {
             console.log('Data sent successfully:', data);
             navigation.dispatch(
                 CommonActions.reset({
