@@ -273,7 +273,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 start < curr && start < end;
                                 start += toTimestamp(a.frequency)
                             );
-                            if(start < end) a.next = start;
+                            if(start < end) a.next = new Date(start);
                         }
 
                     });
