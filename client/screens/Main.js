@@ -123,7 +123,7 @@ export default Main = ({ route, navigation }) => {
                                 url={icons[index % 5]}
                                 pill={alarm.name}
                                 amount={alarm.dose + " " + alarm.dose_unit}
-                                hour={alarm.nextTxt ?? ""}
+                                when={alarm.nextTxt ?? ""}
                             />
                         ))
                     : <Text style={{ fontFamily: 'M1c-Medium', fontSize: 15, color:"#CB7C96", textAlign: "center", flex: 1, justifyContent: "center", alignItems: "center" }}>No tienes pastillas pendientes</Text>

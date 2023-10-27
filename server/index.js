@@ -275,12 +275,16 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 const day = alarmDate.getDay();
                                 let msg = "";
                                 if(today != day) msg = days[day];
-                                else msg = alarmDate.getHours() + ":" + alarmDate.getMinutes();
-                                alarm.nextTxt = msg;
+                                else msg = 
+                                    String(alarmDate.getHours()).padStart(2, '0') + 
+                                    ":" + 
+                                    String(alarmDate.getMinutes()).padStart(2, '0');
+                                alarm.nextText = msg;
                             }
                         }
                     });
                     req.session.nextAlarm.sort((a, b) => a.next - b.next);
+                    entries.sort((a, b) => a.next - b.next);
                     console.log(req.session.nextAlarm);
                     return res.status(200).json(entries);
                 }
