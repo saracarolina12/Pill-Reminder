@@ -1,30 +1,16 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, SafeAreaView, ScrollView, StatusBar } from 'react-native';
-import React, { useState, useEffect, useRef } from 'react';
-import { LinearGradient } from 'expo-linear-gradient';
-import { Color } from '../util/colors'
+import { CommonActions } from '@react-navigation/native';
+import React, { useState, useEffect } from 'react';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 import SelectDropdown from 'react-native-select-dropdown'
 import { AntDesign } from '@expo/vector-icons';
-import * as Notifications from 'expo-notifications';
-import * as Device from 'expo-device';
-import Constants from 'expo-constants';
+import axios from 'axios';
+import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
-
-const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ]
-
-/* */
-
-// Notifications.setNotificationHandler({
-//     handleNotification: async () => ({
-//         shouldShowAlert: true,
-//         shouldPlaySound: true,
-//         shouldSetBadge: false,
-//         priority: Notifications.AndroidNotificationPriority.HIGH, //Android
-//     }),
-// });
-
+//const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ] TODO: UPDATE WITH DB
 
 LocaleConfig.locales['fr'] = {
     monthNames: [
@@ -51,147 +37,49 @@ LocaleConfig.defaultLocale = 'fr';
 
 
 export default Config = ({ route, navigation }) => {
-    // /* */
-    // const [expoPushToken, setExpoPushToken] = useState('');
-    // const [notification, setNotification] = useState(false);
-    // const notificationListener = useRef();
-    // const responseListener = useRef();
-    // /* */
-
     const [cancelBtnColor, setCancelBtnColor] = useState("#FC7070");
     const [OKBtnColor, setOKBtnColor] = useState("#8CD19E");
     const [medicine, onChangeMedicine] = useState("");
     const [dosis, onChangeDosis] = useState("");
     const [unidad, onChangeUnidad] = useState("");
+    const [unidades, setUnidades] = useState(["mg","ml","oz"]);
     const [hoursMedicine, onChangeHoursMedicine] = useState("");
-    const [currentHour, setCurrentHour] = useState(new Date().getHours());
-    const [currentMinutes, setCurrentMinutes] = useState(new Date().getMinutes());
-
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
     const day = currentDate.getDate();
 
-
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const initialSelectedDates = {}; // Inicialmente, ninguna fecha está seleccionada
-    const [currentTime, setCurrentTime] = useState(new Date());
-
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         // setCurrentTime(new Date());
-    //         scheduleNotification(new Date());
-    //     }, 1000);
-    //     return () => clearInterval(interval); // Limpieza al desmontar el componente
-    // }, []);
-    
-
-    /* */
-    // useEffect(() => {
-    //     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-    //     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-    //         console.log("\tsetNotification: ", notification);
-    //         setNotification(notification);
-    //     });
-    
-    //     responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
-    //         console.log(response);
-    //     });
-    
-    //     return () => {
-    //         Notifications.removeNotificationSubscription(notificationListener.current);
-    //         Notifications.removeNotificationSubscription(responseListener.current);
-    //     };
-    // }, []); 
-
-
-    // async function registerForPushNotificationsAsync() {
-    //     let token;
-        
-    //     if (Platform.OS === 'android') {
-    //         await Notifications.setNotificationChannelAsync('default', {
-    //             name: 'default',
-    //             importance: Notifications.AndroidImportance.MAX,
-    //             vibrationPattern: [0, 250, 250, 250],
-    //             lightColor: '#FF231F7C',
-    //         });
-    //     }
-        
-    //     if (Device.isDevice) {
-    //         const { status: existingStatus } = await Notifications.getPermissionsAsync();
-    //         let finalStatus = existingStatus;
-    //         if (existingStatus !== 'granted') {
-    //         const { status } = await Notifications.requestPermissionsAsync();
-    //         finalStatus = status;
-    //         }
-    //         if (finalStatus !== 'granted') {
-    //         alert('Failed to get push token for push notification!');
-    //         return;
-    //         }
-    //         token = (await Notifications.getExpoPushTokenAsync( {projectId:'045aec31-ccc6-46a8-bb3f-efe4110f9aba'} )).data;
-    //     } else {
-    //         alert('Must use physical device for Push Notifications');
-    //     }
-        
-    //     return token;
-    //     }
-        
-    //     const scheduleNotification = async (currDate) => {
-    //         const triggerTime = new Date();
-    //         triggerTime.setHours(22);
-    //         triggerTime.setMinutes(45);
-    //         // triggerTime.setSeconds(0);
-
-    //         console.log("current: ", currDate.getHours(), ":", currDate.getMinutes());
-    
-    //         if (currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
-    //             await Notifications.scheduleNotificationAsync({
-    //                 content: {
-    //                     title: 'Recordatorio de pastilla',
-    //                     body: '¡Es hora de tomar tu medicamento!',
-    //                 },
-    //                 trigger: {
-    //                     seconds: 0, 
-    //                 },
-    //             });
-                
-    //         }else{
-    //         }
-    //     };
-
-        
-        // useEffect(() => {
-        //     const interval = setInterval(() => {
-        //         const now = new Date();
-        //         setCurrentHour(now.getHours());
-        //         setCurrentMinutes(now.getMinutes());
-        //     }, 60000); 
-    
-        //     return () => clearInterval(interval);
-        // }, []);
-
-    /* */
 
     const getMarked = () => {
         let marked = {};
         const endDate = new Date(year + 10, 11, 31); 
         let currentDate = new Date(year, month - 1, day);
         while (currentDate <= endDate) {
-        const nextYear = currentDate.getFullYear();
-        const nextMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
-        const nextDay = currentDate.getDate().toString().padStart(2, '0');
-        const dateStr = `${nextYear}-${nextMonth}-${nextDay}`;
-        
-        marked[dateStr] = {
-            startingDay: false,
-            endingDay: false,
-            color: selectedDates[dateStr] ? '#FFC9DA' : 'white',
-            textColor: '#444444',
-            disabled: false,
-        };
+            const nextYear = currentDate.getFullYear();
+            const nextMonth = (currentDate.getMonth() + 1).toString().padStart(2, '0');
+            const nextDay = currentDate.getDate().toString().padStart(2, '0');
+            const dateStr = `${nextYear}-${nextMonth}-${nextDay}`;
+            
+            marked[dateStr] = {
+                startingDay: false,
+                endingDay: false,
+                color: selectedDates[dateStr] ? '#FFC9DA' : 'white',
+                textColor: '#444444',
+                disabled: false,
+            };
 
-        // Incrementar la fecha en 1 día
-        currentDate.setDate(currentDate.getDate() + 1);
+            currentDate.setDate(currentDate.getDate() + 1);
         }
 
         return marked;
@@ -200,6 +88,14 @@ export default Config = ({ route, navigation }) => {
     const [selectedDates, setSelectedDates] = useState(initialSelectedDates);
 
     const handleDayPress = (day) => {
+        const date = new Date();
+        const y = date.getFullYear();
+        const m = (date.getMonth() + 1).toString().padStart(2, '0');
+        const d = date.getDate().toString().padStart(2, '0');
+        const todayString = `${y}-${m}-${d}`;
+
+        const today = new Date(todayString), selected = new Date(day.dateString);
+        if(selected < today) return;
         const dateStr = day.dateString;
         const newSelectedDates = { ...selectedDates };
         newSelectedDates[dateStr] = !newSelectedDates[dateStr];
@@ -264,8 +160,6 @@ export default Config = ({ route, navigation }) => {
         }
     });
 
-
-
     const meses = {
         "01": "enero",
         "02": "febrero",
@@ -280,32 +174,52 @@ export default Config = ({ route, navigation }) => {
         11: "noviembre",
         12: "diciembre"
     }
-    
-    
 
-    // const getMarked = () => {
-    //     let marked = {};
-    
-    //     for (let i = 1; i <= 31; i++) {
-    //       const dayNumber = i.toString().padStart(2, '0');
-    //       const dateStr = `${year}-${month}-${dayNumber}`;
-          
-    //       marked[dateStr] = {
-    //         startingDay: false, // No necesitamos marcar un "startingDay"
-    //         endingDay: false, // No necesitamos marcar un "endingDay"
-    //         color: selectedDates[dateStr] ? 'white' : '#FFC9DA', // Cambia el color a blanco si está seleccionado
-    //         textColor: selectedDates[dateStr] ? '#aaa' : '#444444', // Cambia el color del texto si está seleccionado
-    //         disabled: false, // Habilita todas las fechas para que sean seleccionables
-    //       };
-    //     }
-    
-    //     return marked;
-    //   };
-    
-    useEffect(()=>{
-        // console.log(day, meses[month] , year);
-    }, [day, month, year])
+    const handleOkPress = () => {
+        const hours = currentDate.getHours().toString().padStart(2, '0');
+        const minutes = currentDate.getMinutes().toString().padStart(2, '0');
 
+        const trueDates = Object.keys(selectedDates).filter((date) => selectedDates[date]);
+  
+        if (trueDates.length === 0) {
+            triggerAlert('Ooops', 'Por favor llena todos los campos');
+            console.log("No dates where selected"); 
+            return null;
+        }
+        trueDates.sort();
+        const firstDate = `${trueDates[0]} ${hours}:${minutes}:00`;
+        const lastDate = `${trueDates[trueDates.length - 1]} 23:59:59`;
+
+        if(!medicine || !firstDate || !lastDate || !hoursMedicine || !dosis || !unidad){
+            triggerAlert('Ooops', 'Por favor llena todos los campos');
+            console.log("Form is not complete"); 
+            return;
+        }
+
+        const data = {
+            name: medicine,
+            start: firstDate,
+            end: lastDate,  
+            frequency: parseInt(hoursMedicine),
+            dose: dosis,
+            dose_unit: unidad,
+        };
+
+        axios.post(URL + 'newPill', data)
+        .then(() => {
+            console.log('Data sent successfully:', data);
+            navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'Main' }],
+                })
+              );
+        })
+        .catch((error) => {
+            triggerAlert('Ooops', 'Algo esta mal');
+            console.error('Error sending data:', error);
+        });
+    };
 
     return (
         <View style={styles.container}>
@@ -327,8 +241,6 @@ export default Config = ({ route, navigation }) => {
                         />
                 </View>
 
-
-                {/* PARALELO */}
                 <View style={styles.fieldsContainer}>
                     <View style={{ marginBottom: 10 }}>
                         <Text style={{ fontFamily: 'M1c-Regular', fontSize: 18, color: 'black', marginBottom: 0, textAlign: 'left', color: '#EA889A' }}>¿Cada cuánto?</Text>
@@ -360,40 +272,22 @@ export default Config = ({ route, navigation }) => {
                     <SelectDropdown
                         defaultButtonText= {<AntDesign name="caretdown" size={16} color="grey" />}
                         buttonStyle={{backgroundColor: '#E9E9E9', color: '#A9A9A9', borderRadius: 10, width: 60,alignSelf:'center'}}
-                        data={["mg","mcg","mL", "Gotas", "UI", "%", "Patch", "Sup", "Spray"]}
+                        data={unidades}
                         onSelect={(selectedItem, index) => {
-                            console.log(selectedItem, index)
+                            onChangeUnidad(index + 1);
                         }}
                         buttonTextAfterSelection={(selectedItem, index) => {
-                            // text represented after item is selected
-                            // if data array is an array of objects then return selectedItem.property to render after item is selected
                             return selectedItem
                         }}
                         rowTextForSelection={(item, index) => {
-                            // text represented for each item in dropdown
-                            // if data array is an array of objects then return item.property to represent item in dropdown
                             return item
                         }}
                     />
 
                     
                 </View>
-                {/* PARALELO */}
 
                 <Text style={{ fontFamily: 'M1c-Regular', fontSize: 18, color:"black", textAlign:'left', color: "#EA889A" }}>Duración del tratamiento</Text>
-                {/* <Calendar
-                    style={{
-                    }}
-                    current={`${year}-${month}-${day}`}
-                    onDayPress={day => { 
-                        console.log('selected day', day);
-                    }}
-                    markedDates={{
-                        '2012-03-01': {selected: true, marked: true, selectedColor: 'blue'},
-                        '2012-03-02': {marked: true},
-                        '2012-03-03': {selected: true, marked: true, selectedColor: 'blue'}
-                    }}
-                /> */}
                 <SafeAreaView>
                     <Calendar
                         current={`${year}-${month}-${day}`}
@@ -408,28 +302,30 @@ export default Config = ({ route, navigation }) => {
 
                 <View style={styles.buttonContainer}>
                     <Pressable 
-                        // style={styles.circleCancelContainer}
                         onPressIn={() => { setCancelBtnColor('#D76161') }}
                         onPressOut={() => {
-                            navigation.navigate("Main")
                             setCancelBtnColor('#FC7070')
+                            navigation.navigate("Main")
                         }}
                     >
-                        {/* <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text> */}
                         <MaterialIcons name="cancel" size={60} color={cancelBtnColor} />
                     </Pressable>
 
                     <Pressable 
-                        // style={styles.circleOKContainer}
-                        onPressIn={() => { setOKBtnColor('#74AD83') }}
-                        onPressOut={() => { setOKBtnColor('#8CD19E') }}
+                        onPressIn={() => {
+                            setOKBtnColor('#74AD83');
+                        }}
+                        onPressOut={() => {
+                            setOKBtnColor('#8CD19E');
+                            handleOkPress();
+                        }}
                     >
-                        {/* <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text> */}
                         <Ionicons name="md-checkmark-circle" size={60} color={OKBtnColor} />
                     </Pressable>
                 </View>
 
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
             
         </View>
     );

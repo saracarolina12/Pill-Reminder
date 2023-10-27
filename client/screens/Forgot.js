@@ -3,10 +3,23 @@ import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default Forgot = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [mail, onChangeMail] = React.useState('');
+
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -88,6 +101,32 @@ export default Forgot = ({ route, navigation }) => {
         },
     });
     
+    const handleEmail = async () => {
+        try {
+            const formData = {};
+            var formComplete = true;
+            formData.email = mail ? mail: formComplete = false;
+
+            if(!formComplete){
+                console.log('Please provide an email address'); 
+                triggerAlert('Ooops', 'Por favor ingresa tu correo');
+                return;
+            }
+ 
+            const response = await axios.post(URL + 'sendCode', formData);
+
+            if (response.status === 200) {
+                console.log('Request to send code succeded!');
+                navigation.navigate('VerifyCode');
+            } else {
+                triggerAlert('Ooops', 'No encontramos ese correo');
+                console.log("Couldn't send code", 'Please try again.');
+            }
+        } catch (error) {
+            triggerAlert('Ooops', 'Algo salió mal');
+            console.log('Error', 'An error occurred while sending request.', error);
+        }
+    }
     
     return (
         <LinearGradient
@@ -127,7 +166,8 @@ export default Forgot = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
-                            setBtnColor(Color[40]) 
+                            handleEmail();
+                            setBtnColor(Color[40]);
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
@@ -139,6 +179,7 @@ export default Forgot = ({ route, navigation }) => {
 
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };

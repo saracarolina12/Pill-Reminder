@@ -1,8 +1,12 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
 import React, { useState, useEffect } from 'react';
+import { CommonActions } from '@react-navigation/native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default SignUp = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
@@ -10,6 +14,16 @@ export default SignUp = ({ route, navigation }) => {
     const [password, onChangePassword] = React.useState('');
     const [email, onChangeEmail] = React.useState('');
     const [confirmPassword, onChangeConfirmPassword] = React.useState('');
+    
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -100,6 +114,44 @@ export default SignUp = ({ route, navigation }) => {
         },
     });
     
+    const handleSignUp = async () => {
+        try {
+            const formData = {};
+            var formComplete = true;
+            formData.name = user ? user: formComplete = false;
+            formData.email = email ? email: formComplete = false;
+            formData.password = password ? password: formComplete = false;
+
+            if(!formComplete){  
+                console.log('Form is not complete'); 
+                triggerAlert('Ooops', 'Por favor llena todos los campos');
+                return;
+            }
+            if(password != confirmPassword){
+                triggerAlert('Ooops', 'Asegurate de que las contraseñas coincidan');
+                console.log('Passwords don"t match');
+                return;
+            }
+
+            const response = await axios.post(URL + 'signup', formData);
+            
+            if (response.status === 200) {
+                console.log('Sign Up Successful', 'You are now registered!');
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: 'Login' }],
+                    })
+                )
+            } else {
+                triggerAlert('Ooops', 'Algo salió mal');
+                console.log('Sign Up Failed', 'Please try again later.');
+            }
+        } catch (error) {
+            triggerAlert('Ooops', 'Algo salió mal');
+            console.log('Error', 'An error occurred while signing up.', error);
+        }
+    };
     
     return (
         <LinearGradient
@@ -156,6 +208,7 @@ export default SignUp = ({ route, navigation }) => {
                         </View>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
                             <TextInput
+                                secureTextEntry
                                 onChangeText={onChangePassword}
                                 value={password}
                                 style={styles.input}
@@ -170,6 +223,7 @@ export default SignUp = ({ route, navigation }) => {
                         </View>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row',}}>
                             <TextInput
+                                secureTextEntry
                                 onChangeText={onChangeConfirmPassword}
                                 value={confirmPassword}
                                 style={styles.input}
@@ -185,6 +239,7 @@ export default SignUp = ({ route, navigation }) => {
                         }} 
                         onPressOut={() => { 
                             setBtnColor(Color[40]) 
+                            handleSignUp();
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
@@ -195,6 +250,7 @@ export default SignUp = ({ route, navigation }) => {
                     </Pressable>
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };

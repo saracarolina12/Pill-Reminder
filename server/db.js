@@ -17,13 +17,13 @@ function seeTables(){
 
 function selectTable(table){
     db.serialize(() => {
-        db.all(`SELECT * from ${table};`, (err, entries) => {
+        db.all(`SELECT * FROM ${table}`, (err, entries) => {
             if (err) {
                 return console.error(err.message);
             }
           
             entries.forEach(entry => {
-                console.log('Entry: ' + entry.id + '\t ' + entry.name);
+                console.log(entry);
             });
         })
     });
@@ -33,7 +33,7 @@ function createUnitsTable(){
     db.serialize(() => {
         db.run('DROP TABLE units;');
         db.run('CREATE TABLE units (unit_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)');
-
+        
         const measurementUnits = ['mg', 'oz', 'ml'];
 
         const insert = db.prepare('INSERT INTO units (name) VALUES (?)');
@@ -46,7 +46,8 @@ function createUnitsTable(){
 
 function createUsersTable(){
     db.serialize(() => {
-        db.run('CREATE TABLE users (user_id INTEGER, name VARCHAR(50), email VARCHAR(50), password VARCHAR(300));');
+        db.run('DROP TABLE users;');
+        db.run('CREATE TABLE users (user_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR(50) NOT NULL, email VARCHAR(50) NOT NULL, password VARCHAR(300) NOT NULL);');
     });
 }
 
@@ -69,20 +70,31 @@ function createPillsTable(){
     });
 }
 
+
 seeTables();
 
 /* Units
 selectTable('units');
 createUnitsTable();
-selectTable('units');
 */
+selectTable('units');
 
-/* Users
+/* Users 
 createUsersTable();
 */
+selectTable('users');
 
 /* Pills
 createPillsTable();
+const insert = db.prepare('INSERT INTO pills (name, user_id, dose, dose_unit) VALUES (?, ?, ?, ?)');
+insert.run('Paracetamol', 3, 500, 1);
+insert.finalize();
+*/
+selectTable('pills');
+
+/* CURL to add a new entry
+curl -X POST http://localhost:8532/signup -H "Content-Type: application/json" -d "{\"name\":\"test\",\"email\":\"test@example.com\",\"password\":\"123\"}"
+curl -X POST http://localhost:8532/signup -H "Content-Type: application/json" -d "{\"name\":\"Lalito\",\"email\":\"laloro08@hotmail.com\",\"password\":\"123\"}"
 */
 
 seeTables();
