@@ -267,6 +267,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             let curr = new Date();
                             let start = new Date(a.start);
                             let end = new Date(a.end);
+                            a.test = new Date(Date.parse(start));
                             for(
                                 ; 
                                 start < curr && start < end;
