@@ -20,6 +20,8 @@ const port = 8532;
 // var cors = require('cors');
 app.use(bodyParser.json());
 
+const toTimestamp = (hours) => 1000*60*60*hours;
+
 class DatabaseHandler {
     constructor(dbPath) {
         this.dbPath = dbPath;
@@ -251,18 +253,8 @@ app.get('/getPills', requireAuth, (req, res) => {
                     return res.status(500).json({ error: "Couldn't find pills: " + err });
                 }
                 console.log(entries, entries.length);
-
-                
-                /*
-                req.session.nextAlarm = new Heap(null, null, (a, b) => {
-                    console.log(typeof(new Date(a['date'])), a['date'] - b['date']);
-                    return new Date(a['date']) < new Date(b['date']);
-                });
-                req.session.nextAlarm = new Heap();
-                */
                 req.session.nextAlarm = [];
 
-                const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
                     entries.forEach(alarm => {
                         if(alarm.start) {
@@ -275,25 +267,13 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 start += toTimestamp(alarm.frequency)
                             );
                             if(start < end) {
-                                // let next = new Date(start);
                                 alarm.next = start;
-                                req.session.nextAlarm.push({date: start, pill_id: alarm.pill_id});
-                                //req.session.nextAlarm.push({'date': start, 'pill_id': alarm.pill_id, });
-                                //req.session.nextAlarm.push({[alarm.pill_id]: start.toString(), });
+                                req.session.nextAlarm.push(alarm);
                             }
                         }
                     });
-                    console.log('--------');
-                    req.session.nextAlarm.sort((a, b) => a.date - b.date);
+                    req.session.nextAlarm.sort((a, b) => a.next - b.next);
                     console.log(req.session.nextAlarm);
-                    /*
-                    while(req.session.nextAlarm.length){
-                        console.log(req.session.nextAlarm.peek()['date'], req.session.nextAlarm.pop()['pill_id']);
-                    }  
-                    req.session.nextAlarm.forEach(alarm => {
-                        console.log(alarm);
-                    });
-                    */
                     return res.status(200).json(entries);
                 }
                 else {
@@ -307,7 +287,10 @@ app.get('/getPills', requireAuth, (req, res) => {
 });
 
 app.get('/nextAlarm', requireAuth, (req, res) => {
-    //console.log(
+    let curr = Date.parse(new Date()) - toTimestamp(6); // Mexico is in UTC-6
+    req.session.nextAlarm.forEach((alarm) => {
+
+    });
 });
 
 app.get('/getUnits', (req, res) => {
