@@ -294,7 +294,7 @@ app.get('/nextAlarm', requireAuth, (req, res) => {
     //console.log(
 });
 
-app.get('/getUnits', (req, res) => {
+app.get('/getUnits', requireAuth, (req, res) => {
     var db = handler.openConnection();
 
     db.serialize(() => {
