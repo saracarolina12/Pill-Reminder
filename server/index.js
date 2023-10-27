@@ -270,11 +270,11 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 req.session.nextAlarm.push(alarm);
 
                                 const days = {1: 'Lunes', 2: 'Martes', 3: 'Miercoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sabado', 7: 'Domingo'}
-                                const today = new Date(curr).getDay();
+                                const today = new Date(curr).getDate();
                                 const alarmDate = new Date(start);
-                                const day = alarmDate.getDay();
+                                const day = alarmDate.getDate();
                                 let msg = "";
-                                if(today != day) msg = days[day];
+                                if(today != day) msg = days[alarmDate.getDate()];
                                 else msg = 
                                     String(alarmDate.getHours()).padStart(2, '0') + 
                                     ":" + 
