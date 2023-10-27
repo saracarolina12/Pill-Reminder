@@ -254,7 +254,7 @@ app.get('/getPills', requireAuth, (req, res) => {
 
                 req.session.nextAlarm = new Heap(null, null, (a, b) => {
                     console.log(typeof(a['date']), a['date'] - b['date']);
-                    a['date'] - b['date'];
+                    return a['date'] - b['date'];
                 });
 
                 const toTimestamp = (hours) => 1000*60*60*hours;
