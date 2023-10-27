@@ -62,6 +62,15 @@ export default Main = ({ route, navigation }) => {
     
     return (
         <View style={styles.container}>
+            <Pressable
+            onPressOut={() => {
+                navigation.navigate("Login")
+            }}>
+            <Image
+            source={require("../assets/imgs/signout.png")}
+            style={{marginLeft:300}}>
+            </Image>
+            </Pressable>
 
             <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color:"#DA5D74", marginBottom:5 }}>Siguientes tomas</Text>
 
