@@ -266,8 +266,8 @@ app.get('/getPills', requireAuth, (req, res) => {
                             if(start < end) {
                                 let next = new Date(start);
                                 alarm.next = next;
-                                req.session.nextAlarm.push({[alarm.pill_id]: next}, null, (a, b) => {
-
+                                req.session.nextAlarm.push({'pill_id': alarm.pill_id, 'date': next}, null, (a, b) => {
+                                    a['date'] - b['date'];
                                 });
                             }
                         }
