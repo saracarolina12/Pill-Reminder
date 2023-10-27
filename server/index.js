@@ -49,9 +49,6 @@ app.get('/', (req, res) => {
 });
 
 const requireAuth = (req, res, next) => {
-    //console.log(req.session, '\n-------------------------------------------------------------------------------------');
-    //console.log(req);
-
     if (req.session.userId) {
         next();
     }
