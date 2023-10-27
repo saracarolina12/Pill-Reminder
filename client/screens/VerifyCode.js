@@ -1,16 +1,30 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, TouchableHighlight } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
 import { isEnabled } from 'react-native/Libraries/Performance/Systrace';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import axios from 'axios';
+import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default VerifyCode = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
-    const [code, onChangeCode] = React.useState('');
+    const [code, onChangeCode] = React.useState('', '', '', '');
     const [flexDirection, setflexDirection] = useState('column');
     let [resendEnabled, setResendEnabled] = React.useState(false);
+
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
     
     inputRefs = [
         React.createRef(),
@@ -21,6 +35,7 @@ export default VerifyCode = ({ route, navigation }) => {
     
     function goNext(index){
         if(index < 3){
+            // onChangeCode(index ? code );
             inputRefs[index+1].focus()
         }
     }
@@ -130,6 +145,35 @@ export default VerifyCode = ({ route, navigation }) => {
             color : color
         }
     });
+
+    const handleVerify = async () => {
+        try {
+            if(code.length != 4){
+                triggerAlert('Ooops', 'Por favor ingresa el codigo');
+                console.log("Please write the code");
+                return;
+            }
+            var verification = parseInt(code.join(""));
+            const response = await axios.post(URL + 'verify', {code: verification});
+
+            if (response.status === 200) {
+                console.log('Codes match', 'You can change your password!');
+                navigation.dispatch(
+                CommonActions.reset({
+                  index: 0,
+                  routes: [{ name: 'NewPassword' }],
+                })
+              );
+            } else {
+                triggerAlert('Mmmmh', 'Ese no es el codigo');
+                console.log("Code isn't right");
+            }
+        }
+        catch (error) {
+            triggerAlert('Mmmmh', 'Ese no es el codigo');
+            console.log("Couldn't send code:", error);
+        }
+    };
     
     return (
         <LinearGradient colors={['#F8C0D2', '#F4B0C6', '#F497B5']} style={styles.container}>
@@ -151,7 +195,13 @@ export default VerifyCode = ({ route, navigation }) => {
                     <SafeAreaView style={styles.row}>
                         {this.inputRefs.map((k, idx) => (
                             <TextInput 
-                                onChange={() => goNext(idx)}
+                                key={idx}
+                                onChange={(text) => {
+                                    const newCode = [...code]; 
+                                    newCode[idx] = text.nativeEvent.text; // Update the value at the current index
+                                    onChangeCode(newCode); // Update the state
+                                    goNext(idx);
+                                }}
                                 ref={r => inputRefs[idx] = r} 
                                 style={styles.input} 
                                 maxLength={1} 
@@ -175,7 +225,8 @@ export default VerifyCode = ({ route, navigation }) => {
                             setBtnColor(Color[50]) 
                         }} 
                         onPressOut={() => { 
-                            navigation.navigate('NewPassword');
+                            // navigation.navigate('NewPassword');
+                            handleVerify();
                             setBtnColor(Color[40]);
                         }}
                     >
@@ -187,6 +238,7 @@ export default VerifyCode = ({ route, navigation }) => {
                     </Pressable>
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
         );
     };

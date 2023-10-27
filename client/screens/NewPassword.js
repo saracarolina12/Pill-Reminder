@@ -1,13 +1,27 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default NewPassword = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
     const [password, onChangePassword] = React.useState('');
     const [confirmPassword, onChangeconfirmPassword] = React.useState('');
+
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -88,6 +102,43 @@ export default NewPassword = ({ route, navigation }) => {
             marginRight: 10, // Ajusta este valor según sea necesario
         },
     });
+
+    const handleNewPassword = async () => {
+        try {
+            const formData = {};
+            var formComplete = true;
+            formData.password = password ? password: formComplete = false;
+
+            if(!formComplete){
+                triggerAlert('Ooops', 'Por favor llena todos los campos');
+                console.log('Form is not complete'); 
+                return;
+            }
+            if(password != confirmPassword){
+                triggerAlert('Ooops', 'Asegurate de que las contraseñas coincidan');
+                console.log("Passwords don't match"); 
+                return;
+            }
+ 
+            const response = await axios.post(URL + 'newPassword', formData);
+
+            if (response.status === 200) {
+                console.log('Sign in Successful', 'You can now log in!');
+                navigation.dispatch(
+                    CommonActions.reset({
+                      index: 0,
+                      routes: [{ name: 'Login' }],
+                    })
+                  );
+            } else {
+                triggerAlert('Ooops', 'Algo salió mal');
+                console.log('New Password Failed', 'Please try again.');
+            }
+        } catch (error) {
+            triggerAlert('Ooops', 'Algo salió mal');
+            console.log('Error', 'An error occurred while setting up a new password.', error);
+        }
+    };
     
     return (
         <LinearGradient
@@ -137,7 +188,7 @@ export default NewPassword = ({ route, navigation }) => {
                         }} 
                         onPressOut={() => { 
                             setBtnColor(Color[40]);
-                            navigation.navigate("Login");
+                            handleNewPassword();
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
@@ -149,6 +200,7 @@ export default NewPassword = ({ route, navigation }) => {
 
                 </View>
             </View>
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };

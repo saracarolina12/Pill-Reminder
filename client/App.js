@@ -18,6 +18,8 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
 
+  // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
+
   useEffect(() => {
     async function loadFonts() {
       await Font.loadAsync({

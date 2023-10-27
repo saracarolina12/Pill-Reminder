@@ -1,7 +1,11 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { LinearGradient } from 'expo-linear-gradient';
-import { Color } from '../util/colors'
+import { Color } from '../util/colors';
+import axios from 'axios';
+import { URL } from '../util/configurations';
+import Alerta from '../components/alert';
 
 export default Login = ({ route, navigation }) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
@@ -9,6 +13,16 @@ export default Login = ({ route, navigation }) => {
     const [ForgotColor, setForgotColor] = useState("#A9A9A9");
     const [user, onChangeUser] = React.useState('');
     const [password, onChangePassword] = React.useState('');
+    
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [alertHeader, setAlertHeader] = useState("");
+    const [alertText, setAlertText] = useState("");
+    function triggerAlert(header, text){
+        setAlertHeader(header);
+        setAlertText(text);
+        setAlertVisible(false);
+        setAlertVisible(true);
+    }
 
     const styles = StyleSheet.create({
         container: {
@@ -32,9 +46,9 @@ export default Login = ({ route, navigation }) => {
             alignItems: 'center',
         },
         Button:{
-            backgroundColor: btnColor, 
+            backgroundColor: btnColor,
             transform: btnColor === Color[912]? [{translateY: 0}]: [{translateY: 2}] ,
-            textAlign:'center', 
+            textAlign:'center',
             padding: 10,
             borderRadius:30 ,
             justifyContent: 'center',
@@ -61,8 +75,8 @@ export default Login = ({ route, navigation }) => {
             alignItems: 'center',
         },
         imagen: {
-            width: 75, 
-            height: 75, 
+            width: 75,
+            height: 75,
             marginTop:5
             // backgroundColor:'red'
         },
@@ -73,16 +87,48 @@ export default Login = ({ route, navigation }) => {
             backgroundColor:'green'
         },
         circle: {
-            width: 95, 
-            height: 95, 
+            width: 95,
+            height: 95,
             borderRadius: 55,
             backgroundColor: 'white',
             justifyContent: 'center',
             alignItems: 'center',
         },
     });
-    
-    
+
+    const handleLogIn = async () => {
+        try {
+            const formData = {};
+            var formComplete = true;
+            formData.name = user ? user: formComplete = false;
+            formData.password = password ? password: formComplete = false;
+
+            if(!formComplete){
+                console.log('Form is not complete'); 
+                triggerAlert('Ooops', 'Por favor llena todos los campos');
+                return;
+            }
+ 
+            const response = await axios.post(URL + 'signin', formData);
+            
+            if (response.status === 200) {
+                console.log('Sign in Successful', 'You are now logged in!');
+                navigation.dispatch(
+                    CommonActions.reset({
+                        index: 0,
+                        routes: [{ name: 'Main' }],
+                    })
+            );
+            } else {
+                console.log('Sign in Failed', 'Please try again.');
+                triggerAlert('Ooops', 'Algo salió mal');
+            }
+        } catch (error) {
+            console.log('Error', 'An error occurred while signing in.', error);
+            triggerAlert('Ooops', 'Algo salió mal');
+        }
+    };
+
     return (
         <LinearGradient
             colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
@@ -132,15 +178,15 @@ export default Login = ({ route, navigation }) => {
                         />
                     </View>
 
-                    
+
                     <Pressable
                         style={{ width: "70%" }}
-                        onPressIn={() => { 
-                            setForgotColor("#727272") 
-                        }} 
-                        onPressOut={() => { 
+                        onPressIn={() => {
+                            setForgotColor("#727272")
+                        }}
+                        onPressOut={() => {
                             navigation.navigate('Forgot');
-                            setForgotColor("#A9A9A9") 
+                            setForgotColor("#A9A9A9")
                         }
                     }>
                         <Text style={{ fontFamily: "M1c-Regular", color: ForgotColor, textAlign: "right", textDecorationLine: 'underline' }}>
@@ -150,12 +196,12 @@ export default Login = ({ route, navigation }) => {
 
                     <Pressable
                         style={styles.Button}
-                        onPressIn={() => { 
-                            setBtnColor(Color[50]) 
-                        }} 
-                        onPressOut={() => { 
-                            navigation.navigate("Main")
-                            setBtnColor(Color[40]) 
+                        onPressIn={() => {
+                            setBtnColor(Color[50])
+                        }}
+                        onPressOut={() => {
+                            setBtnColor(Color[40])
+                            handleLogIn();
                         }
                     }>
                         <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
@@ -166,18 +212,20 @@ export default Login = ({ route, navigation }) => {
                     </Pressable>
 
                     <Pressable
-                        onPressIn={() => { 
-                            setTxtColor("#8B7DC1") 
-                        }} 
-                        onPressOut={() => { 
+                        onPressIn={() => {
+                            setTxtColor("#8B7DC1")
+                        }}
+                        onPressOut={() => {
                             navigation.navigate('SignUp');
-                            setTxtColor("#B19EF9") 
+                            setTxtColor("#B19EF9")
                         }
                     }>
                         <Text style={{fontFamily:"M1c-Regular", color:"#A9A9A9"}}>¿No tienes una cuenta? <Text style={{fontFamily:"M1c-Bold", color:txtColor}}>Crea una</Text> </Text>
                     </Pressable>
                 </View>
             </View>
+
+            {alertVisible && <Alerta header = {alertHeader} text = {alertText}/>}
         </LinearGradient>
     );
 };
