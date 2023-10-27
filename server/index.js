@@ -267,7 +267,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             let date = new Date(a.start);
                             a.next = Date.parse(date);
                             a.test = date;
-                            a.summed = new Date(Date.parse(date) + 23*60*60);
+                            a.summed = new Date(Date.parse(date) + 23*60*60*1000);
                         }
 
                     });
