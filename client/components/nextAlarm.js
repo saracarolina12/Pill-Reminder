@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Color } from '../util/colors'
 import { AntDesign } from '@expo/vector-icons';
 
-export default NextAlarm = ({ url, pill, amount, hour}) => {
+export default NextAlarm = ({ url, pill, amount, when}) => {
     const [btnColor, setBtnColor] = useState(Color[40]);
 
     const styles = StyleSheet.create({
@@ -97,7 +97,7 @@ export default NextAlarm = ({ url, pill, amount, hour}) => {
                 <Text style={styles.text2}>{amount}</Text>
                 <View style={styles.clockContainer}>
                     <AntDesign name="clockcircleo" size={15} color="#A28CF5" />
-                    <Text style={styles.text3}>{`Próxima ${hour} am`}</Text>
+                    <Text style={styles.text3}>{`Próxima ${when}`}</Text>
                 </View>
             </View>
         </View>

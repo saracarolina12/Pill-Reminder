@@ -6,7 +6,6 @@ const nodemailer = require('nodemailer');
 var Heap = require("collections/heap");
 
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
-// TODO: Add next alarm endpoint
 
 const app = express();
 app.use(
@@ -269,6 +268,15 @@ app.get('/getPills', requireAuth, (req, res) => {
                             if(start < end) {
                                 alarm.next = start;
                                 req.session.nextAlarm.push(alarm);
+
+                                const days = {1: 'Lunes', 2: 'Martes', 3: 'Miercoles', 4: 'Jueves', 5: 'Viernes', 6: 'Sabado', 7: 'Domingo'}
+                                const today = new Date(curr).getDay();
+                                const alarmDate = new Date(start);
+                                const day = alarmDate.getDay();
+                                let msg = "";
+                                if(today != day) msg = days[day];
+                                else msg = alarmDate.getHours() + ":" + alarmDate.getMinutes(); \
+                                alarm.nextTxt = msg;
                             }
                         }
                     });
