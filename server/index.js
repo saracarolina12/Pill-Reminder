@@ -252,7 +252,10 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
                 console.log(entries, entries.length);
 
-                req.session.nextAlarm = new Heap();
+                req.session.nextAlarm = new Heap(null, null, (a, b) => {
+                    console.log(typeof(a['date']), a['date'] - b['date']);
+                    a['date'] - b['date'];
+                });
 
                 const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
@@ -269,10 +272,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             if(start < end) {
                                 let next = new Date(start);
                                 alarm.next = next;
-                                req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, }, null, (a, b) => {
-                                    console.log(typeof(a['date']), a['date'] - b['date']);
-                                    a['date'] - b['date'];
-                                });
+                                req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, });
                             }
                         }
                     });
