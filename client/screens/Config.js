@@ -10,6 +10,8 @@ import axios from 'axios';
 import { URL } from '../util/configurations';
 import Alerta from '../components/alert';
 
+//const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ] TODO: UPDATE WITH DB
+
 LocaleConfig.locales['fr'] = {
     monthNames: [
         'Enero',
@@ -42,7 +44,6 @@ export default Config = ({ route, navigation }) => {
     const [unidad, onChangeUnidad] = useState("");
     const [unidades, setUnidades] = useState(["mg","ml","oz"]);
     const [hoursMedicine, onChangeHoursMedicine] = useState("");
-
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = (currentDate.getMonth() + 1).toString().padStart(2, '0');
@@ -78,7 +79,6 @@ export default Config = ({ route, navigation }) => {
                 disabled: false,
             };
 
-            // Incrementar la fecha en 1 día
             currentDate.setDate(currentDate.getDate() + 1);
         }
 
@@ -99,7 +99,7 @@ export default Config = ({ route, navigation }) => {
         const dateStr = day.dateString;
         const newSelectedDates = { ...selectedDates };
         newSelectedDates[dateStr] = !newSelectedDates[dateStr];
-        console.log(newSelectedDates);
+        console.log("selected dates: ",newSelectedDates);
         setSelectedDates(newSelectedDates);
     };
 
@@ -174,29 +174,6 @@ export default Config = ({ route, navigation }) => {
         11: "noviembre",
         12: "diciembre"
     }
-    
-    useEffect(()=>{
-        console.log(day, meses[month] , year);
-    }, [day, month, year])
-    useEffect(() => {
-        /*
-        
-        axios.get(URL + 'getUnits')
-        //.then((response) => response.json())
-        .then((result) => setUnidades(result.data.map(item => item.name)))
-        .then(() => console.log(unidades))
-        .catch((error) => {
-            console.error('API request error', error);
-        });
-        fetch(URL + 'getUnits')
-        .then((response) => response.json())
-        .then((result) => setUnidades(result.map(item => item.name)))
-        .then(() => console.log(unidades))
-        .catch((error) => {
-                console.error('API request error', error);
-            });
-            */
-      }, []);
 
     const handleOkPress = () => {
         const hours = currentDate.getHours().toString().padStart(2, '0');
@@ -264,8 +241,6 @@ export default Config = ({ route, navigation }) => {
                         />
                 </View>
 
-
-                {/* PARALELO */}
                 <View style={styles.fieldsContainer}>
                     <View style={{ marginBottom: 10 }}>
                         <Text style={{ fontFamily: 'M1c-Regular', fontSize: 18, color: 'black', marginBottom: 0, textAlign: 'left', color: '#EA889A' }}>¿Cada cuánto?</Text>
@@ -302,13 +277,9 @@ export default Config = ({ route, navigation }) => {
                             onChangeUnidad(index + 1);
                         }}
                         buttonTextAfterSelection={(selectedItem, index) => {
-                            // text represented after item is selected
-                            // if data array is an array of objects then return selectedItem.property to render after item is selected
                             return selectedItem
                         }}
                         rowTextForSelection={(item, index) => {
-                            // text represented for each item in dropdown
-                            // if data array is an array of objects then return item.property to represent item in dropdown
                             return item
                         }}
                     />
@@ -331,19 +302,16 @@ export default Config = ({ route, navigation }) => {
 
                 <View style={styles.buttonContainer}>
                     <Pressable 
-                        // style={styles.circleCancelContainer}
                         onPressIn={() => { setCancelBtnColor('#D76161') }}
                         onPressOut={() => {
                             setCancelBtnColor('#FC7070')
                             navigation.navigate("Main")
                         }}
                     >
-                        {/* <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text> */}
                         <MaterialIcons name="cancel" size={60} color={cancelBtnColor} />
                     </Pressable>
 
                     <Pressable 
-                        // style={styles.circleOKContainer}
                         onPressIn={() => {
                             setOKBtnColor('#74AD83');
                         }}
@@ -352,7 +320,6 @@ export default Config = ({ route, navigation }) => {
                             handleOkPress();
                         }}
                     >
-                        {/* <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35, color: 'white', textAlign: 'center', lineHeight: 43 }}>+</Text> */}
                         <Ionicons name="md-checkmark-circle" size={60} color={OKBtnColor} />
                     </Pressable>
                 </View>
@@ -363,3 +330,4 @@ export default Config = ({ route, navigation }) => {
         </View>
     );
 };
+

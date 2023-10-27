@@ -12,8 +12,22 @@ import nextAlarm from './components/nextAlarm.js';
 import VerifyCode from './screens/VerifyCode.js';
 import NewPassword from './screens/NewPassword.js';
 import ShowAlarm from './screens/ShowAlarm.js';
+import { AlarmProvider } from './screens/AlarmContext';
+import * as TaskManager from 'expo-task-manager';
+import * as BackgroundFetch from 'expo-background-fetch';
 
 const Stack = createNativeStackNavigator();
+
+TaskManager.defineTask('updateTime', ({ data, error }) => {
+  if (error) {
+    console.error('Error executing background task:', error);
+    return;
+  }
+  if(data){
+    alert('Something went right with background locations', data)
+    const{locations} = data
+  }
+});
 
 const App = () => {
   const [fontLoaded, setFontLoaded] = useState(false);
@@ -37,24 +51,23 @@ const App = () => {
     loadFonts();
   }, []);
 
-  if (!fontLoaded) {
-    return null; // You can render a loading screen or something here
-  }
+  if (!fontLoaded) { return null;}
 
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-        <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-        <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
-        <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
-        <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
-        <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
-        <Stack.Screen name="VerifyCode" component={VerifyCode} options={{ headerShown: false }} />
-        <Stack.Screen name="NewPassword" component={NewPassword} options={{ headerShown: false }} />
-        <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
-        <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
-      </Stack.Navigator>
+        <AlarmProvider>
+          <Stack.Navigator>
+              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+              <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+              <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
+              <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
+              <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+              <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
+              <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
+              <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
+              <Stack.Screen name="AlarmProvider" component={AlarmProvider} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </AlarmProvider>
     </NavigationContainer>
   );
 };
