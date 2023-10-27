@@ -269,7 +269,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             if(start < end) {
                                 let next = new Date(start);
                                 alarm.next = next;
-                                req.session.nextAlarm.push({'pill_id': alarm.pill_id, 'date': next}, null, (a, b) => {
+                                req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, }, null, (a, b) => {
                                     console.log(typeof(a['date']), a['date'] - b['date']);
                                     a['date'] - b['date'];
                                 });
