@@ -3,7 +3,6 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
-var Heap = require("collections/heap");
 
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
 
