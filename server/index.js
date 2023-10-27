@@ -250,6 +250,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                 var result = [];
                 if(entries.length) {
                     entries.forEach(a => {
+                        /*
                         let date = new Date(a.start ?? null);
                         a.next = new Date(date?.setHours(date?.getHours() + 23))?.toLocaleString("en-US", {
                             year: "numeric",
@@ -260,7 +261,13 @@ app.get('/getPills', requireAuth, (req, res) => {
                             second: "2-digit",
                             hour12: false,
                             timeZone: 'America/Mexico_City',
-                          });
+                        });
+                        */
+                        if(!a.start) {
+                            let date = new Date(a.start);
+                            a.next = date;
+                        }
+
                     });
                     console.log("Displaying " + entries.length +  " pills: " + entries);
                     return res.status(200).json(entries);
