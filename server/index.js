@@ -3,7 +3,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
-const { PriorityQueue } = require('collections');
+var Heap = require("collections/heap");
 
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
 // TODO: Add next alarm endpoint
@@ -249,8 +249,8 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
                 console.log(entries, entries.length);
 
-                req.session.nextAlarm = new PriorityQueue();
-                const pq = new PriorityQueue();
+                const pq = new Heap();
+                req.session.nextAlarm = new Heap();
 
                 const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
