@@ -79,8 +79,8 @@ export const AlarmProvider = ({ children, route  }) => {
             finalStatus = status;
             }
             if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
+                alert('Failed to get push token for push notification!');
+                return;
             }
             token = (await Notifications.getExpoPushTokenAsync( {projectId:'045aec31-ccc6-46a8-bb3f-efe4110f9aba'} )).data;
         } else {
@@ -99,7 +99,7 @@ export const AlarmProvider = ({ children, route  }) => {
             const triggerTime = new Date();
             triggerTime.setHours(alarmHour);
             triggerTime.setMinutes(alarmMinutes);
-            console.log(AlarmData.hour, ":", AlarmData.minutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
+            //console.log(AlarmData.hour, ":", AlarmData.minutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
         
             if (AlarmData.active == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
                 global.AlarmData.active = false;
