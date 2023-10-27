@@ -251,7 +251,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                 if(entries.length) {
                     entries.forEach(a => {
                         let date = new Date(a.start ?? null);
-                        a.next = date?.setHours(date?.getHours() + 23).toLocaleString("en-US", {
+                        a.next = new Date(date?.setHours(date?.getHours() + 23))?.toLocaleString("en-US", {
                             year: "numeric",
                             month: "2-digit",
                             day: "2-digit",
