@@ -252,14 +252,14 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
                 console.log(entries, entries.length);
 
-                /*
                 
                 req.session.nextAlarm = new Heap(null, null, (a, b) => {
                     console.log(typeof(new Date(a['date'])), a['date'] - b['date']);
                     return new Date(a['date']) < new Date(b['date']);
                 });
-                */
+                /*
                 req.session.nextAlarm = new Heap();
+                */
 
                 const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
@@ -276,13 +276,13 @@ app.get('/getPills', requireAuth, (req, res) => {
                             if(start < end) {
                                 // let next = new Date(start);
                                 alarm.next = start;
-                                //req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, });
-                                req.session.nextAlarm.push({[alarm.pill_id]: start.toString(), });
+                                req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, });
+                                //req.session.nextAlarm.push({[alarm.pill_id]: start.toString(), });
                             }
                         }
                     });
                     while(req.session.nextAlarm.length){
-                        console.log(req.session.nextAlarm.pop());
+                        console.log(req.session.nextAlarm.pop()['date'], req.session.nextAlarm.pop()['pill_id']);
                     }  
                     /*
                     req.session.nextAlarm.forEach(alarm => {
