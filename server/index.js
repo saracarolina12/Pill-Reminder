@@ -268,6 +268,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             let start = Date.parse(new Date(a.start));
                             let end = Date.parse(new Date(a.end));
                             a.test = start;
+                            a.realStart = new Date(start);
                             a.curr = curr;
                             for(
                                 ; 
