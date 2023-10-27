@@ -271,7 +271,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 const alarmDate = new Date(start);
                                 const day = alarmDate.getDate();
                                 let msg = "";
-                                if(today != day) msg = days[alarmDate.getDate()];
+                                if(today != day) msg = days[alarmDate.getDay()];
                                 else msg = 
                                     String(alarmDate.getHours()).padStart(2, '0') + 
                                     ":" + 
