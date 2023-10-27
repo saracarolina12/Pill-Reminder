@@ -249,7 +249,6 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
                 console.log(entries, entries.length);
 
-                const pq = new Heap();
                 req.session.nextAlarm = new Heap();
 
                 const toTimestamp = (hours) => 1000*60*60*hours;
@@ -265,7 +264,9 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 start += toTimestamp(alarm.frequency)
                             );
                             if(start < end) {
-                                alarm.next = new Date(start);
+                                let next = new Date(start);
+                                alarm.next = next;
+                                req.session.nextAlarm.push({alarm.pill_id: next});
                             }
                         }
                     });
