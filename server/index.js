@@ -288,9 +288,15 @@ app.get('/getPills', requireAuth, (req, res) => {
 
 app.get('/nextAlarm', requireAuth, (req, res) => {
     let curr = Date.parse(new Date()) - toTimestamp(6); // Mexico is in UTC-6
-    req.session.nextAlarm.forEach((alarm) => {
-        if(alarm.next > curr) return res.status(200).json({ nextAlarm: alarm});
-    });
+    if (req.session.nextAlarm)
+        for(let i = 0; i < req.session.nextAlarm.length; i++) {
+            const alarm = req.session.nextAlarm[i];
+            if(alarm.next > curr){
+                return res.status(200).json({ nextAlarm: alarm });
+                break;
+            }
+        }
+    else return res.status(500).json({ error: 'Information not available'});
 });
 
 app.get('/getUnits', (req, res) => {
