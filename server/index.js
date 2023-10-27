@@ -276,7 +276,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             if(start < end) {
                                 // let next = new Date(start);
                                 alarm.next = start;
-                                req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, });
+                                req.session.nextAlarm.push({'date': start, 'pill_id': alarm.pill_id, });
                                 //req.session.nextAlarm.push({[alarm.pill_id]: start.toString(), });
                             }
                         }
