@@ -1,5 +1,13 @@
 export var AlarmData = {
-    alarm = null;
+    alarm: {
+        "pill_id": 1,
+        "name": "Paracetamol",
+        "start": null,
+        "end": null,
+        "frequency": null,
+        "dose": 500,
+        "dose_unit": "mg"
+    },
     active: true,
 };
 
