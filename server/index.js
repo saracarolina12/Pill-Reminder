@@ -250,7 +250,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                 var result = [];
                 if(entries.length) {
                     entries.forEach(a => {
-                        a.next = a.setHours(a.start.getHours() + 23);
+                        a.next = a.setHours(a.start?.getHours() + 23);
                     });
                     console.log("Displaying " + entries.length +  " pills: " + entries);
                     return res.status(200).json(entries);
