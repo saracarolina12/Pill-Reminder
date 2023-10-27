@@ -272,6 +272,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             }
                         }
                     });
+                    console.log(req.session.nextAlarm);
                     return res.status(200).json(entries);
                 }
                 else {
@@ -285,11 +286,7 @@ app.get('/getPills', requireAuth, (req, res) => {
 });
 
 app.get('/nextAlarm', requireAuth, (req, res) => {
-    var db = handler.openConnection();
-
-
-
-    handler.closeConnection();
+    //console.log(
 });
 
 app.get('/getUnits', (req, res) => {
