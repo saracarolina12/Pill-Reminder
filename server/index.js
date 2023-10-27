@@ -13,7 +13,7 @@ app.use(
   session({
     secret: '7B#Kp&2M$5n@9T8Q',
     resave: false,
-    saveUninitialized: false,
+    saveUninitialized: true,
   })
 );
 const port = 8532;
@@ -48,7 +48,7 @@ app.get('/', (req, res) => {
 });
 
 const requireAuth = (req, res, next) => {
-    console.log(req.session, '\n-------------------------------------------------------------------------------------');
+    //console.log(req.session, '\n-------------------------------------------------------------------------------------');
     //console.log(req);
 
     if (req.session.userId) {
