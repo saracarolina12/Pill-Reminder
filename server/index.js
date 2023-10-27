@@ -267,7 +267,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             let curr = new Date();
                             let start = new Date(a.start);
                             let end = new Date(a.end);
-                            a.test = new Date(Date.parse(start));
+                            a.test = new Date(Date.parse(start)).toLocaleString('en-US', {timeZone: 'America/Mexico_City'});
                             for(
                                 ; 
                                 start < curr && start < end;
