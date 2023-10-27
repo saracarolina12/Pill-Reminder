@@ -3,6 +3,7 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
+const { PriorityQueue } = require('collections');
 
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
 // TODO: Add next alarm endpoint
@@ -248,6 +249,8 @@ app.get('/getPills', requireAuth, (req, res) => {
                 }
                 console.log(entries, entries.length);
 
+                req.session.nextAlarm = new PriorityQueue();
+
                 const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
                     entries.forEach(alarm => {
@@ -260,7 +263,9 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 start < curr && start < end;
                                 start += toTimestamp(alarm.frequency)
                             );
-                            if(start < end) alarm.next = new Date(start);
+                            if(start < end) {
+                                alarm.next = new Date(start);
+                            }
                         }
                     });
                     return res.status(200).json(entries);
