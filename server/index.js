@@ -281,9 +281,14 @@ app.get('/getPills', requireAuth, (req, res) => {
                             }
                         }
                     });
+                    while(req.session.nextAlarm.length){
+                        console.log(req.session.nextAlarm.pop());
+                    }  
+                    /*
                     req.session.nextAlarm.forEach(alarm => {
                         console.log(alarm);
                     });
+                    */
                     return res.status(200).json(entries);
                 }
                 else {
