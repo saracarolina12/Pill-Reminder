@@ -270,9 +270,10 @@ app.get('/getPills', requireAuth, (req, res) => {
                                 start += toTimestamp(alarm.frequency)
                             );
                             if(start < end) {
-                                let next = new Date(start);
+                                // let next = new Date(start);
                                 alarm.next = next;
-                                req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, });
+                                //req.session.nextAlarm.push({'date': next, 'pill_id': alarm.pill_id, });
+                                req.session.nextAlarm.push({next: alarm.pill_id, });
                             }
                         }
                     });
