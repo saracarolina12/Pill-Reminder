@@ -263,9 +263,9 @@ app.get('/getPills', requireAuth, (req, res) => {
                             timeZone: 'America/Mexico_City',
                         });
                         */
-                        const toHours = (hours) => 1000*60*60*hours;
+                        const toTimestamp = (hours) => 1000*60*60*hours;
                         if(a.start) {
-                            let curr = Date.parse(new Date()) - toHours(6);
+                            let curr = Date.parse(new Date()) - toTimestamp(6); // Mexico is in UTC-6
                             let start = Date.parse(new Date(a.start));
                             let end = Date.parse(new Date(a.end));
                             a.test = start;
@@ -274,7 +274,7 @@ app.get('/getPills', requireAuth, (req, res) => {
                             for(
                                 ; 
                                 start < curr && start < end;
-                                start += toHours(a.frequency)
+                                start += toTimestamp(a.frequency)
                             );
                             if(start < end) a.next = start;
 
