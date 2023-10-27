@@ -247,37 +247,22 @@ app.get('/getPills', requireAuth, (req, res) => {
                     return res.status(500).json({ error: "Couldn't find pills: " + err });
                 }
                 console.log(entries, entries.length);
-                var result = [];
+
+                const toTimestamp = (hours) => 1000*60*60*hours;
                 if(entries.length) {
-                    entries.forEach(a => {
-                        /*
-                        let date = new Date(a.start ?? null);
-                        a.next = new Date(date?.setHours(date?.getHours() + 23))?.toLocaleString("en-US", {
-                            year: "numeric",
-                            month: "2-digit",
-                            day: "2-digit",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                            second: "2-digit",
-                            hour12: false,
-                            timeZone: 'America/Mexico_City',
-                        });
-                        */
-                        const toTimestamp = (hours) => 1000*60*60*hours;
-                        if(a.start) {
+                    entries.forEach(alarm => {
+                        if(alarm.start) {
                             let curr = Date.parse(new Date()) - toTimestamp(6); // Mexico is in UTC-6
-                            let start = Date.parse(new Date(a.start));
-                            let end = Date.parse(new Date(a.end));
+                            let start = Date.parse(new Date(alarm.start));
+                            let end = Date.parse(new Date(alarm.end));
                             for(
                                 ; 
                                 start < curr && start < end;
-                                start += toTimestamp(a.frequency)
+                                start += toTimestamp(alarm.frequency)
                             );
-                            if(start < end) a.next = new Date(start);
+                            if(start < end) alarm.next = new Date(start);
                         }
-
                     });
-                    console.log("Displaying " + entries.length +  " pills: " + entries);
                     return res.status(200).json(entries);
                 }
                 else {
