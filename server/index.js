@@ -268,19 +268,12 @@ app.get('/getPills', requireAuth, (req, res) => {
                             let curr = Date.parse(new Date()) - toTimestamp(6); // Mexico is in UTC-6
                             let start = Date.parse(new Date(a.start));
                             let end = Date.parse(new Date(a.end));
-                            a.test = start;
-                            a.realStart = new Date(start);
-                            a.curr = curr;
                             for(
                                 ; 
                                 start < curr && start < end;
                                 start += toTimestamp(a.frequency)
                             );
                             if(start < end) a.next = start;
-
-                            a.s = new Date(start);
-                            a.c = new Date(curr);
-                            a.e = new Date(end);
                         }
 
                     });
