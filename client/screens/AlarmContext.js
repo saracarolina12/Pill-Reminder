@@ -31,7 +31,7 @@ export const AlarmProvider = ({ children, route  }) => {
 
     useEffect(() => {
         const interval = setInterval(() => {
-            if(AlarmData.hour && AlarmData.minutes){
+            if(AlarmData.alarm){
                 scheduleNotification(new Date());
             }
         }, 1000);
@@ -79,8 +79,8 @@ export const AlarmProvider = ({ children, route  }) => {
             finalStatus = status;
             }
             if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
+                alert('Failed to get push token for push notification!');
+                return;
             }
             token = (await Notifications.getExpoPushTokenAsync( {projectId:'045aec31-ccc6-46a8-bb3f-efe4110f9aba'} )).data;
         } else {
@@ -92,16 +92,23 @@ export const AlarmProvider = ({ children, route  }) => {
 
         
         const scheduleNotification = async (currDate) => {
+            //currDate = new Date(currDate);
+
             // console.log("\n\n",AlarmData,"\n\n");
             // console.log(AlarmData.hour, ":", AlarmData.minutes);
-            let alarmHour = AlarmData.hour;
-            let alarmMinutes = AlarmData.minutes;
-            const triggerTime = new Date();
-            triggerTime.setHours(alarmHour);
-            triggerTime.setMinutes(alarmMinutes);
-            console.log(AlarmData.hour, ":", AlarmData.minutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
+            let nextAlarm = new Date(AlarmData.alarm? AlarmData.alarm.next + 60*60*6*1000: null);
+            // let alarmHour = nextAlarm.getHours();
+            // let alarmMinutes = nextAlarm.getMinutes();
+            // const triggerTime = new Date();
+            // triggerTime.setHours(alarmHour);
+            // triggerTime.setMinutes(alarmMinutes);
+            // console.log(alarmHour, ":", alarmMinutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
+            //console.log(nextAlarm, currDate)
+            console.log(currDate.getHours(), nextAlarm.getHours(), currDate.getMinutes(), nextAlarm.getMinutes(), currDate.getDate(), nextAlarm.getDate());
         
-            if (AlarmData.active == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
+            //if (AlarmData.active == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
+            if (AlarmData.active == true && currDate.getHours() === nextAlarm.getHours() && currDate.getMinutes() === nextAlarm.getMinutes() && currDate.getDate() === nextAlarm.getDate()) {
+            //if (currDate == nextAlarm) {
                 global.AlarmData.active = false;
                 await Notifications.scheduleNotificationAsync({
                     content: {
@@ -112,7 +119,8 @@ export const AlarmProvider = ({ children, route  }) => {
                         seconds: 0, 
                     },
                 });
-                navigation.navigate('Alarm',{hour:alarmHour, minutes:alarmMinutes, sound:sound});
+                //navigation.navigate('Alarm',{hour:alarmHour, minutes:alarmMinutes, sound:sound});
+                navigation.navigate('Alarm',{hour:currDate.getHours(), minutes:currDate.getMinutes(), sound:sound});
             }
         };
         

@@ -1,4 +1,5 @@
 import { Pressable, View, Image, StyleSheet, Text, TextInput, ToastAndroid } from 'react-native';
+import { CommonActions } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { Color } from '../util/colors';
 import { RFValue } from "react-native-responsive-fontsize";
@@ -182,13 +183,26 @@ export default Alarm = ({ navigation }) => {
                 style={styles.DescartarBtn}
                 onPressIn={() => { 
                     setDescartarBtnColor(Color[50]) 
+                    stopSound();
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{ name: 'Main' }],
+                        })
+                    )
                 }} 
                 onPressOut={() => { 
                     //TODO: agregar lógica para desactivar la alarma
+                    /*
                     stopSound();
                     setDescartarBtnColor(Color[40]) 
-                    navigation.navigate('Main'); //TODO: navigate to last screen
-                    // navigation.popToTop(); //TODO: al parecer se estanca en Login.js
+                    navigation.dispatch(
+                        CommonActions.reset({
+                            index: 0,
+                            routes: [{ name: 'Main' }],
+                        })
+                    )
+                        */
                 }}
             >
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>

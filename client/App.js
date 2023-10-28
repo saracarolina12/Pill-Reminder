@@ -57,17 +57,17 @@ const App = () => {
     <NavigationContainer>
         <AlarmProvider>
           <Stack.Navigator>
-              <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-              <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
-              <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
-              <Stack.Screen name="VerifyCode" component={VerifyCode} options={{ headerShown: false }} />
-              <Stack.Screen name="NewPassword" component={NewPassword} options={{ headerShown: false }} />
-              <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
-              <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
-              <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
-              <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
-              <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
-              <Stack.Screen name="AlarmProvider" component={AlarmProvider} options={{ headerShown: false }} />
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }} />
+            <Stack.Screen name="Forgot" component={Forgot} options={{ headerShown: false }} />
+            <Stack.Screen name="VerifyCode" component={VerifyCode} options={{ headerShown: false }} />
+            <Stack.Screen name="NewPassword" component={NewPassword} options={{ headerShown: false }} />
+            <Stack.Screen name="Config" component={Config} options={{ headerShown: false }} />
+            <Stack.Screen name="Main" component={Main} options={{ headerShown: false }} />
+            <Stack.Screen name="ShowAlarm" component={ShowAlarm} options={{ headerShown: false }} />
+            <Stack.Screen name="NextAlarm" component={nextAlarm} options={{ headerShown: false }} />
+            <Stack.Screen name="Alarm" component={Alarm} options={{ headerShown: false }} />
+            <Stack.Screen name="AlarmProvider" component={AlarmProvider} options={{ headerShown: false }} />
           </Stack.Navigator>
         </AlarmProvider>
     </NavigationContainer>

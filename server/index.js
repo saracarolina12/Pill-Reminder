@@ -253,7 +253,7 @@ app.get('/getPills', requireAuth, (req, res) => {
 
                 if(entries.length) {
                     entries.forEach(alarm => {
-                        if(alarm.start) {
+                        if(alarm.start && alarm.frequency && alarm.end) {
                             let curr = Date.parse(new Date()) - toTimestamp(6); // Mexico is in UTC-6
                             let start = Date.parse(new Date(alarm.start));
                             let end = Date.parse(new Date(alarm.end));
