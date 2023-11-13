@@ -9,7 +9,7 @@ const nodemailer = require('nodemailer');
 const app = express();
 app.use(
   session({
-    secret: '7B#Kp&2M$5n@9T8QH38904GHY5$',
+    secret: '7B#Kp&2M$5n@9T8QH38904GHY5$', // TODO: Static test; revealed secrot
     resave: false,
     saveUninitialized: true,
   })
@@ -18,7 +18,7 @@ const port = 8532;
 // var cors = require('cors');
 app.use(bodyParser.json());
 
-const toTimestamp = (hours) => 1000*60*60*hours;
+const toTimestamp = (hours) => 1000*60*60*hours; // TODO: test
 
 class DatabaseHandler {
     constructor(dbPath) {
@@ -26,12 +26,12 @@ class DatabaseHandler {
         this.db = null;
     }
 
-    openConnection(){
+    openConnection(){ // TODO: test and add to defectos encontrados: not all scenarios were handled
         this.db = new sqlite3.Database(this.dbPath);
         return this.db;
     }
 
-    closeConnection(){
+    closeConnection(){ // TODO: test
         this.db.close((err) => {
             if (err) {
                 return console.error(err.message);
@@ -41,13 +41,13 @@ class DatabaseHandler {
     }
 }
 
-var handler = new DatabaseHandler('pillReminder.db');
+var handler = new DatabaseHandler('pillReminder.db'); // TODO: Static test; revealed secrot
 
 app.get('/', (req, res) => {
     res.send('Hola');
 });
 
-const requireAuth = (req, res, next) => {
+const requireAuth = (req, res, next) => { // TODO: test
     if (req.session.userId) {
         next();
     }
@@ -57,7 +57,7 @@ const requireAuth = (req, res, next) => {
     }
 };
 
-app.post('/sendCode', (req, res) => {
+app.post('/sendCode', (req, res) => { // TODO: test w empty 
     const {email} = req.body;
     if(!email)
         return res.status(400).json({error: 'Invalid JSON data'});
@@ -82,12 +82,12 @@ app.post('/sendCode', (req, res) => {
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth:{
-                        user:'mindsparkpillreminder01@gmail.com',
-                        pass:'omof cacf vcvm yyqo'
+                        user:'mindsparkpillreminder01@gmail.com', // TODO: Static test; revealed secrot
+                        pass:'omof cacf vcvm yyqo' // TODO: Static test; revealed secrot
                     }
                 });
                 const mailOptions = {
-                    from:'mindsparkpillreminder01@gmail.com',
+                    from:'mindsparkpillreminder01@gmail.com', // TODO: Static test; revealed secrot
                     to: email,
                     subject : 'Recuperacion de cuenta',
                     text : 'Tu codigo de verifiación es: ' + code,
@@ -115,7 +115,7 @@ app.post('/sendCode', (req, res) => {
     handler.closeConnection();
 });
 
-app.post('/verify', (req, res) => {
+app.post('/verify', (req, res) => { // TODO: test w empty 
     const {code} = req.body;
     if(!code) 
         return res.status(400).json({error: 'Invalid JSON data'});
@@ -131,7 +131,7 @@ app.post('/verify', (req, res) => {
     }
 });
 
-app.post('/signup', (req, res) => {
+app.post('/signup', (req, res) => { // TODO: test w empty 
     const data = req.body;
     if (!data)
     return res.status(400).json({ error: 'Invalid JSON data' });
@@ -172,7 +172,7 @@ app.post('/signup', (req, res) => {
     });
 });
 
-app.post('/signin', (req, res) => {
+app.post('/signin', (req, res) => { // TODO: test w empty 
     const data = req.body;
     if (!data)
         return res.status(400).json({ error: 'Invalid JSON data' });
@@ -332,8 +332,8 @@ app.get('/getUnits', (req, res) => {
     handler.closeConnection();
 });
 
-app.post('/newPill', requireAuth, (req, res) => {
-    const data = req.body;
+app.post('/newPill', requireAuth, (req, res) => { // TODO: test w empty 
+    const data = req.body; 
     if (!data)
         return res.status(400).json({ error: 'Invalid JSON data' });
 
@@ -358,3 +358,5 @@ app.post('/newPill', requireAuth, (req, res) => {
 app.listen(port, () => {
     console.log(`Holahola. My app listening on port ${port}`);
 })
+
+module.exports = { toTimestamp, app };

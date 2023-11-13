@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:openHandles": "jest --detectOpenHandles"
+  },  
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -14,5 +16,8 @@
     "node": "^20.7.0",
     "nodemailer": "^6.9.7",
     "sqlite3": "^5.1.6"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
