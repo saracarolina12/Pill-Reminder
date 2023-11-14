@@ -355,8 +355,8 @@ app.post('/newPill', requireAuth, (req, res) => { // TODO: test w empty
     handler.closeConnection();
 });
 
-app.listen(port, () => {
+var server = app.listen(port, () => {
     console.log(`Holahola. My app listening on port ${port}`);
 })
 
-module.exports = { toTimestamp, app };
+module.exports = { toTimestamp, server };
