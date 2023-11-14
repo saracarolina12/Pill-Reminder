@@ -97,7 +97,7 @@ export default Forgot = ({ route, navigation }) => {
             alignItems: 'center',
         },
         icon: {
-            marginRight: 10, // Ajusta este valor según sea necesario
+            marginRight: 10,
         },
     });
     

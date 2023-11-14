@@ -10,8 +10,6 @@ import axios from 'axios';
 import { URL } from '../util/configurations';
 import Alerta from '../components/alert';
 
-//const unidades = ["mg", "piezas", "g", "mcg / µg", "oz", "gota(s)", ] TODO: UPDATE WITH DB
-
 LocaleConfig.locales['fr'] = {
     monthNames: [
         'Enero',
@@ -59,7 +57,7 @@ export default Config = ({ route, navigation }) => {
         setAlertVisible(true);
     }
 
-    const initialSelectedDates = {}; // Inicialmente, ninguna fecha está seleccionada
+    const initialSelectedDates = {};
 
     const getMarked = () => {
         let marked = {};
@@ -112,7 +110,6 @@ export default Config = ({ route, navigation }) => {
             marginTop:20
         },
         scrollView: {
-            // backgroundColor: 'pink',
             maxHeight:"57%",
             width:"100%",
             marginBottom:15,
@@ -125,7 +122,6 @@ export default Config = ({ route, navigation }) => {
             width: 50, 
             height: 50,
             borderRadius: 25, 
-            // backgroundColor: '#FC709B', // Color del círculo
             backgroundColor: cancelBtnColor,
             justifyContent: 'center',
             alignItems: 'center',
@@ -149,14 +145,14 @@ export default Config = ({ route, navigation }) => {
             alignItems: 'center',
         },
         buttonContainer: {
-            flexDirection: 'row', // Esto coloca los elementos en una fila
-            justifyContent: 'space-between', // Esto distribuye los elementos de manera uniforme en la fila
-            alignItems: 'center', // Esto alinea los elementos verticalmente en el centro
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
         },
         fieldsContainer:{
-            flexDirection: 'row', // Esto coloca los elementos en una fila
-            justifyContent: 'space-between', // Esto distribuye los elementos de manera uniforme en la fila
-            alignItems: 'center', // Esto alinea los elementos verticalmente en el centro
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
         }
     });
 

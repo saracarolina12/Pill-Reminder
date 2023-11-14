@@ -7,12 +7,12 @@ require('dotenv').config();
 
 // TODO: CHANGE ALL if(debug) console.LOG FOR LOGGER
 
-const debug = false;
+const debug = true;
 
 const app = express();
 app.use(
   session({
-    secret: process.env.SESSION_SECRET, // TODO: Static test; revealed secrot
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
@@ -21,7 +21,7 @@ const port = process.env.PORT || 8532;
 // var cors = require('cors');
 app.use(bodyParser.json());
 
-const toTimestamp = (hours) => 1000*60*60*hours; // TODO: test
+const toTimestamp = (hours) => 1000*60*60*hours;
 
 class DatabaseHandler {
     constructor(dbPath) {
@@ -29,7 +29,7 @@ class DatabaseHandler {
         this.db = null;
     }
 
-    openConnection(){ // TODO: test and add to defectos encontrados: not all scenarios were handled
+    openConnection(){
         try {
             this.db = new sqlite3.Database(this.dbPath);
             return this.db;
@@ -39,7 +39,7 @@ class DatabaseHandler {
         }
     }
 
-    closeConnection(){ // TODO: test
+    closeConnection(){
         this.db.close((err) => {
             if (err) {
                 if(debug) console.error(err.message);
@@ -49,7 +49,7 @@ class DatabaseHandler {
     }
 }
 
-var handler = new DatabaseHandler(process.env.DB_PATH); // TODO: Static test; revealed secrot
+var handler = new DatabaseHandler(process.env.DB_PATH);
 
 app.get('/', (req, res) => {
     res.send('Hola');
@@ -65,7 +65,7 @@ const requireAuth = (req, res, next) => { // TODO: test
     }
 };
 
-app.post('/sendCode', (req, res) => { // TODO: test w empty 
+app.post('/sendCode', (req, res) => {
     const {email} = req.body;
     if(!email)
         return res.status(400).json({error: 'Invalid JSON data'});
@@ -90,12 +90,12 @@ app.post('/sendCode', (req, res) => { // TODO: test w empty
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth:{
-                        user: process.env.EMAIL, // TODO: Static test; revealed secrot
-                        pass: process.env.PASSWORD // TODO: Static test; revealed secrot
+                        user: process.env.EMAIL,
+                        pass: process.env.PASSWORD
                     }
                 });
                 const mailOptions = {
-                    from: process.env.EMAIL, // TODO: Static test; revealed secrot
+                    from: process.env.EMAIL,
                     to: email,
                     subject : 'Recuperacion de cuenta',
                     text : 'Tu codigo de verifiación es: ' + code,
@@ -115,7 +115,7 @@ app.post('/sendCode', (req, res) => { // TODO: test w empty
             }
             else {
                 if(debug) console.log("Couldn't find email");
-                return res.status(400).json({ error: "Couldn't find email" });
+                return res.status(500).json({ error: "Couldn't find email" });
             }
         })
     });
@@ -123,7 +123,7 @@ app.post('/sendCode', (req, res) => { // TODO: test w empty
     handler.closeConnection();
 });
 
-app.post('/verify', (req, res) => { // TODO: test w empty 
+app.post('/verify', (req, res) => {
     const {code} = req.body;
     if(!code) 
         return res.status(400).json({error: 'Invalid JSON data'});
@@ -135,11 +135,11 @@ app.post('/verify', (req, res) => { // TODO: test w empty
     }
     else {
         if(debug) console.log("Codes don't match");
-        return res.status(400).json({error: "Codes don't match"});
+        return res.status(500).json({error: "Codes don't match"});
     }
 });
 
-app.post('/signup', (req, res) => { // TODO: test w empty 
+app.post('/signup', (req, res) => {
     const {name, email, password} = req.body;
     if (!name || !email || password)
         return res.status(400).json({ error: 'Invalid JSON data' });
@@ -180,7 +180,7 @@ app.post('/signup', (req, res) => { // TODO: test w empty
     });
 });
 
-app.post('/signin', (req, res) => { // TODO: test w empty 
+app.post('/signin', (req, res) => {
     const {name, password} = req.body;
     if (!name || !password)
         return res.status(400).json({ error: 'Invalid JSON data' });
@@ -340,7 +340,7 @@ app.get('/getUnits', (req, res) => {
     handler.closeConnection();
 });
 
-app.post('/newPill', requireAuth, (req, res) => { // TODO: test w empty 
+app.post('/newPill', requireAuth, (req, res) => {
     const {name, start, end, frequency, dose, dose_unit} = req.body; 
     if (!name || !start || !end || !frequency || !dose || !dose_unit)
         return res.status(400).json({ error: 'Invalid JSON data' });

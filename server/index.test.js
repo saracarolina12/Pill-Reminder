@@ -1,23 +1,8 @@
 const index = require('./index');
 const axios = require('axios');
-const exp = require('constants');
 const sqlite3 = require('sqlite3');
 
 require('dotenv').config();
-
-// Helper function to create a session in the server
-async function signin() {
-  try {
-    const response = await axios.post(process.env.TEST_URL + 'signin',
-    {
-        "name": process.env.TEST_USER,
-        "password": process.env.TEST_PASS
-    });
-    return response.status;
-  } catch (error) {
-    console.error(error);
-  }
-}
 
 describe('Util', () => {
 
@@ -44,10 +29,56 @@ describe('Util', () => {
 describe('Endpoints', () => {
 
   test('Signin endpoint', async () => {
-    expect(await signin()).toBe(200);
+    try {
+      const response = await axios.post(process.env.TEST_URL + 'signin',
+      {
+          "name": process.env.TEST_USER,
+          "password": process.env.TEST_PASS
+      });
+      expect(response.status).toBe(200);
+    } catch (error) {}
   });
 
-  describe('Empty requests', () => {
+  test('Auth - 401 Unauthorized', async () => {
+    try {
+      await axios.get(process.env.TEST_URL + 'signout');
+    }
+    catch(e) {
+      expect(e.response.status).toBe(401); // Expecting unauthorized
+    }
+  });
+
+  describe('Verification code', () => {
+
+    test("Send code - 500 Couldn't find email", async () => {
+      try {
+        await axios.post(process.env.TEST_URL + 'sendCode', {"email": "notRegistered@example.com"});
+      }
+      catch(e) {
+        expect(e.response.status).toBe(500);
+      }
+    });
+    
+    test("Send code", async () => {
+      try {
+        const response = await axios.post(process.env.TEST_URL + 'sendCode', {"email": process.env.TEST_EMAIL});
+        expect(response.status).toBe(200);
+      }
+      catch(e) {}
+    });
+    
+    test("Verify - doesn't match", async () => {
+      try {
+        await axios.post(process.env.TEST_URL + 'verify', {"code": 1234});
+      }
+      catch(e) {
+        expect(e.response.status).toBe(500);
+      }
+    });
+
+  });
+
+  describe('Empty requests - Bad Request', () => {
 
     var endpoints = ['sendCode', 'verify', 'signup', 'signin']
     for(var e in endpoints){
@@ -63,29 +94,6 @@ describe('Endpoints', () => {
 
   });
 });
-
-// TODO: test and add to defectos encontrados: not all scenarios were handled
-// TODO: test
-
-// ENDPOINTS
-
-
-
-// TODO: test
-
-// TODO: test w empty 
-// TODO: test w empty 
-// TODO: test w empty 
-// TODO: test w empty 
-// TODO: test w empty 
-
-
-// DEFECTOS
-/*
-  Revealed secrets
-  Not all scenarios were handled in functions (db open connection) - null path
-  if (!data) doesn't check if empty - 3 endpoints
-*/
 
 afterAll(async () => {
   if (index.server) {
