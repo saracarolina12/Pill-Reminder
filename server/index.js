@@ -7,7 +7,7 @@ require('dotenv').config();
 
 // TODO: CHANGE ALL if(debug) console.LOG FOR LOGGER
 
-const debug = true;
+const debug = false;
 
 const app = express();
 app.use(
@@ -43,6 +43,7 @@ class DatabaseHandler {
         this.db.close((err) => {
             if (err) {
                 if(debug) console.error(err.message);
+                return err;
             }
             if(debug) console.log('Closed the database connection.');
         });

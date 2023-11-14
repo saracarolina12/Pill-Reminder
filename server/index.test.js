@@ -1,6 +1,7 @@
 const index = require('./index');
 const axios = require('axios');
 const sqlite3 = require('sqlite3');
+const fs = require('fs');
 
 require('dotenv').config();
 
@@ -10,7 +11,7 @@ describe('Util', () => {
     expect(index.toTimestamp(1)).toBe(3600000);
   });
 
-  describe('Database Handler', () => {
+  describe('Database', () => {
 
     test('Open connection with error', () => {
       var testDB = new index.DatabaseHandler(null);
@@ -18,9 +19,66 @@ describe('Util', () => {
     });
     
     test('Open connection', () => {
-      testDB = new index.DatabaseHandler(process.env.DB_PATH);
-      expect(testDB).not.toBeInstanceOf(sqlite3.Database);
+      var testDB = new index.DatabaseHandler(process.env.DB_PATH);
+      expect(testDB.openConnection()).toBeInstanceOf(sqlite3.Database);
     });
+
+    test('Close connection', () => {
+      var testDB = new index.DatabaseHandler(process.env.DB_PATH);
+      testDB.openConnection();
+      expect(testDB.closeConnection()).toBe(undefined); // Doesn't return any error
+    });
+
+    /*
+    
+    describe('Tables', () => {
+      
+      var tables = ['users', 'units', 'pills']
+      
+      var testDB = new index.DatabaseHandler(process.env.DB_PATH);
+      var db = testDB.openConnection();
+      
+      var resTables = [];
+      
+      db.serialize(() => {
+        db.all("SELECT name FROM sqlite_master WHERE type='table';", (err, tables) => {
+          if (err) {
+              return console.error(err.message);
+            }
+            
+            for(var t in tables){
+              console.log(tables[t].name);
+              resTables.push(tables[t].name);
+            }
+            
+            check(resTables);
+          });
+        });
+
+        const check = (resTables) => {
+          console.log(resTables);
+          for(var t in tables){
+            test(`${tables[t]} exists`, () => {
+              expect(resTables.includes(tables[t])).toBe(true);
+            });
+          }
+        }
+        
+        
+      });
+      
+      */
+    });
+    
+    describe('Integrity', () => {
+      
+      var routes = ['node_modules', process.env.DB_PATH, '.env'];
+      
+      for(var r in routes){
+        test(`${routes[r]} exists`, () => {
+        expect(fs.existsSync(routes[r])).toBe(true);
+      });
+    }
 
   });
 
@@ -31,10 +89,10 @@ describe('Endpoints', () => {
   test('Signin endpoint', async () => {
     try {
       const response = await axios.post(process.env.TEST_URL + 'signin',
-      {
-          "name": process.env.TEST_USER,
-          "password": process.env.TEST_PASS
-      });
+        {
+            "name": process.env.TEST_USER,
+            "password": process.env.TEST_PASS
+        });
       expect(response.status).toBe(200);
     } catch (error) {}
   });

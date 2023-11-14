@@ -160,25 +160,6 @@ export default Alarm = ({ navigation }) => {
                 </Image>
             </View>
             <Text style={{fontFamily: 'M1c-Regular', fontSize: 20, color:'#F7A5BF',textAlign:'center'}}>Paracetamol 20 mg</Text>
-            {/* <Pressable
-                style={styles.Button}
-                onPressIn={() => { 
-                    setBtnColor(Color[50]) 
-                }} 
-                onPressOut={() => { 
-                    setBtnColor(Color[40]) 
-                }}
-            >
-                <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>
-                            <Text style={{fontSize:RFValue(17),fontFamily:'M1c-Regular', color:'white', textAlign:'center'}} >
-                                Posponer (10 minutos)
-                            </Text>
-                        </View>
-            </Pressable> */}
-        {/* <Image source={require("../assets/imgs/left.png")}/> 
-        <View style={styles.circle2}/>
-        <Image source={require("../assets/imgs/right.png")}/>  */}
-        {/* <Text style={{color:'#A9939A',fontFamily:'M1c-Light',fontSize:13}}>Desliza al tomar tu medicamento</Text> */}
             <Pressable
                 style={styles.DescartarBtn}
                 onPressIn={() => { 
@@ -192,17 +173,6 @@ export default Alarm = ({ navigation }) => {
                     )
                 }} 
                 onPressOut={() => { 
-                    //TODO: agregar lógica para desactivar la alarma
-                    /*
-                    stopSound();
-                    setDescartarBtnColor(Color[40]) 
-                    navigation.dispatch(
-                        CommonActions.reset({
-                            index: 0,
-                            routes: [{ name: 'Main' }],
-                        })
-                    )
-                        */
                 }}
             >
                 <View style={{ justifyContent: "center", alignItems: "center", flexDirection: 'row'}}>

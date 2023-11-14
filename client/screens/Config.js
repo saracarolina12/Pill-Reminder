@@ -33,7 +33,6 @@ LocaleConfig.locales['fr'] = {
 
 LocaleConfig.defaultLocale = 'fr';
 
-
 export default Config = ({ route, navigation }) => {
     const [cancelBtnColor, setCancelBtnColor] = useState("#FC7070");
     const [OKBtnColor, setOKBtnColor] = useState("#8CD19E");
