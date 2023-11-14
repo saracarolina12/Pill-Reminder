@@ -3,13 +3,14 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
 // TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
 
 const app = express();
 app.use(
   session({
-    secret: '7B#Kp&2M$5n@9T8QH38904GHY5$', // TODO: Static test; revealed secrot
+    secret: process.env.SESSION_SECRET, // TODO: Static test; revealed secrot
     resave: false,
     saveUninitialized: true,
   })
@@ -41,7 +42,7 @@ class DatabaseHandler {
     }
 }
 
-var handler = new DatabaseHandler('pillReminder.db'); // TODO: Static test; revealed secrot
+var handler = new DatabaseHandler(process.env.DB_PATH); // TODO: Static test; revealed secrot
 
 app.get('/', (req, res) => {
     res.send('Hola');
@@ -82,12 +83,12 @@ app.post('/sendCode', (req, res) => { // TODO: test w empty
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth:{
-                        user:'mindsparkpillreminder01@gmail.com', // TODO: Static test; revealed secrot
-                        pass:'omof cacf vcvm yyqo' // TODO: Static test; revealed secrot
+                        user: process.env.EMAIL, // TODO: Static test; revealed secrot
+                        pass: process.env.PASSWORD // TODO: Static test; revealed secrot
                     }
                 });
                 const mailOptions = {
-                    from:'mindsparkpillreminder01@gmail.com', // TODO: Static test; revealed secrot
+                    from: process.env.EMAIL, // TODO: Static test; revealed secrot
                     to: email,
                     subject : 'Recuperacion de cuenta',
                     text : 'Tu codigo de verifiación es: ' + code,
