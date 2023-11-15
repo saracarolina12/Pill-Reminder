@@ -91,7 +91,6 @@ export default SignUp = ({ route, navigation }) => {
             borderRadius:15,
             width:250,
             paddingBottom:3
-            // borderColor:'red'
         },
         container_img: {
             flex: 1,
@@ -102,7 +101,6 @@ export default SignUp = ({ route, navigation }) => {
             width: 75, 
             height: 75, 
             marginTop:5
-            // backgroundColor:'red'
         },
         circle: {
             width: 95, 

@@ -134,16 +134,6 @@ export default Login = ({ route, navigation }) => {
             colors={['#F8C0D2', '#F4B0C6', '#F497B5']}
             style={styles.container}>
 
-            {/* <View style={{alignContent:'center', alignItems:'center', backgroundColor:'red'}}>
-                <View style={styles.circle}>
-                    <Image
-                    source={require("../assets/imgs/heart.png")}
-                    style={styles.imagen}
-                    />
-                </View>
-                <Text style={{ fontFamily: 'M1c-Bold', fontSize: 35}}>Pill Reminder</Text>
-            </View> */}
-
             <View style={styles.container_img}>
                 <View style={styles.circle}>
                 <Image

@@ -209,16 +209,6 @@ export default VerifyCode = ({ route, navigation }) => {
                             </TextInput>
                         ))}
                     </SafeAreaView>       
-                    {/*
-                    <View>
-                        <TouchableOpacity onPress={changeColor}>
-                            <Text style={styles.underline}>
-                                ¿No recibiste ningún código?
-                            </Text>
-                        </TouchableOpacity>
-                    </View>                   
-                    */}                
-            
                     <Pressable
                         style={styles.Button}
                         onPressIn={() => { 

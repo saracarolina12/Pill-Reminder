@@ -3,18 +3,21 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const session = require('express-session');
 const nodemailer = require('nodemailer');
+require('dotenv').config();
 
-// TODO: CHANGE ALL CONSOLE.LOG FOR LOGGER
+// TODO: CHANGE ALL if(debug) console.LOG FOR LOGGER
+
+const debug = false;
 
 const app = express();
 app.use(
   session({
-    secret: '7B#Kp&2M$5n@9T8QH38904GHY5$',
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
   })
 );
-const port = 8532;
+const port = process.env.PORT || 8532;
 // var cors = require('cors');
 app.use(bodyParser.json());
 
@@ -27,32 +30,38 @@ class DatabaseHandler {
     }
 
     openConnection(){
-        this.db = new sqlite3.Database(this.dbPath);
-        return this.db;
+        try {
+            this.db = new sqlite3.Database(this.dbPath);
+            return this.db;
+        }
+        catch(e) {
+            return e;
+        }
     }
 
     closeConnection(){
         this.db.close((err) => {
             if (err) {
-                return console.error(err.message);
+                if(debug) console.error(err.message);
+                return err;
             }
-            console.log('Closed the database connection.');
+            if(debug) console.log('Closed the database connection.');
         });
     }
 }
 
-var handler = new DatabaseHandler('pillReminder.db');
+var handler = new DatabaseHandler(process.env.DB_PATH);
 
 app.get('/', (req, res) => {
     res.send('Hola');
 });
 
-const requireAuth = (req, res, next) => {
+const requireAuth = (req, res, next) => { // TODO: test
     if (req.session.userId) {
         next();
     }
     else {
-        console.log("Called an endpoint that requires authentication");
+        if(debug) console.log("Called an endpoint that requires authentication");
         res.status(401).json({ message: 'Unauthorized. Please log in.' });
     }
 };
@@ -66,11 +75,11 @@ app.post('/sendCode', (req, res) => {
     db.serialize(() => {
         db.all(`SELECT * FROM users WHERE email = ?;`, [email], (err, entries) => {
             if (err) {
-                console.log("Couldn't find email: " + err); 
+                if(debug) console.log("Couldn't find email: " + err); 
                 return res.status(500).json({ error: "Couldn't find email: " + err });
             }
             if(entries.length) {
-                console.log("Found email."); 
+                if(debug) console.log("Found email."); 
                 // req.session.userId = entries[0].user_id; 
 
                 const Longitud = 4;
@@ -82,12 +91,12 @@ app.post('/sendCode', (req, res) => {
                 const transporter = nodemailer.createTransport({
                     service: 'gmail',
                     auth:{
-                        user:'mindsparkpillreminder01@gmail.com',
-                        pass:'omof cacf vcvm yyqo'
+                        user: process.env.EMAIL,
+                        pass: process.env.PASSWORD
                     }
                 });
                 const mailOptions = {
-                    from:'mindsparkpillreminder01@gmail.com',
+                    from: process.env.EMAIL,
                     to: email,
                     subject : 'Recuperacion de cuenta',
                     text : 'Tu codigo de verifiación es: ' + code,
@@ -99,15 +108,15 @@ app.post('/sendCode', (req, res) => {
                 transporter.sendMail(mailOptions,
                     function(err,info){
                         if(err){
-                            console.log("Couldn't find email: " + err);
+                            if(debug) console.log("Couldn't find email: " + err);
                             return res.status(500).json({ error: "Couldn't find email: " + err });
                         }
                         else return res.status(200).json({ message: info.response });
                     });
             }
             else {
-                console.log("Couldn't find email");
-                return res.status(400).json({ error: "Couldn't find email" });
+                if(debug) console.log("Couldn't find email");
+                return res.status(500).json({ error: "Couldn't find email" });
             }
         })
     });
@@ -121,47 +130,47 @@ app.post('/verify', (req, res) => {
         return res.status(400).json({error: 'Invalid JSON data'});
 
     if(code === req.session.code) {
-        console.log("Codes match");
+        if(debug) console.log("Codes match");
         req.session.code = 0;
         return res.status(200).json({message: 'Codes match'});
     }
     else {
-        console.log("Codes don't match");
-        return res.status(400).json({error: "Codes don't match"});
+        if(debug) console.log("Codes don't match");
+        return res.status(500).json({error: "Codes don't match"});
     }
 });
 
 app.post('/signup', (req, res) => {
-    const data = req.body;
-    if (!data)
-    return res.status(400).json({ error: 'Invalid JSON data' });
+    const {name, email, password} = req.body;
+    if (!name || !email || password)
+        return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
     var failed = false;
 
     db.serialize(() => {
-        db.all(`SELECT * FROM users WHERE name = '${data.name}' or email = '${data.email}'`, (err, entries) => {
+        db.all(`SELECT * FROM users WHERE name = '${name}' or email = '${email}'`, (err, entries) => {
             if (err) {
-                console.log("Failed while signing up: " + err);
+                if(debug) console.log("Failed while signing up: " + err);
                 failed = true;
                 return res.status(500).json({ error: "Failed signing up: " + err });
             }
             else if(entries.length) {
-                console.log("User already exists.");
+                if(debug) console.log("User already exists.");
                 failed = true;
                 return res.status(400).json({ message: 'User already exists' });
             }
             else {
                 db.run(
                     'INSERT INTO users (name, email, password) VALUES (?, ?, ?)',
-                    [data.name, data.email, data.password],
+                    [name, email, password],
                     (err) => {
                         if (err) {
-                            console.log("Couldn't insert user: " + err);
+                            if(debug) console.log("Couldn't insert user: " + err);
                             return res.status(500).json({ error: 'Database insertion failed' + err });
                         }
                         else {
-                            console.log("User created successfully");
+                            if(debug) console.log("User created successfully");
                             return res.status(200).json({ message: 'Data inserted successfully' });
                         }
                     }
@@ -173,26 +182,26 @@ app.post('/signup', (req, res) => {
 });
 
 app.post('/signin', (req, res) => {
-    const data = req.body;
-    if (!data)
+    const {name, password} = req.body;
+    if (!name || !password)
         return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
     
     db.serialize(() => {
-        db.all(`SELECT * FROM users WHERE name = '${data.name}' and password = '${data.password}'`, (err, entries) => {
+        db.all(`SELECT * FROM users WHERE name = '${name}' and password = '${password}'`, (err, entries) => {
             if (err) {
-                console.log("Couldn't find user: " + err);
+                if(debug) console.log("Couldn't find user: " + err);
                 return res.status(500).json({ error: "Couldn't find user: " + err });
             }
-            console.log(entries, entries.length);
+            if(debug) console.log(entries, entries.length);
             if(entries.length) {
-                console.log("Sign in successful.");
+                if(debug) console.log("Sign in successful.");
                 req.session.userId = entries[0].user_id;
                 return res.status(200).json({ message: 'Sign in successful' });
             }
             else {
-                console.log("Couldn't find user");
+                if(debug) console.log("Couldn't find user");
                 return res.status(400).json({ error: "Couldn't find user: " + err });
             }
         })
@@ -204,7 +213,7 @@ app.post('/signin', (req, res) => {
 app.get('/signout', requireAuth, (req, res) => {
     try {
         req.session.userId = null;
-        console.log('Signed out');
+        if(debug) console.log('Signed out');
         return res.status(200).json({ message: 'Sign out successful' });
     }
     catch (error) {
@@ -223,11 +232,11 @@ app.post('/newPassword', (req, res) => {
         [password, req.session.email],
         (err) => {
             if (err || !req.session.email) {
-                console.log("Couldn't update password: " + err);
+                if(debug) console.log("Couldn't update password: " + err);
                 return res.status(500).json({ error: 'Database update failed' + err });
             }
             req.session.email = "";
-            console.log("Password updated successfully");
+            if(debug) console.log("Password updated successfully");
             res.json({ message: 'Data inserted successfully' });
         }
         );
@@ -245,10 +254,10 @@ app.get('/getPills', requireAuth, (req, res) => {
             WHERE user_id = ${req.session.userId};`, 
             (err, entries) => {
                 if (err) {
-                    console.log("Couldn't find pills: " + err);
+                    if(debug) console.log("Couldn't find pills: " + err);
                     return res.status(500).json({ error: "Couldn't find pills: " + err });
                 }
-                console.log(entries, entries.length);
+                if(debug) console.log(entries, entries.length);
                 req.session.nextAlarm = [];
 
                 if(entries.length) {
@@ -282,11 +291,11 @@ app.get('/getPills', requireAuth, (req, res) => {
                     });
                     req.session.nextAlarm.sort((a, b) => a.next - b.next);
                     entries.sort((a, b) => a.next - b.next);
-                    console.log(req.session.nextAlarm);
+                    if(debug) console.log(req.session.nextAlarm);
                     return res.status(200).json(entries);
                 }
                 else {
-                    console.log("No pills to show");
+                    if(debug) console.log("No pills to show");
                     return res.status(200).json({ message: "No pills to display: " });
                 }
         })
@@ -315,15 +324,15 @@ app.get('/getUnits', (req, res) => {
         db.all('SELECT unit_id, name FROM units;', 
             (err, entries) => {
                 if (err) {
-                    console.log("Couldn't find units: " + err);
+                    if(debug) console.log("Couldn't find units: " + err);
                     return res.status(500).json({ error: "Couldn't find units: " + err });
                 }
                 if(entries.length) {
-                    console.log("Displaying " + entries.length +  " units: " + entries);
+                    if(debug) console.log("Displaying " + entries.length +  " units: " + entries);
                     return res.status(200).json(entries);
                 }
                 else {
-                    console.log("No units to show");
+                    if(debug) console.log("No units to show");
                     return res.status(500).json({ error: "No units to display" });
                 }
         })
@@ -333,28 +342,30 @@ app.get('/getUnits', (req, res) => {
 });
 
 app.post('/newPill', requireAuth, (req, res) => {
-    const data = req.body;
-    if (!data)
+    const {name, start, end, frequency, dose, dose_unit} = req.body; 
+    if (!name || !start || !end || !frequency || !dose || !dose_unit)
         return res.status(400).json({ error: 'Invalid JSON data' });
 
     var db = handler.openConnection();
 
     db.run(
       'INSERT INTO pills (name, user_id, start, end, frequency, dose, dose_unit) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [data.name, req.session.userId, data.start, data.end, data.frequency, data.dose, data.dose_unit],
+      [name, req.session.userId, start, end, frequency, dose, dose_unit],
       (err) => {
         if (err) {
-            console.log("Couldn't insert Pill: " + err);
+            if(debug) console.log("Couldn't insert Pill: " + err);
             return res.status(500).json({ error: 'Database insertion failed' + err });
         }
         res.json({ message: 'Data inserted successfully' });
-        console.log("Pill created successfully");
+        if(debug) console.log("Pill created successfully");
       }
     );
 
     handler.closeConnection();
 });
 
-app.listen(port, () => {
-    console.log(`Holahola. My app listening on port ${port}`);
+var server = app.listen(port, () => {
+    if(debug) console.log(`Holahola. My app listening on port ${port}`);
 })
+
+module.exports = { toTimestamp, server, DatabaseHandler };

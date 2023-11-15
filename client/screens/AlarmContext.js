@@ -92,23 +92,9 @@ export const AlarmProvider = ({ children, route  }) => {
 
         
         const scheduleNotification = async (currDate) => {
-            //currDate = new Date(currDate);
-
-            // console.log("\n\n",AlarmData,"\n\n");
-            // console.log(AlarmData.hour, ":", AlarmData.minutes);
             let nextAlarm = new Date(AlarmData.alarm? AlarmData.alarm.next + 60*60*6*1000: null);
-            // let alarmHour = nextAlarm.getHours();
-            // let alarmMinutes = nextAlarm.getMinutes();
-            // const triggerTime = new Date();
-            // triggerTime.setHours(alarmHour);
-            // triggerTime.setMinutes(alarmMinutes);
-            // console.log(alarmHour, ":", alarmMinutes,"------- ", currDate.getHours(), ":", currDate.getMinutes());
-            //console.log(nextAlarm, currDate)
             console.log(currDate.getHours(), nextAlarm.getHours(), currDate.getMinutes(), nextAlarm.getMinutes(), currDate.getDate(), nextAlarm.getDate());
-        
-            //if (AlarmData.active == true && currDate.getHours() === triggerTime.getHours() && currDate.getMinutes() === triggerTime.getMinutes()) {
             if (AlarmData.active == true && currDate.getHours() === nextAlarm.getHours() && currDate.getMinutes() === nextAlarm.getMinutes() && currDate.getDate() === nextAlarm.getDate()) {
-            //if (currDate == nextAlarm) {
                 global.AlarmData.active = false;
                 await Notifications.scheduleNotificationAsync({
                     content: {
@@ -119,7 +105,6 @@ export const AlarmProvider = ({ children, route  }) => {
                         seconds: 0, 
                     },
                 });
-                //navigation.navigate('Alarm',{hour:alarmHour, minutes:alarmMinutes, sound:sound});
                 navigation.navigate('Alarm',{hour:currDate.getHours(), minutes:currDate.getMinutes(), sound:sound});
             }
         };
