@@ -1,9 +1,9 @@
 # 💊 Pill-Reminder
-
-<div style="display: flex; justify-content: space-around; margin-bottom: 20px;">
+<div style="display: flex; justify-content: space-around;">
     <img src="https://github.com/saracarolina12/Pill-Reminder/blob/main/docs/Prototype/Login.png?raw=true" alt="Login-img" style="max-width: 45%; height: auto;">
     <img src="https://github.com/saracarolina12/Pill-Reminder/blob/main/docs/Prototype/Main.png?raw=true" alt="Main-img" style="max-width: 45%; height: auto;">
 </div>
+
 
 
 ## 🔹Overview
